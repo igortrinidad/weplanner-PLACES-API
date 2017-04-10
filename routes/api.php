@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 
 Route::group(['prefix' => 'auth',], function () {
     Route::post('/login', 'Auth\LoginController@login');
+    Route::post('/signup', 'Auth\RegisterController@register');
 });
 
 Route::get('/protected', function () {

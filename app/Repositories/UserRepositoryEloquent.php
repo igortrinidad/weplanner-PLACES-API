@@ -42,7 +42,10 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
 
     public function update(array $attributes, $id)
     {
-        $attributes['password'] = bcrypt($attributes['password']);
+        if(isset($attributes['password'])){
+            $attributes['password'] = bcrypt($attributes['password']);
+        }
+        
         return parent::update($attributes, $id);
     }
 }

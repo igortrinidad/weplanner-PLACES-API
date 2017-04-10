@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Repositories\UserRepository;
 use App\User;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
@@ -20,52 +22,29 @@ class RegisterController extends Controller
     |
     */
 
-    use RegistersUsers;
-
     /**
-     * Where to redirect users after registration.
-     *
-     * @var string
+     * @var UserRepository
      */
-    protected $redirectTo = '/home';
+    private $repository;
 
     /**
      * Create a new controller instance.
      *
-     * @return void
+     * @param UserRepository $repository
      */
-    public function __construct()
+    public function __construct(UserRepository $repository)
     {
-        $this->middleware('guest');
-    }
 
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|min:6|confirmed',
-        ]);
+        $this->repository = $repository;
     }
 
     /**
      * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return User
+     * @param Request $request
+     * @return mixed
      */
-    protected function create(array $data)
+    public function register(Request $request)
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-        ]);
+        return $this->repository->create($request->all());
     }
 }
