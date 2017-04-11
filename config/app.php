@@ -184,6 +184,7 @@ return [
         Barryvdh\Cors\ServiceProvider::class,
         Spatie\Fractal\FractalServiceProvider::class,
         Prettus\Repository\Providers\RepositoryServiceProvider::class,
+        Laravel\Socialite\SocialiteServiceProvider::class,
 
     ],
 
@@ -242,6 +243,7 @@ return [
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
         'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
         'Fractal' => Spatie\Fractal\FractalFacade::class,
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
     ],
 
 ];

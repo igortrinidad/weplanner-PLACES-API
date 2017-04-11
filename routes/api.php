@@ -17,6 +17,9 @@ use Illuminate\Http\Request;
 Route::group(['prefix' => 'auth',], function () {
     Route::post('/login', 'Auth\LoginController@login');
     Route::post('/signup', 'Auth\RegisterController@register');
+
+    Route::get('/facebook/login', 'Auth\SocialAuthController@facebookLogin');
+    Route::get('/facebook/return', 'Auth\SocialAuthController@facebookReturn');
 });
 
 Route::get('/protected', function () {

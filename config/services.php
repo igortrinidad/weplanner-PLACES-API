@@ -35,4 +35,10 @@ return [
         'secret' => env('STRIPE_SECRET'),
     ],
 
+    'facebook' => [
+        'client_id' => '151705885358217',
+        'client_secret' => 'b7c4cc91b26ae82e6b02190df39ef4d1',
+        'redirect' => 'http://weplanner-places-api.dev/api/auth/facebook/return',
+    ],
+
 ];
