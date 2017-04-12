@@ -14,12 +14,13 @@ use Illuminate\Http\Request;
 */
 
 
-Route::group(['prefix' => 'auth',], function () {
+Route::group(['prefix' => 'auth'], function () {
     Route::post('/login', 'Auth\LoginController@login');
     Route::post('/signup', 'Auth\RegisterController@register');
 
-    Route::get('/facebook/login', 'Auth\SocialAuthController@facebookLogin');
-    Route::get('/facebook/return', 'Auth\SocialAuthController@facebookReturn');
+    Route::post('/facebook', 'Auth\SocialAuthController@facebookLogin');
+    Route::get('/user', 'Auth\SocialAuthController@user')->middleware('jwt.auth');
+    Route::get('/refresh', 'Auth\SocialAuthController@refresh')->middleware('jwt.auth');
 });
 
 Route::get('/protected', function () {
