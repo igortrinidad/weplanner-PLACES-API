@@ -18,7 +18,7 @@ Route::group(['prefix' => 'auth'], function () {
     Route::post('/login', 'Auth\LoginController@login');
     Route::post('/signup', 'Auth\RegisterController@register');
 
-    Route::post('/facebook', 'Auth\SocialAuthController@facebookLogin');
+    Route::post('/{provider}', 'Auth\SocialAuthController@socialLogin');
     Route::get('/user', 'Auth\SocialAuthController@user')->middleware('jwt.auth');
     Route::get('/refresh', 'Auth\SocialAuthController@refresh')->middleware('jwt.auth');
 });

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 
 use App\Models\User;
+use App\Models\UserSocialProvider;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Tymon\JWTAuth\JWTAuth;
@@ -26,72 +27,55 @@ class SocialAuthController extends Controller
         $this->JWTAuth = $JWTAuth;
     }
 
-    public function facebookLogin(Request $request)
+    public function socialLogin(Request $request, $provider)
     {
-        return $this->_social($request, 'facebook', function ($user) {
+        return $this->handleLogin($request, $provider, function ($user) {
             return (object) [
                 'id' => $user->id,
-                'email' => $user->user['email'],
-                'name' => $user->user['name'],
+                'email' => $user->email,
+                'name' => $user->name,
                 'photo_url' => $user->avatar . '&width=1200'
             ];
         });
     }
 
-    public function facebookReturn(Request $request)
-    {
-        $user = Socialite::with('facebook')
-            ->stateless()
-            ->user();
 
-        return response()->json(['user' => $user]);
-    }
-
-    private function _social(Request $request, $type, $cb)
+    private function handleLogin(Request $request, $provider, $callback)
     {
         if ($request->has('code')) {
-            $new_user = false;
+            $social_user = Socialite::with($provider)->stateless()->user();
 
-            $social_user = Socialite::with($type)->stateless()->user();
-
-            $social_user = $cb($social_user);
+            $social_user = $callback($social_user);
 
             if ( ! @$social_user->id) {
                 return response([
                     'status' => 'error',
                     'code' => 'ErrorGettingSocialUser',
-                    'msg' => 'There was an error getting the ' . $type . ' user.'
+                    'msg' => 'There was an error getting the ' . $provider . ' user.'
                 ], 400);
             }
 
             /*
-             * find user with social credentials
+             * find user by social credentials
              */
-            $user = User::where($type . '_id', $social_user->id)->first();
+            $socialProvider = UserSocialProvider::where('provider_id', $social_user->id)->first();
 
+            if(!$socialProvider)
+            {   //Split user full name
+                $splitName = explode(' ', $social_user->name);
 
-            if ( ! ($user instanceof User)) {
-                //Find user by social email
-                $user = User::where('email', $social_user->email)->first();
+                //Create user
+                $user = User::firstOrCreate([
+                    'name' => $splitName[0],
+                    'last_name' => $splitName[1],
+                    'email' => $social_user->email
+                ]);
 
-                // If user not exists create a new user instance
-                if ( ! ($user instanceof User)) {
-                    $new_user = true;
-                    $user = new User();
-                }
+                $user->socialProviders()->create(['provider' => $provider, 'provider_id' => $social_user->id]);
 
-                $user->{$type . '_id'} = $social_user->id;
+            }else{
+                $user = $socialProvider->user;
             }
-            $full_name = explode(' ', $social_user->name);
-
-            // Update info and save.
-            if (empty($user->email)) { $user->email = $social_user->email; }
-            if (empty($user->name)) { $user->name = $full_name[0]; }
-            if (empty($user->last_name)) { $user->last_name = $full_name[1]; }
-            if (empty($user->{$type . '_email'})) { $user->{$type . '_email'} = $social_user->email; }
-            if (empty($user->password)) { $user->password = bcrypt(str_random(8)); }
-
-            $user->save();
 
             if ( ! $token = $this->JWTAuth->fromUser($user)) {
                 throw new AuthorizationException;
@@ -99,9 +83,9 @@ class SocialAuthController extends Controller
 
             return response([
                 'status' => 'success',
-                'msg' => 'Successfully logged in via ' . $type . '.',
+                'msg' => 'Successfully logged in via ' . $provider . '.',
                 'token' => $token,
-                'user' => $user
+                'user' => $user->load('socialProviders')
             ])
                 ->header('Authorization', $token);
         }
@@ -110,19 +94,16 @@ class SocialAuthController extends Controller
             'status' => 'success',
             'msg' => 'Successfully fetched token url.',
             'data' => [
-                'url' => Socialite::with($type)->stateless()->redirect()->getTargetUrl()
+                'url' => Socialite::with($provider)->stateless()->redirect()->getTargetUrl()
             ]
         ], 200);
     }
 
     public function user(Request $request)
     {
-        $user = User::find(\Auth::user()->id);
+        $user = \Auth::user();
 
-        return response([
-            'status' => 'success',
-            'data' => $user
-        ]);
+        return response()->json(['status' => 'success', 'data' => $user]);
     }
 
     public function refresh()

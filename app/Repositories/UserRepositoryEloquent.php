@@ -36,13 +36,15 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
 
     public function create(array $attributes)
     {
-        $attributes['password'] = bcrypt($attributes['password']);
+        if(isset($attributes['password']) && $attributes['password'] != null){
+            $attributes['password'] = bcrypt($attributes['password']);
+        }
         return parent::create($attributes);
     }
 
     public function update(array $attributes, $id)
     {
-        if(isset($attributes['password'])){
+        if(isset($attributes['password']) && $attributes['password'] != null){
             $attributes['password'] = bcrypt($attributes['password']);
         }
         

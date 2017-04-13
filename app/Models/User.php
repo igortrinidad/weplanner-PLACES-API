@@ -42,6 +42,12 @@ class User extends Authenticatable implements JWTSubject
      */
     protected $appends = ['full_name'];
 
+    /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    protected $with = ['socialProviders'];
 
     /*
      * Full name attribute
@@ -68,5 +74,10 @@ class User extends Authenticatable implements JWTSubject
      */
     public function getJWTCustomClaims(){
         return [];
+    }
+
+    public function socialProviders()
+    {
+        return $this->hasMany(UserSocialProvider::class);
     }
 }

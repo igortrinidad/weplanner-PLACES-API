@@ -41,4 +41,10 @@ return [
         'redirect' => 'http://localhost:8080/login/facebook',
     ],
 
+    'google' => [
+        'client_id' => '537008103029-mloc2rglcqoj4qbebauvgtlprarbn2m9.apps.googleusercontent.com',
+        'client_secret' => 'RsI-qqvCzvfD-rDJ2_-VSCLX',
+        'redirect' => 'http://localhost:8080/login/google',
+    ],
+
 ];
