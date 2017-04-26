@@ -18,6 +18,7 @@ class CreateUserSocialProvidersTable extends Migration
             $table->uuid('user_id');
             $table->string('provider');
             $table->string('provider_id');
+            $table->string('access_token');
             $table->timestamps();
             $table->primary('id');
         });

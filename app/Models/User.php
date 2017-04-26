@@ -40,7 +40,7 @@ class User extends Authenticatable implements JWTSubject
      /*
      * Append the those attributes to a record
      */
-    protected $appends = ['full_name'];
+    protected $appends = ['full_name', 'blank_password'];
 
     /**
      * The relations to eager load on every query.
@@ -57,6 +57,13 @@ class User extends Authenticatable implements JWTSubject
         return $this->name . ' ' . $this->last_name;
     }
 
+    /*
+     * if user has blank password
+     */
+    public function getBlankPasswordAttribute() {
+
+       return $this->password == '' || $this->password == null;
+    }
 
     /**
      * Get the identifier that will be stored in the subject claim of the JWT

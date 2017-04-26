@@ -85,10 +85,20 @@ class UserController extends Controller
      */
     public function update(Request $request)
     {
+        if($request->has('current_password')){
+
+            $user = \Auth::user();
+
+            if(!\Hash::check($request->get('current_password'), $user->password)){
+
+                return response()->json(['error' => true, 'message' => 'Senha atual incorreta'], 200);
+            }
+        }
+
         $user = $this->repository->update($request->all(), $request->get('id'));
 
         return fractal()
-            ->item($user, new UserTransformer(), 'user')
+            ->item($user->load('socialProviders'), new UserTransformer(), 'user')
             ->serializeWith(new DataArraySerializer())
             ->toArray();
     }

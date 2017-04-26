@@ -34,7 +34,8 @@ class SocialAuthController extends Controller
                 'id' => $user->id,
                 'email' => $user->email,
                 'name' => $user->name,
-                'photo_url' => $user->avatar . '&width=1200'
+                'photo_url' => $user->avatar . '&width=1200',
+                'token' => $user->token . '&width=1200'
             ];
         });
     }
@@ -64,19 +65,41 @@ class SocialAuthController extends Controller
             {   //Split user full name
                 $splitName = explode(' ', $social_user->name);
 
-                //Create user
-                $user = User::firstOrCreate([
-                    'name' => $splitName[0],
-                    'last_name' => $splitName[1],
-                    'email' => $social_user->email
-                ]);
 
-                $user->socialProviders()->create(['provider' => $provider, 'provider_id' => $social_user->id]);
+                if($request->has('user_email')){
+
+                    $user = User::whereEmail($request->get('user_email'))->first();
+
+                    if($user){
+                        $user->socialProviders()->create(['provider' => $provider, 'provider_id' => $social_user->id, 'access_token' => $social_user->token]);
+                    }
+                }
+
+               if(!$request->has('user_email')){
+
+                   //Create user
+                   $user = User::firstOrCreate([
+                       'name' => $splitName[0],
+                       'last_name' => $splitName[1],
+                       'email' => $social_user->email
+                   ]);
+
+                   $user->socialProviders()->create(['provider' => $provider, 'provider_id' => $social_user->id, 'access_token' => $social_user->token]);
+               }
 
             }else{
                 $user = $socialProvider->user;
             }
 
+            //Verifies if the account belongs to the authenticated user.
+            if($request->has('user_id') && $user->id != $request->get('user_id')){
+                return response([
+                    'status' => 'error',
+                    'code' => 'ErrorGettingSocialUser',
+                    'msg' => ucfirst($provider).' already in use.'
+                ], 400);
+            }
+            
             if ( ! $token = $this->JWTAuth->fromUser($user)) {
                 throw new AuthorizationException;
             }

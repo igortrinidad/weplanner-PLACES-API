@@ -23,7 +23,7 @@ class UserSocialProvider extends Model implements Transformable
      * @var array
      */
     protected $fillable = [
-        'user_id', 'provider', 'provider_id',
+        'user_id', 'provider', 'provider_id', 'access_token'
     ];
 
     public function user()

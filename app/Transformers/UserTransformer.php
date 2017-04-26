@@ -17,7 +17,7 @@ class UserTransformer extends Transformer
      */
     public function transform(User $user)
     {
-        $avaliableFields = ['id','name','last_name', 'full_name', 'email', 'created_at','updated_at'];
+        $avaliableFields = ['id','name','last_name', 'full_name', 'email', 'created_at','updated_at', 'blank_password', 'social_providers'];
 
         return array_only($user->toArray(), $avaliableFields);
 
