@@ -23,14 +23,17 @@ Route::group(['prefix' => 'auth'], function () {
     Route::get('/refresh', 'Auth\SocialAuthController@refresh')->middleware('jwt.auth');
 });
 
-Route::get('/protected', function () {
-    return 'Welcome to the secret zone.';
-})->middleware('jwt.auth');
+Route::group(['prefix' => 'place_categories','middleware' => 'jwt.auth'], function () {
+    Route::get('/list', 'PlaceCategoriesController@index');
+});
+
+Route::group(['prefix' => 'places','middleware' => 'jwt.auth'], function () {
+    Route::get('/list', 'PlacesController@index');
+    Route::post('/create', 'PlacesController@store');
+    Route::post('/update', 'PlacesController@update');
+});
 
 
-Route::get('/me', function (Request $request) {
-    return $request->user();
-})->middleware('jwt.auth');
 
 
 

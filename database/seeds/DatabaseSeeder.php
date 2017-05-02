@@ -21,5 +21,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         factory(App\Models\User::class, 10)->create();
+
+        $this->call(PlacesCategoriesTableSeeder::class);
+
     }
 }
