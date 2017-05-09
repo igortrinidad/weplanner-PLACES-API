@@ -37,4 +37,9 @@ class Place extends Model implements Transformable
         'is_active' => 'boolean'
     ];
 
+    public function photos()
+    {
+        return $this->hasMany(PlacePhoto::class);
+    }
+
 }

@@ -55,7 +55,7 @@ class PlacesController extends Controller
 
             $response = [
                 'message' => 'Place created.',
-                'data' => $place->toArray(),
+                'data' => $place->load('photos')->toArray(),
             ];
 
             if ($request->wantsJson()) {
@@ -93,7 +93,7 @@ class PlacesController extends Controller
 
             $response = [
                 'message' => 'Place updated.',
-                'data' => $place->toArray(),
+                'data' => $place->load('photos')->toArray(),
             ];
 
             if ($request->wantsJson()) {
