@@ -50,11 +50,24 @@ class Place extends Model implements Transformable
         'confirmed' => 'boolean'
     ];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function category(){
+        return $this->belongsTo(PlaceCategory::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function photos()
     {
         return $this->hasMany(PlacePhoto::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function documents()
     {
         return $this->hasMany(PlaceDocument::class);

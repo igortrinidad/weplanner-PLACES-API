@@ -29,6 +29,7 @@ Route::group(['prefix' => 'place_categories','middleware' => 'jwt.auth'], functi
 
 Route::group(['prefix' => 'places','middleware' => 'jwt.auth'], function () {
     Route::get('/list', 'PlacesController@index');
+    Route::get('/show/{id}', 'PlacesController@show');
     Route::post('/create', 'PlacesController@store');
     Route::post('/update', 'PlacesController@update');
 

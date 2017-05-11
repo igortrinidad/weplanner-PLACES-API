@@ -52,9 +52,33 @@ class PlacesController extends Controller
      */
     public function index()
     {
-        $places = $this->repository->findWhere(['user_id' => \Auth::user()->id]);
+
+        $places = $this->repository->scopeQuery(function ($query) {
+            return $query->where(['user_id' => \Auth::user()->id])->with('category');
+        })->paginate(10);
 
         return response()->json($places);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int $id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $place = $this->repository->findWhere(['id'=> $id, 'user_id' => \Auth::user()->id])->load('category','photos', 'documents')->first();
+
+        if (request()->wantsJson()) {
+
+            return response()->json([
+                'data' => $place,
+            ]);
+        }
+
+        return view('posts.show', compact('post'));
     }
 
     /**
@@ -74,7 +98,7 @@ class PlacesController extends Controller
 
             $response = [
                 'message' => 'Place created.',
-                'data' => $place->load('photos', 'documents')->toArray(),
+                'data' => $place->load('category', 'photos', 'documents')->toArray(),
             ];
 
             if ($request->wantsJson()) {
@@ -121,7 +145,7 @@ class PlacesController extends Controller
 
             $response = [
                 'message' => 'Place updated.',
-                'data' => $place->load('photos', 'documents')->toArray(),
+                'data' => $place->load('category', 'photos', 'documents')->toArray(),
             ];
 
             if ($request->wantsJson()) {
