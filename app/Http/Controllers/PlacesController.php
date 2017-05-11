@@ -185,6 +185,7 @@ class PlacesController extends Controller
             return response()->json([
                 'message' => 'Place deleted.',
                 'deleted' => $deleted,
+                'place_id' => $id,
             ]);
         }
 

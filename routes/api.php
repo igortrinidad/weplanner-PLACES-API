@@ -32,6 +32,7 @@ Route::group(['prefix' => 'places','middleware' => 'jwt.auth'], function () {
     Route::get('/show/{id}', 'PlacesController@show');
     Route::post('/create', 'PlacesController@store');
     Route::post('/update', 'PlacesController@update');
+    Route::get('/destroy/{id}', 'PlacesController@destroy');
 
     //Photo upload
     Route::post('/media/upload', 'PlacePhotosController@store');

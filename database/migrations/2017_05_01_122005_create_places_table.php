@@ -21,7 +21,7 @@ class CreatePlacesTable extends Migration
             $table->text('description')->nullable();
             $table->string('city');
             $table->string('state');
-            $table->string('address');
+            $table->json('address');
             $table->integer('min_guests');
             $table->integer('max_guests');
             $table->json('informations');

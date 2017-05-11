@@ -45,6 +45,7 @@ class Place extends Model implements Transformable
      * @var array
      */
     protected $casts = [
+        'address' => 'json',
         'informations' => 'json',
         'therms' => 'json',
         'confirmed' => 'boolean'
