@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Validators\PlacePhotoValidator;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
 use App\Http\Requests\PlacePhotoCreateRequest;
 use App\Http\Requests\PlacePhotoUpdateRequest;
@@ -18,10 +20,20 @@ class PlacePhotosController extends Controller
      * @var PlacePhotoRepository
      */
     protected $repository;
+    /**
+     * @var PlacePhotoValidator
+     */
+    private $validator;
 
-    public function __construct(PlacePhotoRepository $repository)
+    /**
+     * PlacePhotosController constructor.
+     * @param PlacePhotoRepository $repository
+     * @param PlacePhotoValidator $validator
+     */
+    public function __construct(PlacePhotoRepository $repository, PlacePhotoValidator $validator)
     {
         $this->repository = $repository;
+        $this->validator = $validator;
     }
 
     /**
@@ -34,6 +46,8 @@ class PlacePhotosController extends Controller
     public function store(PlacePhotoCreateRequest $request)
     {
         try {
+            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
+
             $image = $request->file('image');
 
             $fileName = bin2hex(random_bytes(16)) . '.' . $image->getClientOriginalExtension();
@@ -81,7 +95,11 @@ class PlacePhotosController extends Controller
      */
     public function destroy($id)
     {
-        $deleted = $this->repository->delete($id);
+        $photo = $this->repository->find($id);
+
+        \Storage::disk('media')->delete($photo->path);
+
+        $deleted = $photo->delete();
 
         if (request()->wantsJson()) {
 

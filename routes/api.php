@@ -34,6 +34,11 @@ Route::group(['prefix' => 'places','middleware' => 'jwt.auth'], function () {
 
     //Photo upload
     Route::post('/media/upload', 'PlacePhotosController@store');
+    Route::get('/media/destroy/{id}', 'PlacePhotosController@destroy');
+
+    //Document upload
+    Route::post('/document/upload', 'PlaceDocumentsController@store');
+    Route::get('/document/destroy/{id}', 'PlaceDocumentsController@destroy');
 });
 
 

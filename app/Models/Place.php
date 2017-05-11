@@ -24,7 +24,19 @@ class Place extends Model implements Transformable
      * @var array
      */
     protected $fillable = [
-        'user_id', 'category_id', 'name', 'description','city', 'state', 'address', 'min_guests', 'max_guests', 'informations', 'is_active', 'slug'
+        'user_id',
+        'category_id',
+        'name',
+        'description',
+        'city',
+        'state',
+        'address',
+        'min_guests',
+        'max_guests',
+        'informations',
+        'confirmed',
+        'slug',
+        'therms'
     ];
 
     /**
@@ -34,12 +46,18 @@ class Place extends Model implements Transformable
      */
     protected $casts = [
         'informations' => 'json',
-        'is_active' => 'boolean'
+        'therms' => 'json',
+        'confirmed' => 'boolean'
     ];
 
     public function photos()
     {
         return $this->hasMany(PlacePhoto::class);
+    }
+
+    public function documents()
+    {
+        return $this->hasMany(PlaceDocument::class);
     }
 
 }

@@ -4,13 +4,13 @@ namespace App\Models;
 
 use App\Models\Traits\Uuids;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
-class PlacePhoto extends Model implements Transformable
+class PlaceDocument extends Model implements Transformable
 {
     use TransformableTrait, Uuids;
+
 
     /**
      * Indicates if the IDs are auto-incrementing.
@@ -24,25 +24,22 @@ class PlacePhoto extends Model implements Transformable
      *
      * @var array
      */
-    protected $fillable = ['place_id', 'path', 'is_cover'];
-
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = ['is_cover' => 'boolean'];
-
+    protected $fillable = [
+        'place_id',
+        'path',
+        'filename',
+        'extension'
+    ];
 
     /*
-    * Append the photo_url to a record
-    */
-    protected $appends = ['photo_url'];
+   * Append the _url to a record
+   */
+    protected $appends = ['url'];
 
     /**
      * @return string
      */
-    public function getPhotoUrlAttribute()
+    public function getUrlAttribute()
     {
         if($this->attributes['path'])
         {
@@ -57,7 +54,7 @@ class PlacePhoto extends Model implements Transformable
      */
     private function getFileUrl($key) {
 
-        return (string) Storage::disk('media')->url($key);
+        return (string) \Storage::disk('media')->url($key);
 
     }
 

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\PlacePhotoRepository;
+use App\Validators\PlaceValidator;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -19,11 +21,27 @@ class PlacesController extends Controller
      * @var PlaceRepository
      */
     protected $repository;
+    /**
+     * @var PlaceValidator
+     */
+    private $validator;
+    /**
+     * @var PlacePhotoRepository
+     */
+    private $photoRepository;
 
 
-    public function __construct(PlaceRepository $repository)
+    /**
+     * PlacesController constructor.
+     * @param PlaceRepository $repository
+     * @param PlaceValidator $validator
+     * @param PlacePhotoRepository $photoRepository
+     */
+    public function __construct(PlaceRepository $repository, PlaceValidator $validator, PlacePhotoRepository $photoRepository)
     {
         $this->repository = $repository;
+        $this->validator = $validator;
+        $this->photoRepository = $photoRepository;
     }
 
 
@@ -50,12 +68,13 @@ class PlacesController extends Controller
     {
 
         try {
+            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
 
             $place = $this->repository->create($request->all());
 
             $response = [
                 'message' => 'Place created.',
-                'data' => $place->load('photos')->toArray(),
+                'data' => $place->load('photos', 'documents')->toArray(),
             ];
 
             if ($request->wantsJson()) {
@@ -89,11 +108,20 @@ class PlacesController extends Controller
     {
 
         try {
+            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
+
+            //update photos
+            if(array_key_exists('photos', $request->all())){
+                foreach ($request->get('photos') as $photo){
+                    $this->photoRepository->update($photo, $photo['id']);
+                }
+            }
+
             $place = $this->repository->update($request->all(), $request->get('id'));
 
             $response = [
                 'message' => 'Place updated.',
-                'data' => $place->load('photos')->toArray(),
+                'data' => $place->load('photos', 'documents')->toArray(),
             ];
 
             if ($request->wantsJson()) {

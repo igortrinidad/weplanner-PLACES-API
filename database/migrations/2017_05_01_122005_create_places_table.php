@@ -25,8 +25,9 @@ class CreatePlacesTable extends Migration
             $table->integer('min_guests');
             $table->integer('max_guests');
             $table->json('informations');
-            $table->boolean('is_active')->default(false)->index();
+            $table->boolean('confirmed')->default(false)->index();
             $table->string('slug')->index();
+            $table->json('therms');
             $table->timestamps();
             $table->primary('id');
         });
