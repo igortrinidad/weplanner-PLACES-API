@@ -18,8 +18,8 @@ class PlacesCategoriesTableSeeder extends Seeder
         ]);
 
         PlaceCategory::create([
-            'name' => 'Igreja',
-            'slug' => 'igreja'
+            'name' => 'Igrejas',
+            'slug' => 'igrejas'
         ]);
     }
 }

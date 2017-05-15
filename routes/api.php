@@ -27,20 +27,26 @@ Route::group(['prefix' => 'place_categories','middleware' => 'jwt.auth'], functi
     Route::get('/list', 'PlaceCategoriesController@index');
 });
 
-Route::group(['prefix' => 'places','middleware' => 'jwt.auth'], function () {
-    Route::get('/list', 'PlacesController@index');
-    Route::get('/show/{id}', 'PlacesController@show');
-    Route::post('/create', 'PlacesController@store');
-    Route::post('/update', 'PlacesController@update');
-    Route::get('/destroy/{id}', 'PlacesController@destroy');
+Route::group(['prefix' => 'places'], function () {
+    //admin resources
+    Route::get('/list', 'PlacesController@index')->middleware('jwt.auth');
+    Route::get('/show/{id}', 'PlacesController@show')->middleware('jwt.auth');
+    Route::post('/create', 'PlacesController@store')->middleware('jwt.auth');
+    Route::post('/update', 'PlacesController@update')->middleware('jwt.auth');;
+    Route::get('/destroy/{id}', 'PlacesController@destroy')->middleware('jwt.auth');
 
     //Photo upload
-    Route::post('/media/upload', 'PlacePhotosController@store');
-    Route::get('/media/destroy/{id}', 'PlacePhotosController@destroy');
+    Route::post('/media/upload', 'PlacePhotosController@store')->middleware('jwt.auth');
+    Route::get('/media/destroy/{id}', 'PlacePhotosController@destroy')->middleware('jwt.auth');
 
     //Document upload
-    Route::post('/document/upload', 'PlaceDocumentsController@store');
-    Route::get('/document/destroy/{id}', 'PlaceDocumentsController@destroy');
+    Route::post('/document/upload', 'PlaceDocumentsController@store')->middleware('jwt.auth');
+    Route::get('/document/destroy/{id}', 'PlaceDocumentsController@destroy')->middleware('jwt.auth');
+
+    //Public resources
+
+    Route::get('{category_slug}', 'PlacesController@listByCategory');
+    Route::get('{category_slug}/{place_slug}', 'PlacesController@showPublic');
 });
 
 

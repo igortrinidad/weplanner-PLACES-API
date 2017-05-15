@@ -73,9 +73,15 @@ class PlacesController extends Controller
 
         if (request()->wantsJson()) {
 
+            if($place){
+                return response()->json([
+                    'data' => $place,
+                ]);
+            }
+
             return response()->json([
-                'data' => $place,
-            ]);
+                'data' => 'Record not found.',
+            ], 404);
         }
 
         return view('posts.show', compact('post'));
@@ -190,5 +196,60 @@ class PlacesController extends Controller
         }
 
         return redirect()->back()->with('message', 'Place deleted.');
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param $category_slug
+     * @return \Illuminate\Http\Response
+     */
+    public function listByCategory($category_slug)
+    {
+
+        $places = $this->repository
+            ->whereHas('category', function ($q) use ($category_slug) {
+                return $q->where('slug', $category_slug);
+            })->with(['category', 'photos'])->all();
+
+        if (request()->wantsJson()) {
+
+            return response()->json([
+                'data' => $places,
+            ]);
+        }
+
+        return view('posts.show', compact('post'));
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param $category_slug
+     * @param $place_slug
+     * @return \Illuminate\Http\Response
+     */
+    public function showPublic($category_slug, $place_slug)
+    {
+
+        $place = $this->repository
+            ->whereHas('category', function ($q) use ($category_slug, $place_slug) {
+                return $q->where('slug', $category_slug);
+            })->with(['category', 'photos'])->findWhere(['slug' => $place_slug])->first();
+
+        if (request()->wantsJson()) {
+
+            if($place){
+                return response()->json([
+                    'data' => $place,
+                ]);
+            }
+
+            return response()->json([
+                'data' => 'Record not found.',
+            ], 404);
+        }
+
+        return view('posts.show', compact('post'));
     }
 }
