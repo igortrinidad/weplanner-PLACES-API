@@ -24,5 +24,9 @@ class DatabaseSeeder extends Seeder
 
         $this->call(PlacesCategoriesTableSeeder::class);
 
+        factory(App\Models\Place::class, 100)->create();
+
+        $this->call(PlacePhotoTableSeeder::class);
+
     }
 }

@@ -210,13 +210,11 @@ class PlacesController extends Controller
         $places = $this->repository
             ->whereHas('category', function ($q) use ($category_slug) {
                 return $q->where('slug', $category_slug);
-            })->with(['category', 'photos'])->all();
+            })->with(['category', 'photos'])->orderBy('name')->paginate(8);
 
         if (request()->wantsJson()) {
 
-            return response()->json([
-                'data' => $places,
-            ]);
+            return response()->json($places);
         }
 
         return view('posts.show', compact('post'));
