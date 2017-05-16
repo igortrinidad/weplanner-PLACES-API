@@ -43,8 +43,10 @@ Route::group(['prefix' => 'places'], function () {
     Route::post('/document/upload', 'PlaceDocumentsController@store')->middleware('jwt.auth');
     Route::get('/document/destroy/{id}', 'PlaceDocumentsController@destroy')->middleware('jwt.auth');
 
-    //Public resources
+    //Appointments
+    Route::get('/appointments/{id}', 'PlaceAppointmentsController@index')->middleware('jwt.auth');
 
+    //Public resources
     Route::get('{category_slug}', 'PlacesController@listByCategory');
     Route::get('{category_slug}/{place_slug}', 'PlacesController@showPublic');
 });

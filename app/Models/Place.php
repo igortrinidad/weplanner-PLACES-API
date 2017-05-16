@@ -74,4 +74,12 @@ class Place extends Model implements Transformable
         return $this->hasMany(PlaceDocument::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function appointments()
+    {
+        return $this->hasMany(PlaceAppointment::class);
+    }
+
 }

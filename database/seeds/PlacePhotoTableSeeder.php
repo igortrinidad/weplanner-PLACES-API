@@ -16,25 +16,25 @@ class PlacePhotoTableSeeder extends Seeder
 
         $places = Place::get()->pluck('id')->all();
 
-       foreach($places as $place){
+        foreach ($places as $place) {
 
-           PlacePhoto::create([
-               'place_id' => $place,
-               'path' => 'places/media/d41256e2247972a3edb20bb15f6e25dc.png',
-               'is_cover' => true
-           ]);
+            PlacePhoto::create([
+                'place_id' => $place,
+                'path' => 'places/media/d41256e2247972a3edb20bb15f6e25dc.png',
+                'is_cover' => true
+            ]);
 
-           PlacePhoto::create([
-               'place_id' => $place,
-               'path' => 'places/media/dc82cec6c0472da4c35dbfe628e742e3.png',
-               'is_cover' => false
-           ]);
+            PlacePhoto::create([
+                'place_id' => $place,
+                'path' => 'places/media/dc82cec6c0472da4c35dbfe628e742e3.png',
+                'is_cover' => false
+            ]);
 
-           PlacePhoto::create([
-               'place_id' => $place,
-               'path' => 'places/media/14b5614e8dc96d0827667aa467b3fad6.png',
-               'is_cover' => false
-           ]);
-       }
+            PlacePhoto::create([
+                'place_id' => $place,
+                'path' => 'places/media/14b5614e8dc96d0827667aa467b3fad6.png',
+                'is_cover' => false
+            ]);
+        }
     }
 }
