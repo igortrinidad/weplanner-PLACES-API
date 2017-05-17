@@ -14,7 +14,7 @@ class CreatePlaceDocumentsTable extends Migration
 	public function up()
 	{
 		Schema::create('place_documents', function(Blueprint $table) {
-            $table->uuid('id');
+            $table->uuid('id')->index();
             $table->uuid('place_id')->index();
             $table->string('path');
             $table->string('filename');

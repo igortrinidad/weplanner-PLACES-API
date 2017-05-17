@@ -28,5 +28,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call(PlacePhotoTableSeeder::class);
 
+        $this->call(PlaceAppointmentsTableSeeder::class);
+
+
     }
 }

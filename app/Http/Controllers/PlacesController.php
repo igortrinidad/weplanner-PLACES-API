@@ -69,7 +69,7 @@ class PlacesController extends Controller
      */
     public function show($id)
     {
-        $place = $this->repository->findWhere(['id'=> $id, 'user_id' => \Auth::user()->id])->load('category','photos', 'documents')->first();
+        $place = $this->repository->findWhere(['id'=> $id, 'user_id' => \Auth::user()->id])->load('category', 'photos', 'documents','appointments')->first();
 
         if (request()->wantsJson()) {
 
@@ -104,7 +104,7 @@ class PlacesController extends Controller
 
             $response = [
                 'message' => 'Place created.',
-                'data' => $place->load('category', 'photos', 'documents')->toArray(),
+                'data' => $place->load('category', 'photos', 'documents','appointments')->toArray(),
             ];
 
             if ($request->wantsJson()) {
@@ -151,7 +151,7 @@ class PlacesController extends Controller
 
             $response = [
                 'message' => 'Place updated.',
-                'data' => $place->load('category', 'photos', 'documents')->toArray(),
+                'data' => $place->load('category', 'photos', 'documents','appointments')->toArray(),
             ];
 
             if ($request->wantsJson()) {

@@ -14,12 +14,12 @@ class CreatePlaceAppointmentsTable extends Migration
 	public function up()
 	{
 		Schema::create('place_appointments', function(Blueprint $table) {
-            $table->uuid('id');
-            $table->uuid('place_id');
+            $table->uuid('id')->index();
+            $table->uuid('place_id')->index();
             $table->string('title');
             $table->boolean('allDay');
-            $table->dateTime('start');
-            $table->dateTime('end');
+            $table->dateTime('start')->index();
+            $table->dateTime('end')->index();
             $table->string('url')->nullable();
             $table->string('className')->nullable();
             $table->boolean('editable')->default(0);
