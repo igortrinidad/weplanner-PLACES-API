@@ -32,7 +32,7 @@ Route::group(['prefix' => 'places'], function () {
     Route::get('/list', 'PlacesController@index')->middleware('jwt.auth');
     Route::get('/show/{id}', 'PlacesController@show')->middleware('jwt.auth');
     Route::post('/create', 'PlacesController@store')->middleware('jwt.auth');
-    Route::post('/update', 'PlacesController@update')->middleware('jwt.auth');;
+    Route::post('/update', 'PlacesController@update')->middleware('jwt.auth');
     Route::get('/destroy/{id}', 'PlacesController@destroy')->middleware('jwt.auth');
 
     //Photo upload
@@ -49,6 +49,10 @@ Route::group(['prefix' => 'places'], function () {
     //Public resources
     Route::get('{category_slug}', 'PlacesController@listByCategory');
     Route::get('{category_slug}/{place_slug}', 'PlacesController@showPublic');
+
+    //calendar settings
+    Route::get('/calendar_settings/show/{id}', 'PlaceCalendarSettingsController@show')->middleware('jwt.auth');
+    Route::post('/calendar_settings/update', 'PlaceCalendarSettingsController@update')->middleware('jwt.auth');
 });
 
 

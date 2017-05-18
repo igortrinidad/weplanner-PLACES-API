@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\PlaceCalendarSettingsRepository;
 use App\Repositories\PlacePhotoRepository;
 use App\Validators\PlaceValidator;
 use Illuminate\Http\Request;
@@ -29,6 +30,10 @@ class PlacesController extends Controller
      * @var PlacePhotoRepository
      */
     private $photoRepository;
+    /**
+     * @var PlaceCalendarSettingsRepository
+     */
+    private $calendarSettingsRepository;
 
 
     /**
@@ -36,12 +41,18 @@ class PlacesController extends Controller
      * @param PlaceRepository $repository
      * @param PlaceValidator $validator
      * @param PlacePhotoRepository $photoRepository
+     * @param PlaceCalendarSettingsRepository $calendarSettingsRepository
      */
-    public function __construct(PlaceRepository $repository, PlaceValidator $validator, PlacePhotoRepository $photoRepository)
+    public function __construct(PlaceRepository $repository,
+                                PlaceValidator $validator,
+                                PlacePhotoRepository $photoRepository,
+                                PlaceCalendarSettingsRepository $calendarSettingsRepository
+    )
     {
         $this->repository = $repository;
         $this->validator = $validator;
         $this->photoRepository = $photoRepository;
+        $this->calendarSettingsRepository = $calendarSettingsRepository;
     }
 
 
@@ -69,7 +80,7 @@ class PlacesController extends Controller
      */
     public function show($id)
     {
-        $place = $this->repository->findWhere(['id'=> $id, 'user_id' => \Auth::user()->id])->load('category', 'photos', 'documents','appointments')->first();
+        $place = $this->repository->findWhere(['id'=> $id, 'user_id' => \Auth::user()->id])->load('category', 'photos', 'documents','appointments', 'calendar_settings')->first();
 
         if (request()->wantsJson()) {
 
@@ -102,15 +113,18 @@ class PlacesController extends Controller
 
             $place = $this->repository->create($request->all());
 
+            $placeSettings = $this->calendarSettingsRepository->create(array_collapse([['place_id' => $place->id],$request->get('calendar_settings')]));
+
             $response = [
                 'message' => 'Place created.',
-                'data' => $place->load('category', 'photos', 'documents','appointments')->toArray(),
+                'data' => $place->load('category', 'photos', 'documents','appointments', 'calendar_settings')->toArray(),
             ];
 
             if ($request->wantsJson()) {
 
                 return response()->json($response);
             }
+
 
             return redirect()->back()->with('message', $response['message']);
         } catch (ValidatorException $e) {
@@ -151,7 +165,7 @@ class PlacesController extends Controller
 
             $response = [
                 'message' => 'Place updated.',
-                'data' => $place->load('category', 'photos', 'documents','appointments')->toArray(),
+                'data' => $place->load('category', 'photos', 'documents','appointments', 'calendar_settings')->toArray(),
             ];
 
             if ($request->wantsJson()) {
