@@ -247,7 +247,7 @@ class PlacesController extends Controller
         $place = $this->repository
             ->whereHas('category', function ($q) use ($category_slug, $place_slug) {
                 return $q->where('slug', $category_slug);
-            })->with(['category', 'photos'])->findWhere(['slug' => $place_slug])->first();
+            })->with(['category', 'photos', 'appointments', 'calendar_settings'])->findWhere(['slug' => $place_slug])->first();
 
         if (request()->wantsJson()) {
 
