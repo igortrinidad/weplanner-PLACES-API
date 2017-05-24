@@ -31,6 +31,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(\App\Repositories\PlaceDocumentRepository::class, \App\Repositories\PlaceDocumentRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\PlaceAppointmentRepository::class, \App\Repositories\PlaceAppointmentRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\PlaceCalendarSettingsRepository::class, \App\Repositories\PlaceCalendarSettingsRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\ClientRepository::class, \App\Repositories\ClientRepositoryEloquent::class);
         //:end-bindings:
     }
 }

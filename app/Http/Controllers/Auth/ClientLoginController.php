@@ -8,11 +8,22 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Tymon\JWTAuth\JWTAuth;
 
-class LoginController extends Controller
+class ClientLoginController extends Controller
 {
     use AuthenticatesUsers;
 
-    public function login(Request $request, JWTAuth $JWTAuth)
+    /**
+     * Get the guard to be used during authentication.
+     * Overrides default Laravel method to get the 'api' guard
+     *
+     * @return \Illuminate\Contracts\Auth\StatefulGuard
+     */
+    protected function guard()
+    {
+        return \Auth::guard('client');
+    }
+
+    public function login(Request $request)
     {
         $credentials = $request->only(['email', 'password']);
         try {
@@ -25,10 +36,10 @@ class LoginController extends Controller
         } catch (JWTException $e) {
             throw new HttpException(500);
         }
-        
+
         return response()->json([
             'access_token' => $token,
-            'user' =>  $JWTAuth->user()
+            'user' =>  $this->guard()->user()
         ]);
     }
 }

@@ -49,8 +49,20 @@ $factory->define(App\Models\Place::class, function () use ($faker) {
         'address' => json_decode('{"url": "https://maps.google.com/?q=Av.+Otac%C3%ADlio+Negr%C3%A3o+de+Lima+-+S%C3%A3o+Luiz,+Belo+Horizonte+-+MG,+31365-450,+Brasil&ftid=0xa69055ac376889:0xec4c68af4fa74f62", "name": "igreja da pampulha", "geolocation": {"lat": -19.8584157, "lng": -43.979020100000014}, "full_address": "Av. Otacílio Negrão de Lima - São Luiz, Belo Horizonte - MG, 31365-450, Brasil"}'),
         'informations' => json_decode('{"style": {"modern": false, "rustic": false, "classic": false, "authentic": false}, "guests": {"max": 0, "min": 0}, "covered": false, "parking": false, "services": {"others": false, "ceremony": false, "reception": false, "others_value": null}, "time_limit": false, "localization": {"city": false, "countryside": false, "city_surrounding": false}, "accessibility": false, "starter_price": 0, "payment_method": null, "multiple_events": false, "time_limit_value": "none", "music_exclusivity": false, "barman_exclusivity": false, "buffet_exclusivity": false, "decoration_exclusivity": false}'),
         'therms' => json_decode('{"accepted": true, "accpedted_at": "15/05/2017 11:03:58 AM"}'),
-        'slug' => $faker->slug(6)
+        'slug' => str_slug($name, '-')
 
+    ];
+});
+
+$factory->define(App\Models\Client::class, function (Faker\Generator $faker) {
+    static $password;
+
+    return [
+        'name' => $faker->firstName,
+        'last_name' => $faker->lastName,
+        'email' => $faker->unique()->safeEmail,
+        'password' => $password ?: $password = bcrypt('password'),
+        'remember_token' => str_random(10),
     ];
 });
 

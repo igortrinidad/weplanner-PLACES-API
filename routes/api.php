@@ -19,40 +19,44 @@ Route::group(['prefix' => 'auth'], function () {
     Route::post('/signup', 'Auth\RegisterController@register');
 
     Route::post('/{provider}', 'Auth\SocialAuthController@socialLogin');
-    Route::get('/user', 'Auth\SocialAuthController@user')->middleware('jwt.auth');
-    Route::get('/refresh', 'Auth\SocialAuthController@refresh')->middleware('jwt.auth');
+    Route::get('/user', 'Auth\SocialAuthController@user')->middleware('auth:admin');
+    Route::get('/refresh', 'Auth\SocialAuthController@refresh')->middleware('auth:admin');
 });
 
-Route::group(['prefix' => 'place_categories','middleware' => 'jwt.auth'], function () {
+Route::group(['prefix' => 'place_categories','middleware' => 'auth:admin'], function () {
     Route::get('/list', 'PlaceCategoriesController@index');
 });
 
 Route::group(['prefix' => 'places'], function () {
     //admin resources
-    Route::get('/list', 'PlacesController@index')->middleware('jwt.auth');
-    Route::get('/show/{id}', 'PlacesController@show')->middleware('jwt.auth');
-    Route::post('/create', 'PlacesController@store')->middleware('jwt.auth');
-    Route::post('/update', 'PlacesController@update')->middleware('jwt.auth');
-    Route::get('/destroy/{id}', 'PlacesController@destroy')->middleware('jwt.auth');
+    Route::get('/list', 'PlacesController@index')->middleware('auth:admin');
+    Route::get('/show/{id}', 'PlacesController@show')->middleware('auth:admin');
+    Route::post('/create', 'PlacesController@store')->middleware('auth:admin');
+    Route::post('/update', 'PlacesController@update')->middleware('auth:admin');
+    Route::get('/destroy/{id}', 'PlacesController@destroy')->middleware('auth:admin');
 
     //Photo upload
-    Route::post('/media/upload', 'PlacePhotosController@store')->middleware('jwt.auth');
-    Route::get('/media/destroy/{id}', 'PlacePhotosController@destroy')->middleware('jwt.auth');
+    Route::post('/media/upload', 'PlacePhotosController@store')->middleware('auth:admin');
+    Route::get('/media/destroy/{id}', 'PlacePhotosController@destroy')->middleware('auth:admin');
 
     //Document upload
-    Route::post('/document/upload', 'PlaceDocumentsController@store')->middleware('jwt.auth');
-    Route::get('/document/destroy/{id}', 'PlaceDocumentsController@destroy')->middleware('jwt.auth');
+    Route::post('/document/upload', 'PlaceDocumentsController@store')->middleware('auth:admin');
+    Route::get('/document/destroy/{id}', 'PlaceDocumentsController@destroy')->middleware('auth:admin');
 
     //Appointments
-    Route::get('/appointments/{id}', 'PlaceAppointmentsController@index')->middleware('jwt.auth');
+    Route::get('/appointments/{id}', 'PlaceAppointmentsController@index')->middleware('auth:admin');
 
     //Public resources
     Route::get('{category_slug}', 'PlacesController@listByCategory');
     Route::get('{category_slug}/{place_slug}', 'PlacesController@showPublic');
 
     //calendar settings
-    Route::get('/calendar_settings/show/{id}', 'PlaceCalendarSettingsController@show')->middleware('jwt.auth');
-    Route::post('/calendar_settings/update', 'PlaceCalendarSettingsController@update')->middleware('jwt.auth');
+    Route::get('/calendar_settings/show/{id}', 'PlaceCalendarSettingsController@show')->middleware('auth:admin');
+    Route::post('/calendar_settings/update', 'PlaceCalendarSettingsController@update')->middleware('auth:admin');
+});
+
+Route::group(['prefix' => 'client'], function () {
+    Route::post('/auth/login', 'Auth\ClientLoginController@login');
 });
 
 
@@ -60,7 +64,7 @@ Route::group(['prefix' => 'places'], function () {
 
 
 
-Route::group(['prefix' => 'user','middleware' => 'jwt.auth'], function () {
+Route::group(['prefix' => 'user','middleware' => 'auth:admin'], function () {
     Route::get('/index', 'UserController@index');
     Route::post('/show', 'UserController@show');
     Route::post('/create', 'UserController@create');

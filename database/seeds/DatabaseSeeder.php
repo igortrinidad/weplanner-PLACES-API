@@ -32,6 +32,14 @@ class DatabaseSeeder extends Seeder
 
         $this->call(PlaceAppointmentsTableSeeder::class);
 
+        factory(App\Models\Client::class)->create([
+            'name' => 'Matheus',
+            'last_name' => 'Lima',
+            'email' => 'contato@matheuslima.com.br',
+            'password' => bcrypt('password'),
+            'remember_token' => str_random(10),
+        ]);
 
+        factory(App\Models\Client::class, 10)->create();
     }
 }
