@@ -40,7 +40,7 @@ class Client extends Authenticatable implements JWTSubject
     /*
     * Append the those attributes to a record
     */
-    protected $appends = ['full_name', 'blank_password'];
+    protected $appends = ['full_name', 'blank_password', 'role'];
 
     /*
      * Full name attribute
@@ -56,6 +56,14 @@ class Client extends Authenticatable implements JWTSubject
     public function getBlankPasswordAttribute() {
 
         return $this->password == '' || $this->password == null;
+    }
+
+    /*
+     * Role attribute used in auth checks
+     */
+    public function getRoleAttribute() {
+
+        return 'client';
     }
 
     /**

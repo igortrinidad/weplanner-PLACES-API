@@ -29,6 +29,6 @@ class LoginController extends Controller
         return response()->json([
             'access_token' => $token,
             'user' =>  $JWTAuth->user()
-        ]);
+        ])->header('Authorization','Bearer '. $token);
     }
 }

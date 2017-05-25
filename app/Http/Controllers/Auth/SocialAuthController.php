@@ -126,6 +126,8 @@ class SocialAuthController extends Controller
     {
         $user = \Auth::user();
 
+        $user = $user ? \Auth::guard('admin')->user() : \Auth::guard('client')->user();
+
         return response()->json(['status' => 'success', 'data' => $user]);
     }
 

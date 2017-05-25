@@ -19,8 +19,8 @@ Route::group(['prefix' => 'auth'], function () {
     Route::post('/signup', 'Auth\RegisterController@register');
 
     Route::post('/{provider}', 'Auth\SocialAuthController@socialLogin');
-    Route::get('/user', 'Auth\SocialAuthController@user')->middleware('auth:admin');
-    Route::get('/refresh', 'Auth\SocialAuthController@refresh')->middleware('auth:admin');
+    Route::get('/user', 'Auth\SocialAuthController@user');
+    Route::get('/refresh', 'Auth\SocialAuthController@refresh');
 });
 
 Route::group(['prefix' => 'place_categories','middleware' => 'auth:admin'], function () {
