@@ -11,6 +11,12 @@ class PlaceDocument extends Model implements Transformable
 {
     use TransformableTrait, Uuids;
 
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'place_documents';
 
     /**
      * Indicates if the IDs are auto-incrementing.

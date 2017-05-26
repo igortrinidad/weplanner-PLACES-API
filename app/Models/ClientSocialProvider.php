@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
-class PlaceCategory extends Model implements Transformable
+class ClientSocialProvider extends Model implements Transformable
 {
     use TransformableTrait, Uuids;
 
@@ -16,7 +16,8 @@ class PlaceCategory extends Model implements Transformable
      *
      * @var string
      */
-    protected $table = 'place_categories';
+    protected $table = 'client_social_providers';
+
 
     /**
      * Indicates if the IDs are auto-incrementing.
@@ -24,14 +25,18 @@ class PlaceCategory extends Model implements Transformable
      * @var bool
      */
     public $incrementing = false;
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'slug'
+        'client_id', 'provider', 'provider_id', 'access_token'
     ];
+
+    public function client()
+    {
+        return $this->belongsTo(Client::class);
+    }
 
 }

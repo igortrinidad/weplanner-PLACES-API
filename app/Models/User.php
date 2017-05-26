@@ -13,6 +13,13 @@ class User extends Authenticatable implements JWTSubject
     use Notifiable, Uuids;
 
     /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'users';
+
+    /**
      * Indicates if the IDs are auto-incrementing.
      *
      * @var bool

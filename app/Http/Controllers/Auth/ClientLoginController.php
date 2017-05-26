@@ -40,6 +40,6 @@ class ClientLoginController extends Controller
         return response()->json([
             'access_token' => $token,
             'user' =>  $this->guard()->user()
-        ]);
+        ])->header('Authorization','Bearer '. $token);
     }
 }

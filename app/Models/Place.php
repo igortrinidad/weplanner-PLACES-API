@@ -12,6 +12,13 @@ class Place extends Model implements Transformable
     use TransformableTrait, Uuids;
 
     /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'places';
+
+    /**
      * Indicates if the IDs are auto-incrementing.
      *
      * @var bool

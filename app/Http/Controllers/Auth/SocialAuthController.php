@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 
+use App\Models\Client;
+use App\Models\ClientSocialProvider;
 use App\Models\User;
 use App\Models\UserSocialProvider;
 use Illuminate\Http\Request;
@@ -56,61 +58,109 @@ class SocialAuthController extends Controller
                 ], 400);
             }
 
+            //return response()->json($request->all());
+
+
             /*
-             * find user by social credentials
+             * Handling with a admin user
              */
-            $socialProvider = UserSocialProvider::where('provider_id', $social_user->id)->first();
+            if($request->has('role') && $request->get('role') == 'admin'){
 
-            if(!$socialProvider)
-            {   //Split user full name
-                $splitName = explode(' ', $social_user->name);
+                $userSocialProvider = UserSocialProvider::where('provider_id', $social_user->id)->first();
+
+                if(!$userSocialProvider)
+                {   //Split user full name
+                    $splitName = explode(' ', $social_user->name);
 
 
-                if($request->has('user_email')){
+                    if($request->has('user_email')){
 
-                    $user = User::whereEmail($request->get('user_email'))->first();
+                        $user = User::whereEmail($request->get('user_email'))->first();
 
-                    if($user){
+                        if($user){
+                            $user->socialProviders()->create(['provider' => $provider, 'provider_id' => $social_user->id, 'access_token' => $social_user->token]);
+                        }
+                    }
+
+                    if(!$request->has('user_email')){
+
+                        //Create user
+                        $user = User::firstOrCreate([
+                            'name' => $splitName[0],
+                            'last_name' => $splitName[1],
+                            'email' => $social_user->email
+                        ]);
+
                         $user->socialProviders()->create(['provider' => $provider, 'provider_id' => $social_user->id, 'access_token' => $social_user->token]);
                     }
+
+                }else{
+                    $user = $userSocialProvider->user;
+                }
+            }
+
+            if($request->has('role') && $request->get('role') == 'client'){
+
+                $ClientSocialProvider = ClientSocialProvider::where('provider_id', $social_user->id)->first();
+
+                if(!$ClientSocialProvider)
+                {   //Split user full name
+                    $splitName = explode(' ', $social_user->name);
+
+
+                    if($request->has('user_email')){
+
+                        $user = Client::whereEmail($request->get('user_email'))->first();
+
+                        if($user){
+                            $user->socialProviders()->create(['provider' => $provider, 'provider_id' => $social_user->id, 'access_token' => $social_user->token]);
+                        }
+                    }
+
+                    if(!$request->has('user_email')){
+
+                        //Create user
+                        $user = Client::firstOrCreate([
+                            'name' => $splitName[0],
+                            'last_name' => $splitName[1],
+                            'email' => $social_user->email
+                        ]);
+
+                        $user->socialProviders()->create(['provider' => $provider, 'provider_id' => $social_user->id, 'access_token' => $social_user->token]);
+                    }
+
+                }else{
+                    $user = $ClientSocialProvider->client;
+                }
+            }
+
+            if($user){
+                //Verifies if the account belongs to the authenticated user.
+                if($request->has('user_id') && $user->id != $request->get('user_id')){
+                    return response([
+                        'status' => 'error',
+                        'code' => 'ErrorGettingSocialUser',
+                        'msg' => ucfirst($provider).' already in use.'
+                    ], 400);
                 }
 
-               if(!$request->has('user_email')){
+                if ( ! $token = $this->JWTAuth->fromUser($user)) {
+                    throw new AuthorizationException;
+                }
 
-                   //Create user
-                   $user = User::firstOrCreate([
-                       'name' => $splitName[0],
-                       'last_name' => $splitName[1],
-                       'email' => $social_user->email
-                   ]);
-
-                   $user->socialProviders()->create(['provider' => $provider, 'provider_id' => $social_user->id, 'access_token' => $social_user->token]);
-               }
-
-            }else{
-                $user = $socialProvider->user;
-            }
-
-            //Verifies if the account belongs to the authenticated user.
-            if($request->has('user_id') && $user->id != $request->get('user_id')){
                 return response([
-                    'status' => 'error',
-                    'code' => 'ErrorGettingSocialUser',
-                    'msg' => ucfirst($provider).' already in use.'
-                ], 400);
-            }
-            
-            if ( ! $token = $this->JWTAuth->fromUser($user)) {
-                throw new AuthorizationException;
+                    'status' => 'success',
+                    'msg' => 'Successfully logged in via ' . $provider . '.',
+                    'access_token' => $token,
+                    'user' => $user->load('socialProviders')
+                ])->header('Authorization','Bearer '. $token);
             }
 
             return response([
-                'status' => 'success',
-                'msg' => 'Successfully logged in via ' . $provider . '.',
-                'token' => $token,
-                'user' => $user->load('socialProviders')
-            ])
-                ->header('Authorization', $token);
+                'status' => 'error',
+                'code' => 'ErrorGettingSocialUser',
+                'msg' => 'Unable to authenticate with '. ucfirst($provider)
+            ], 403);
         }
 
         return response([
@@ -133,8 +183,12 @@ class SocialAuthController extends Controller
 
     public function refresh()
     {
+        $user = \Auth::user();
+
+        $user = $user ? \Auth::guard('admin')->user() : \Auth::guard('client')->user();
         return response([
-            'status' => 'success'
+            'status' => 'success',
+            'data' => $user
         ]);
     }
 

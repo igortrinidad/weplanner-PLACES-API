@@ -13,6 +13,13 @@ class Client extends Authenticatable implements JWTSubject
     use Notifiable, Uuids;
 
     /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'clients';
+
+    /**
      * Indicates if the IDs are auto-incrementing.
      *
      * @var bool
@@ -82,5 +89,10 @@ class Client extends Authenticatable implements JWTSubject
      */
     public function getJWTCustomClaims(){
         return [];
+    }
+
+    public function socialProviders()
+    {
+        return $this->hasMany(ClientSocialProvider::class);
     }
 }
