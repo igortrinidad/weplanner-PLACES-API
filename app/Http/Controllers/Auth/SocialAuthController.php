@@ -178,7 +178,7 @@ class SocialAuthController extends Controller
 
         $user = $user ? \Auth::guard('admin')->user() : \Auth::guard('client')->user();
 
-        return response()->json(['status' => 'success', 'data' => $user]);
+        return response()->json(['status' => 'success', 'data' => $user->load('socialProviders')]);
     }
 
     public function refresh()
@@ -188,7 +188,7 @@ class SocialAuthController extends Controller
         $user = $user ? \Auth::guard('admin')->user() : \Auth::guard('client')->user();
         return response([
             'status' => 'success',
-            'data' => $user
+            'data' => $user->load('socialProviders')
         ]);
     }
 

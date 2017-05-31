@@ -57,6 +57,8 @@ Route::group(['prefix' => 'places'], function () {
 
 Route::group(['prefix' => 'client'], function () {
     Route::post('/auth/login', 'Auth\ClientLoginController@login');
+
+    Route::post('/update', 'ClientsController@update')->middleware('auth:client');;
 });
 
 

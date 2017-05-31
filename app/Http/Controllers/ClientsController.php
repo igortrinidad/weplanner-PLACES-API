@@ -139,18 +139,18 @@ class ClientsController extends Controller
      *
      * @return Response
      */
-    public function update(ClientUpdateRequest $request, $id)
+    public function update(ClientUpdateRequest $request)
     {
 
         try {
 
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
 
-            $client = $this->repository->update($request->all(), $id);
+            $client = $this->repository->update($request->all(), $request->get('id'));
 
             $response = [
                 'message' => 'Client updated.',
-                'data'    => $client->toArray(),
+                'user'    => $client->load('socialProviders')->toArray(),
             ];
 
             if ($request->wantsJson()) {
