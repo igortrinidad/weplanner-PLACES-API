@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Repositories\ClientRepository;
 use App\Repositories\UserRepository;
 use App\User;
 use App\Http\Controllers\Controller;
@@ -25,17 +26,23 @@ class RegisterController extends Controller
     /**
      * @var UserRepository
      */
-    private $repository;
+    private $userRepository;
+    /**
+     * @var ClientRepository
+     */
+    private $clientRepository;
 
     /**
      * Create a new controller instance.
      *
-     * @param UserRepository $repository
+     * @param UserRepository $userRepository
+     * @param ClientRepository $clientRepository
      */
-    public function __construct(UserRepository $repository)
+    public function __construct(UserRepository $userRepository, ClientRepository $clientRepository)
     {
 
-        $this->repository = $repository;
+        $this->userRepository = $userRepository;
+        $this->clientRepository = $clientRepository;
     }
 
     /**
@@ -45,6 +52,16 @@ class RegisterController extends Controller
      */
     public function register(Request $request)
     {
-        return $this->repository->create($request->all());
+        return $this->userRepository->create($request->all());
+    }
+
+    /**
+     * Create a new user instance after a valid registration.
+     * @param Request $request
+     * @return mixed
+     */
+    public function registerClient(Request $request)
+    {
+        return $this->clientRepository->create($request->all());
     }
 }

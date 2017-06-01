@@ -36,6 +36,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Matheus',
             'last_name' => 'Lima',
             'email' => 'me@matheuslima.com.br',
+            'phone' => '(67) 99162-1584',
             'password' => bcrypt('password'),
             'remember_token' => str_random(10),
         ]);

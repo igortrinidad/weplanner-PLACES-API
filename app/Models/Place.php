@@ -98,4 +98,12 @@ class Place extends Model implements Transformable
         return $this->hasOne(PlaceCalendarSettings::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function reservations()
+    {
+        return $this->hasMany(PlaceReservations::class)->with('client');
+    }
+
 }

@@ -54,7 +54,7 @@ $factory->define(App\Models\Place::class, function () use ($faker) {
     ];
 });
 
-$factory->define(App\Models\Client::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Client::class, function () use($faker){
     static $password;
 
     return [
@@ -62,6 +62,7 @@ $factory->define(App\Models\Client::class, function (Faker\Generator $faker) {
         'last_name' => $faker->lastName,
         'email' => $faker->unique()->safeEmail,
         'password' => $password ?: $password = bcrypt('password'),
+        'phone' => $faker->cellphoneNumber,
         'remember_token' => str_random(10),
     ];
 });

@@ -39,7 +39,7 @@ class ClientLoginController extends Controller
 
         return response()->json([
             'access_token' => $token,
-            'user' =>  $this->guard()->user()
+            'user' =>  $this->guard()->user()->load('socialProviders')
         ])->header('Authorization','Bearer '. $token);
     }
 }

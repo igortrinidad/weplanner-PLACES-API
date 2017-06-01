@@ -7,26 +7,26 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
-use App\Http\Requests\ClientCreateRequest;
-use App\Http\Requests\ClientUpdateRequest;
-use App\Repositories\ClientRepository;
-use App\Validators\ClientValidator;
+use App\Http\Requests\PlaceReservationsCreateRequest;
+use App\Http\Requests\PlaceReservationsUpdateRequest;
+use App\Repositories\PlaceReservationsRepository;
+use App\Validators\PlaceReservationsValidator;
 
 
-class ClientsController extends Controller
+class PlaceReservationsController extends Controller
 {
 
     /**
-     * @var ClientRepository
+     * @var PlaceReservationsRepository
      */
     protected $repository;
 
     /**
-     * @var ClientValidator
+     * @var PlaceReservationsValidator
      */
     protected $validator;
 
-    public function __construct(ClientRepository $repository, ClientValidator $validator)
+    public function __construct(PlaceReservationsRepository $repository, PlaceReservationsValidator $validator)
     {
         $this->repository = $repository;
         $this->validator  = $validator;
@@ -41,37 +41,40 @@ class ClientsController extends Controller
     public function index()
     {
         $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
-        $clients = $this->repository->all();
+
+        $placeReservations = $this->repository->scopeQuery(function ($query) {
+            return $query->where(['client_id' => \Auth::guard('client')->user()->id])->with('place');
+        })->all();
 
         if (request()->wantsJson()) {
 
             return response()->json([
-                'data' => $clients,
+                'data' => $placeReservations,
             ]);
         }
 
-        return view('clients.index', compact('clients'));
+        return view('placeReservations.index', compact('placeReservations'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  ClientCreateRequest $request
+     * @param  PlaceReservationsCreateRequest $request
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(ClientCreateRequest $request)
+    public function store(PlaceReservationsCreateRequest $request)
     {
 
         try {
 
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
 
-            $client = $this->repository->create($request->all());
+            $placeReservation = $this->repository->create($request->all());
 
             $response = [
-                'message' => 'Client created.',
-                'data'    => $client->toArray(),
+                'message' => 'PlaceReservations created.',
+                'data'    => $placeReservation->toArray(),
             ];
 
             if ($request->wantsJson()) {
@@ -102,16 +105,16 @@ class ClientsController extends Controller
      */
     public function show($id)
     {
-        $client = $this->repository->find($id);
+        $placeReservation = $this->repository->find($id);
 
         if (request()->wantsJson()) {
 
             return response()->json([
-                'data' => $client,
+                'data' => $placeReservation,
             ]);
         }
 
-        return view('clients.show', compact('client'));
+        return view('placeReservations.show', compact('placeReservation'));
     }
 
 
@@ -125,40 +128,32 @@ class ClientsController extends Controller
     public function edit($id)
     {
 
-        $client = $this->repository->find($id);
+        $placeReservation = $this->repository->find($id);
 
-        return view('clients.edit', compact('client'));
+        return view('placeReservations.edit', compact('placeReservation'));
     }
 
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  ClientUpdateRequest $request
+     * @param  PlaceReservationsUpdateRequest $request
      * @param  string            $id
      *
      * @return Response
      */
-    public function update(ClientUpdateRequest $request)
+    public function update(PlaceReservationsUpdateRequest $request, $id)
     {
 
         try {
 
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
 
-            $user = \Auth::guard('client')->user();
-
-            if(!\Hash::check($request->get('current_password'), $user->password)){
-
-                return response()->json(['error' => true, 'message' => 'Senha atual incorreta'], 200);
-            }
-
-
-            $client = $this->repository->update($request->all(), $request->get('id'));
+            $placeReservation = $this->repository->update($request->all(), $id);
 
             $response = [
-                'message' => 'Client updated.',
-                'user'    => $client->load('socialProviders')->toArray(),
+                'message' => 'PlaceReservations updated.',
+                'data'    => $placeReservation->toArray(),
             ];
 
             if ($request->wantsJson()) {
@@ -196,11 +191,11 @@ class ClientsController extends Controller
         if (request()->wantsJson()) {
 
             return response()->json([
-                'message' => 'Client deleted.',
+                'message' => 'PlaceReservations deleted.',
                 'deleted' => $deleted,
             ]);
         }
 
-        return redirect()->back()->with('message', 'Client deleted.');
+        return redirect()->back()->with('message', 'PlaceReservations deleted.');
     }
 }

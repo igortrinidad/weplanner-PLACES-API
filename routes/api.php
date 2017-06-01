@@ -17,6 +17,7 @@ use Illuminate\Http\Request;
 Route::group(['prefix' => 'auth'], function () {
     Route::post('/login', 'Auth\LoginController@login');
     Route::post('/signup', 'Auth\RegisterController@register');
+    Route::post('/client/signup', 'Auth\RegisterController@registerClient');
 
     Route::post('/{provider}', 'Auth\SocialAuthController@socialLogin');
     Route::get('/user', 'Auth\SocialAuthController@user');
@@ -53,12 +54,20 @@ Route::group(['prefix' => 'places'], function () {
     //calendar settings
     Route::get('/calendar_settings/show/{id}', 'PlaceCalendarSettingsController@show')->middleware('auth:admin');
     Route::post('/calendar_settings/update', 'PlaceCalendarSettingsController@update')->middleware('auth:admin');
+
+
+    //Client reservation
+    Route::post('/client/reservation', 'PlaceReservationsController@store')->middleware('auth:client');
 });
 
 Route::group(['prefix' => 'client'], function () {
     Route::post('/auth/login', 'Auth\ClientLoginController@login');
 
-    Route::post('/update', 'ClientsController@update')->middleware('auth:client');;
+    //profile update
+    Route::post('/update', 'ClientsController@update')->middleware('auth:client');
+
+    //reservations
+    Route::get('/reservations', 'PlaceReservationsController@index')->middleware('auth:client');
 });
 
 
