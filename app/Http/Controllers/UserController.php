@@ -85,7 +85,7 @@ class UserController extends Controller
      */
     public function update(Request $request)
     {
-        if($request->has('current_password')){
+        if($request->has('current_password') && $request->has('current_password') != ''){
 
             $user = \Auth::user();
 

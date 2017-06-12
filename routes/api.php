@@ -19,7 +19,7 @@ Route::group(['prefix' => 'auth'], function () {
     Route::post('/signup', 'Auth\RegisterController@register');
     Route::post('/client/signup', 'Auth\RegisterController@registerClient');
 
-    Route::post('/{provider}', 'Auth\SocialAuthController@socialLogin');
+    Route::post('/social', 'Auth\SocialAuthController@socialLogin');
     Route::get('/user', 'Auth\SocialAuthController@user');
     Route::get('/refresh', 'Auth\SocialAuthController@refresh');
 });

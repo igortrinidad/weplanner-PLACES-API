@@ -148,11 +148,13 @@ class ClientsController extends Controller
 
             $user = \Auth::guard('client')->user();
 
-            if(!\Hash::check($request->get('current_password'), $user->password)){
+            if ($request->has('current_password') && $request->has('current_password') != '') {
 
-                return response()->json(['error' => true, 'message' => 'Senha atual incorreta'], 200);
+                if (!\Hash::check($request->get('current_password'), $user->password)) {
+
+                    return response()->json(['error' => true, 'message' => 'Senha atual incorreta'], 200);
+                }
             }
-
 
             $client = $this->repository->update($request->all(), $request->get('id'));
 
