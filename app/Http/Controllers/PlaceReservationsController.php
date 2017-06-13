@@ -198,4 +198,26 @@ class PlaceReservationsController extends Controller
 
         return redirect()->back()->with('message', 'PlaceReservations deleted.');
     }
+
+    /**
+     * Cancel the specified reservation.
+     *
+     * @param  int $id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function cancel($id)
+    {
+        $reservation = $this->repository->update(['is_canceled' => true], $id);
+
+        if (request()->wantsJson()) {
+
+            return response()->json([
+                'message' => 'PlaceReservations canceled.',
+                'canceled' => $reservation,
+            ]);
+        }
+
+        return redirect()->back()->with('message', 'PlaceReservations deleted.');
+    }
 }

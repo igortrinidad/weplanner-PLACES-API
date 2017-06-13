@@ -66,7 +66,7 @@ class PlacesController extends Controller
 
         $places = $this->repository->scopeQuery(function ($query) {
             return $query->where(['user_id' => \Auth::user()->id])->with('category');
-        })->paginate(10);
+        })->orderBy('name', 'ASC')->paginate(10);
 
         return response()->json($places);
     }

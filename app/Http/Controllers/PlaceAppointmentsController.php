@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\PlaceReservationsRepository;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -25,11 +26,22 @@ class PlaceAppointmentsController extends Controller
      * @var PlaceAppointmentValidator
      */
     protected $validator;
+    /**
+     * @var PlaceReservationsRepository
+     */
+    private $reservationsRepository;
 
-    public function __construct(PlaceAppointmentRepository $repository, PlaceAppointmentValidator $validator)
+    /**
+     * PlaceAppointmentsController constructor.
+     * @param PlaceAppointmentRepository $repository
+     * @param PlaceReservationsRepository $reservationsRepository
+     * @param PlaceAppointmentValidator $validator
+     */
+    public function __construct(PlaceAppointmentRepository $repository, PlaceReservationsRepository $reservationsRepository , PlaceAppointmentValidator $validator)
     {
         $this->repository = $repository;
         $this->validator  = $validator;
+        $this->reservationsRepository = $reservationsRepository;
     }
 
 
@@ -70,6 +82,11 @@ class PlaceAppointmentsController extends Controller
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
 
             $placeAppointment = $this->repository->create($request->all());
+
+            if($placeAppointment){
+                //confirm reservation
+                $this->reservationsRepository->update(['is_confirmed' => true], $request->get('reservation_id'));
+            }
 
             $response = [
                 'message' => 'PlaceAppointment created.',

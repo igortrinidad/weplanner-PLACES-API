@@ -45,6 +45,7 @@ Route::group(['prefix' => 'places'], function () {
     Route::get('/document/destroy/{id}', 'PlaceDocumentsController@destroy')->middleware('auth:admin');
 
     //Appointments
+    Route::post('/appointments/create', 'PlaceAppointmentsController@store')->middleware('auth:admin');
     Route::get('/appointments/{id}', 'PlaceAppointmentsController@index')->middleware('auth:admin');
 
     //Public resources
@@ -55,6 +56,8 @@ Route::group(['prefix' => 'places'], function () {
     Route::get('/calendar_settings/show/{id}', 'PlaceCalendarSettingsController@show')->middleware('auth:admin');
     Route::post('/calendar_settings/update', 'PlaceCalendarSettingsController@update')->middleware('auth:admin');
 
+    //Reservations
+    Route::get('/reservations/cancel/{id}', 'PlaceReservationsController@cancel')->middleware('auth:admin');
 
     //Client reservation
     Route::post('/client/reservation', 'PlaceReservationsController@store')->middleware('auth:client');
@@ -68,6 +71,7 @@ Route::group(['prefix' => 'client'], function () {
 
     //reservations
     Route::get('/reservations', 'PlaceReservationsController@index')->middleware('auth:client');
+    Route::get('/reservations/cancel/{id}', 'PlaceReservationsController@cancel')->middleware('auth:client');
 });
 
 
