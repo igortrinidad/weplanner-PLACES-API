@@ -80,8 +80,11 @@ class PlacesController extends Controller
      */
     public function show($id)
     {
-        $place = $this->repository->findWhere(['id'=> $id, 'user_id' => \Auth::user()->id])
-            ->load('category', 'photos', 'documents','appointments', 'calendar_settings', 'reservations')
+        $place = $this->repository->findWhere(['id' => $id, 'user_id' => \Auth::user()->id])
+            ->load('category', 'photos', 'documents', 'appointments', 'calendar_settings')
+            ->load(['reservations' => function ($query) {
+                $query->orderBy('created_at');
+            }])
             ->first();
 
         if (request()->wantsJson()) {
@@ -233,7 +236,7 @@ class PlacesController extends Controller
 
         $per_page == 'all' ? $places = $places->all() : $places = $places->paginate($per_page);
 
-        
+
         if (request()->wantsJson()) {
 
             return response()->json($places);
