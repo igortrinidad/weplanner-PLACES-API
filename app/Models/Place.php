@@ -58,6 +58,10 @@ class Place extends Model implements Transformable
         'confirmed' => 'boolean'
     ];
 
+
+    protected $appends = ['appointments_count', 'reservations_count'];
+
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -89,6 +93,13 @@ class Place extends Model implements Transformable
         return $this->hasMany(PlaceAppointment::class);
     }
 
+    /**
+     * @return mixed
+     */
+    public function getAppointmentsCountAttribute()
+    {
+        return $this->hasMany(PlaceAppointment::class)->count();
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
@@ -104,6 +115,14 @@ class Place extends Model implements Transformable
     public function reservations()
     {
         return $this->hasMany(PlaceReservations::class)->with('client');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getReservationsCountAttribute()
+    {
+        return $this->hasMany(PlaceReservations::class)->count();
     }
 
 }

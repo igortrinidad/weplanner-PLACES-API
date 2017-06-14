@@ -47,7 +47,7 @@ class User extends Authenticatable implements JWTSubject
      /*
      * Append the those attributes to a record
      */
-    protected $appends = ['full_name', 'blank_password', 'role'];
+    protected $appends = ['full_name', 'blank_password', 'role', 'places_count'];
 
     /**
      * The relations to eager load on every query.
@@ -55,6 +55,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $with = ['socialProviders'];
+
 
     /*
      * Full name attribute
@@ -98,8 +99,19 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function socialProviders()
     {
         return $this->hasMany(UserSocialProvider::class);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPlacesCountAttribute()
+    {
+        return $this->hasMany(Place::class)->count();
     }
 }

@@ -220,14 +220,20 @@ class PlacesController extends Controller
      * @param $category_slug
      * @return \Illuminate\Http\Response
      */
-    public function listByCategory($category_slug)
+    public function listByCategory(Request $request, $category_slug)
     {
+        $per_page = 0;
+
+        $request->get('per_page') ? $per_page = $request->get('per_page') : $per_page = 8;
 
         $places = $this->repository
             ->whereHas('category', function ($q) use ($category_slug) {
                 return $q->where('slug', $category_slug);
-            })->with(['category', 'photos'])->orderBy('name')->paginate(8);
+            })->with(['category', 'photos'])->orderBy('name');
 
+        $per_page == 'all' ? $places = $places->all() : $places = $places->paginate($per_page);
+
+        
         if (request()->wantsJson()) {
 
             return response()->json($places);

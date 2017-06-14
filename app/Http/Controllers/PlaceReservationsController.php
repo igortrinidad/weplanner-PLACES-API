@@ -43,13 +43,15 @@ class PlaceReservationsController extends Controller
         $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
 
         $placeReservations = $this->repository->scopeQuery(function ($query) {
-            return $query->where(['client_id' => \Auth::guard('client')->user()->id])->with('place');
-        })->all();
+            return $query->where(['client_id' => \Auth::guard('client')->user()->id]);
+        })->with(['place' => function ($query) {
+            $query->select('id', 'name');
+        }])->all();
 
         if (request()->wantsJson()) {
 
             return response()->json([
-                'data' => $placeReservations,
+                'reservations' => $placeReservations,
             ]);
         }
 
@@ -74,7 +76,7 @@ class PlaceReservationsController extends Controller
 
             $response = [
                 'message' => 'PlaceReservations created.',
-                'data'    => $placeReservation->toArray(),
+                'reservation'    => $placeReservation->load('place'),
             ];
 
             if ($request->wantsJson()) {
