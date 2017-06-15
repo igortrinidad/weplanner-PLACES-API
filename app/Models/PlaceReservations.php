@@ -31,14 +31,30 @@ class PlaceReservations extends Model implements Transformable
      *
      * @var array
      */
-    protected $fillable = ['place_id', 'client_id', 'start', 'end', 'is_pre_reservation', 'is_confirmed', 'is_canceled'];
+    protected $fillable = [
+        'place_id',
+        'client_id',
+        'start',
+        'end',
+        'is_pre_reservation',
+        'is_confirmed',
+        'confirmed_at',
+        'is_canceled',
+        'canceled_at',
+        'therms'
+    ];
 
     /**
      * The attributes that should be cast to native types.
      *
      * @var array
      */
-    protected $casts = ['is_pre_reservation' => 'boolean', 'is_confirmed' => 'boolean', 'is_canceled' => 'boolean'];
+    protected $casts = [
+        'is_pre_reservation' => 'boolean',
+        'is_confirmed' => 'boolean',
+        'is_canceled' => 'boolean',
+        'therms' => 'json'
+    ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

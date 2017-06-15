@@ -43,7 +43,10 @@ class Place extends Model implements Transformable
         'informations',
         'confirmed',
         'slug',
-        'therms'
+        'therms',
+        'instructions',
+        'reservation_price',
+        'pre_reservation_price'
     ];
 
     /**
@@ -55,12 +58,12 @@ class Place extends Model implements Transformable
         'address' => 'json',
         'informations' => 'json',
         'therms' => 'json',
-        'confirmed' => 'boolean'
+        'confirmed' => 'boolean',
+        'instructions' => 'json'
     ];
 
 
-    protected $appends = ['appointments_count', 'reservations_count'];
-
+    protected $appends = ['appointments_count', 'reservations_count','no_owner'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -123,6 +126,14 @@ class Place extends Model implements Transformable
     public function getReservationsCountAttribute()
     {
         return $this->hasMany(PlaceReservations::class)->count();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNoOwnerAttribute()
+    {
+        return $this->user_id  === null;
     }
 
 }

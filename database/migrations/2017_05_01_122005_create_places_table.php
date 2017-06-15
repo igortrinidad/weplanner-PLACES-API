@@ -15,7 +15,7 @@ class CreatePlacesTable extends Migration
     {
         Schema::create('places', function (Blueprint $table) {
             $table->uuid('id')->index();
-            $table->uuid('user_id')->index();
+            $table->uuid('user_id')->nullable()->index();
             $table->uuid('category_id')->index();
             $table->string('name');
             $table->text('description')->nullable();
