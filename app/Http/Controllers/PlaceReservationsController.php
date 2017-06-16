@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -210,7 +211,7 @@ class PlaceReservationsController extends Controller
      */
     public function cancel($id)
     {
-        $reservation = $this->repository->update(['is_canceled' => true], $id);
+        $reservation = $this->repository->update(['is_canceled' => true, 'canceled_at' => Carbon::now()], $id);
 
         if (request()->wantsJson()) {
 

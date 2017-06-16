@@ -63,7 +63,7 @@ class Place extends Model implements Transformable
     ];
 
 
-    protected $appends = ['appointments_count', 'reservations_count','no_owner'];
+    protected $appends = ['appointments_count', 'reservations_count', 'pre_reservations_count', 'has_owner'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -125,15 +125,23 @@ class Place extends Model implements Transformable
      */
     public function getReservationsCountAttribute()
     {
-        return $this->hasMany(PlaceReservations::class)->count();
+        return $this->hasMany(PlaceReservations::class)->where('is_pre_reservation', false)->count();
     }
 
     /**
      * @return mixed
      */
-    public function getNoOwnerAttribute()
+    public function getPreReservationsCountAttribute()
     {
-        return $this->user_id  === null;
+        return $this->hasMany(PlaceReservations::class)->where('is_pre_reservation', true)->count();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function gethasOwnerAttribute()
+    {
+        return $this->user_id  != null;
     }
 
 }

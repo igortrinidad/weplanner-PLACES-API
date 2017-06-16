@@ -24,7 +24,7 @@ Route::group(['prefix' => 'auth'], function () {
     Route::get('/refresh', 'Auth\SocialAuthController@refresh');
 });
 
-Route::group(['prefix' => 'place_categories','middleware' => 'auth:admin'], function () {
+Route::group(['prefix' => 'place_categories'], function () {
     Route::get('/list', 'PlaceCategoriesController@index');
 });
 
@@ -61,6 +61,14 @@ Route::group(['prefix' => 'places'], function () {
 
     //Client reservation
     Route::post('/client/reservation', 'PlaceReservationsController@store')->middleware('auth:client');
+
+    //Client place create
+    Route::post('/client/create', 'PlacesController@store')->middleware('auth:client');
+    Route::post('/client/update', 'PlacesController@update')->middleware('auth:client');
+
+    //Client photo upload
+    Route::post('/client/media/upload', 'PlacePhotosController@store')->middleware('auth:client');
+    Route::get('/client/media/destroy/{id}', 'PlacePhotosController@destroy')->middleware('auth:client');
 });
 
 Route::group(['prefix' => 'client'], function () {
