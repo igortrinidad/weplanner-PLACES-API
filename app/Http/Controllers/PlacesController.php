@@ -65,7 +65,7 @@ class PlacesController extends Controller
     {
 
         $places = $this->repository->scopeQuery(function ($query) {
-            return $query->where(['user_id' => \Auth::user()->id])->with('category');
+            return $query->where(['user_id' => \Auth::user()->id])->with('photos');
         })->orderBy('name', 'ASC')->paginate(10);
 
         return response()->json($places);
@@ -81,7 +81,7 @@ class PlacesController extends Controller
     public function show($id)
     {
         $place = $this->repository->findWhere(['id' => $id, 'user_id' => \Auth::user()->id])
-            ->load('category', 'photos', 'documents', 'appointments', 'calendar_settings')
+            ->load('photos', 'documents', 'appointments', 'calendar_settings')
             ->load(['reservations' => function ($query) {
                 $query->orderBy('created_at');
             }])
@@ -122,7 +122,7 @@ class PlacesController extends Controller
 
             $response = [
                 'message' => 'Place created.',
-                'data' => $place->load('category', 'photos', 'documents','appointments', 'calendar_settings', 'reservations')->toArray(),
+                'data' => $place->load('photos', 'documents','appointments', 'calendar_settings', 'reservations')->toArray(),
             ];
 
             if ($request->wantsJson()) {
@@ -170,7 +170,7 @@ class PlacesController extends Controller
 
             $response = [
                 'message' => 'Place updated.',
-                'data' => $place->load('category', 'photos', 'documents','appointments', 'calendar_settings', 'reservations')->toArray(),
+                'data' => $place->load('photos', 'documents','appointments', 'calendar_settings', 'reservations')->toArray(),
             ];
 
             if ($request->wantsJson()) {
@@ -227,12 +227,14 @@ class PlacesController extends Controller
     {
         $per_page = 0;
 
+        $category_slug = $category_slug === 'cerimonia' ? 'cerimony' : 'party_space';
+
         $request->get('per_page') ? $per_page = $request->get('per_page') : $per_page = 8;
 
-        $places = $this->repository
-            ->whereHas('category', function ($q) use ($category_slug) {
-                return $q->where('slug', $category_slug);
-            })->with(['category', 'photos'])->orderBy('name');
+        $places = $this->repository->scopeQuery(function ($query) use ($category_slug) {
+            return $query->where([$category_slug => true]);
+        })->orderBy('name', 'ASC')
+            ->with(['photos'])->orderBy('name');
 
         $per_page == 'all' ? $places = $places->all() : $places = $places->paginate($per_page);
 
@@ -254,11 +256,14 @@ class PlacesController extends Controller
      */
     public function showPublic($category_slug, $place_slug)
     {
+        $category_slug = $category_slug === 'cerimonia' ? 'cerimony' : 'party_space';
 
         $place = $this->repository
-            ->whereHas('category', function ($q) use ($category_slug, $place_slug) {
-                return $q->where('slug', $category_slug);
-            })->with(['category', 'photos', 'appointments', 'calendar_settings'])->findWhere(['slug' => $place_slug])->first();
+            ->scopeQuery(function ($query) use ($category_slug) {
+                return $query->where([$category_slug => true]);
+            })->with(['photos', 'appointments', 'calendar_settings'])
+            ->findWhere(['slug' => $place_slug])
+            ->first();
 
         if (request()->wantsJson()) {
 
@@ -274,5 +279,48 @@ class PlacesController extends Controller
         }
 
         return view('posts.show', compact('post'));
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param Request $request
+     * @param $category_slug
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request, $category_slug)
+    {
+        $per_page = 0;
+
+        $category_slug = $category_slug === 'cerimonia' ? 'cerimony' : 'party_space';
+
+        $request->get('per_page') ? $per_page = $request->get('per_page') : $per_page = 8;
+
+        $places = $this->repository
+            ->scopeQuery(function ($query) use ($category_slug, $request) {
+                return $query->where([$category_slug => true])
+                    ->where(function ($query) use ($request) {
+                        foreach ($request->all() as $key => $value) {
+                            if ($key === 'city') {
+                                $query->where($key, $value);
+                            }
+
+                            if ($key === 'max_guests') {
+                                $query->where($key, '>=', $value);
+                            }
+
+                            if ($key != 'city' && $key != 'max_guests') {
+                                $query->where($key,  $value === 'true' ? true: false);
+                            }
+                        }
+                    });
+            })->with(['photos'])->orderBy('name');
+
+        $per_page == 'all' ? $places = $places->all() : $places = $places->paginate($per_page);
+
+        if (request()->wantsJson()) {
+
+            return response()->json($places);
+        }
     }
 }

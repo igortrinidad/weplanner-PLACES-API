@@ -32,7 +32,8 @@ class Place extends Model implements Transformable
      */
     protected $fillable = [
         'user_id',
-        'category_id',
+        'cerimony',
+        'party_space',
         'name',
         'description',
         'city',
@@ -40,6 +41,15 @@ class Place extends Model implements Transformable
         'address',
         'min_guests',
         'max_guests',
+        'style_rustic',
+        'style_modern',
+        'style_authentic',
+        'localization_city',
+        'localization_countryside',
+        'accessibility',
+        'parking',
+        'covered',
+        'outdoor',
         'informations',
         'confirmed',
         'slug',
@@ -55,6 +65,17 @@ class Place extends Model implements Transformable
      * @var array
      */
     protected $casts = [
+        'cerimony' => 'boolean',
+        'party_space' => 'boolean',
+        'style_rustic' => 'boolean',
+        'style_modern' => 'boolean',
+        'style_authentic' => 'boolean',
+        'localization_city' => 'boolean',
+        'localization_countryside' => 'boolean',
+        'accessibility' => 'boolean',
+        'parking' => 'boolean',
+        'covered' => 'boolean',
+        'outdoor' => 'boolean',
         'address' => 'json',
         'informations' => 'json',
         'therms' => 'json',
@@ -62,15 +83,7 @@ class Place extends Model implements Transformable
         'instructions' => 'json'
     ];
 
-
     protected $appends = ['appointments_count', 'reservations_count', 'pre_reservations_count', 'has_owner'];
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function category(){
-        return $this->belongsTo(PlaceCategory::class);
-    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

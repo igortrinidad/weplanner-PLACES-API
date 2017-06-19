@@ -22,8 +22,6 @@ class DatabaseSeeder extends Seeder
 
         factory(App\Models\User::class, 10)->create();
 
-        $this->call(PlacesCategoriesTableSeeder::class);
-
         factory(App\Models\Place::class, 100)->create();
 
         $this->call(PlaceCallendarSettingsTableSeeder::class);

@@ -24,10 +24,6 @@ Route::group(['prefix' => 'auth'], function () {
     Route::get('/refresh', 'Auth\SocialAuthController@refresh');
 });
 
-Route::group(['prefix' => 'place_categories'], function () {
-    Route::get('/list', 'PlaceCategoriesController@index');
-});
-
 Route::group(['prefix' => 'places'], function () {
     //admin resources
     Route::get('/list', 'PlacesController@index')->middleware('auth:admin');
@@ -48,10 +44,6 @@ Route::group(['prefix' => 'places'], function () {
     Route::post('/appointments/create', 'PlaceAppointmentsController@store')->middleware('auth:admin');
     Route::get('/appointments/{id}', 'PlaceAppointmentsController@index')->middleware('auth:admin');
 
-    //Public resources
-    Route::get('{category_slug}', 'PlacesController@listByCategory');
-    Route::get('{category_slug}/{place_slug}', 'PlacesController@showPublic');
-
     //calendar settings
     Route::get('/calendar_settings/show/{id}', 'PlaceCalendarSettingsController@show')->middleware('auth:admin');
     Route::post('/calendar_settings/update', 'PlaceCalendarSettingsController@update')->middleware('auth:admin');
@@ -69,6 +61,12 @@ Route::group(['prefix' => 'places'], function () {
     //Client photo upload
     Route::post('/client/media/upload', 'PlacePhotosController@store')->middleware('auth:client');
     Route::get('/client/media/destroy/{id}', 'PlacePhotosController@destroy')->middleware('auth:client');
+
+    //Public resources
+    Route::get('{category_slug}', 'PlacesController@listByCategory');
+    Route::get('{category_slug}/search', 'PlacesController@search');
+    Route::get('{category_slug}/{place_slug}', 'PlacesController@showPublic');
+
 });
 
 Route::group(['prefix' => 'client'], function () {
