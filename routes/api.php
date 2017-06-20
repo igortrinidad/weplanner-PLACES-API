@@ -63,6 +63,7 @@ Route::group(['prefix' => 'places'], function () {
     Route::get('/client/media/destroy/{id}', 'PlacePhotosController@destroy')->middleware('auth:client');
 
     //Public resources
+    Route::get('/search', 'PlacesController@nameSearch');
     Route::get('{category_slug}', 'PlacesController@listByCategory');
     Route::get('{category_slug}/search', 'PlacesController@search');
     Route::get('{category_slug}/{place_slug}', 'PlacesController@showPublic');

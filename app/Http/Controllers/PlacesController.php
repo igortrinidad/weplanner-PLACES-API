@@ -323,4 +323,27 @@ class PlacesController extends Controller
             return response()->json($places);
         }
     }
+
+
+
+    /**
+     * Place search by name.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function nameSearch(Request $request)
+    {
+        $places = $this->repository
+            ->scopeQuery(function ($query) use ( $request) {
+                return $query->where('name', 'LIKE', '%'.$request->get('therm').'%');
+            })->with(['photos'])->all();
+
+        if (request()->wantsJson()) {
+
+            return response()->json(['results' => $places]);
+        }
+    }
+
+
 }
