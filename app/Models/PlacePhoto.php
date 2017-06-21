@@ -41,10 +41,19 @@ class PlacePhoto extends Model implements Transformable
     protected $casts = ['is_cover' => 'boolean'];
 
 
-    /*
-    * Append the photo_url to a record
-    */
+    /**
+     * The accessors to append to the model's array.
+     *
+     * @var array
+     */
     protected $appends = ['photo_url'];
+
+
+    /**
+     * -------------------------------
+     * Custom fields
+     * -------------------------------
+     */
 
     /**
      * @return string
@@ -67,6 +76,12 @@ class PlacePhoto extends Model implements Transformable
         return (string) Storage::disk('media')->url($key);
 
     }
+
+    /**
+     * -------------------------------
+     * Relationships
+     * -------------------------------
+     */
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

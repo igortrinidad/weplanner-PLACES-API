@@ -24,6 +24,7 @@ class UserSocialProvider extends Model implements Transformable
      * @var bool
      */
     public $incrementing = false;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -33,6 +34,11 @@ class UserSocialProvider extends Model implements Transformable
         'user_id', 'provider', 'provider_id', 'access_token'
     ];
 
+    /**
+     * -------------------------------
+     * Relationships
+     * -------------------------------
+     */
     public function user()
     {
         return $this->belongsTo(User::class);

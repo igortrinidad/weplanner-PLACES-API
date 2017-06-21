@@ -41,7 +41,8 @@ class PlaceReservations extends Model implements Transformable
         'confirmed_at',
         'is_canceled',
         'canceled_at',
-        'therms'
+        'therms',
+        'history'
     ];
 
     /**
@@ -53,8 +54,15 @@ class PlaceReservations extends Model implements Transformable
         'is_pre_reservation' => 'boolean',
         'is_confirmed' => 'boolean',
         'is_canceled' => 'boolean',
-        'therms' => 'json'
+        'therms' => 'json',
+        'history' => 'json',
     ];
+
+    /**
+     * -------------------------------
+     * Relationships
+     * -------------------------------
+     */
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

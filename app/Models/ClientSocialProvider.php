@@ -25,6 +25,7 @@ class ClientSocialProvider extends Model implements Transformable
      * @var bool
      */
     public $incrementing = false;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -34,6 +35,11 @@ class ClientSocialProvider extends Model implements Transformable
         'client_id', 'provider', 'provider_id', 'access_token'
     ];
 
+    /**
+     * -------------------------------
+     * Relationships
+     * -------------------------------
+     */
     public function client()
     {
         return $this->belongsTo(Client::class);

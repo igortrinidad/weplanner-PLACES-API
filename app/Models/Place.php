@@ -56,7 +56,9 @@ class Place extends Model implements Transformable
         'therms',
         'instructions',
         'reservation_price',
-        'pre_reservation_price'
+        'pre_reservation_price',
+        'created_by_id',
+        'created_by_type'
     ];
 
     /**
@@ -83,7 +85,63 @@ class Place extends Model implements Transformable
         'instructions' => 'json'
     ];
 
+    /**
+     * The accessors to append to the model's array.
+     *
+     * @var array
+     */
     protected $appends = ['appointments_count', 'reservations_count', 'pre_reservations_count', 'has_owner'];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = ['created_by_id', 'created_by_type'];
+
+    /**
+     * -------------------------------
+     * Custom fields
+     * -------------------------------
+     */
+
+    /**
+     * @return mixed
+     */
+    public function getAppointmentsCountAttribute()
+    {
+        return $this->hasMany(PlaceAppointment::class)->count();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getReservationsCountAttribute()
+    {
+        return $this->hasMany(PlaceReservations::class)->where('is_pre_reservation', false)->count();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPreReservationsCountAttribute()
+    {
+        return $this->hasMany(PlaceReservations::class)->where('is_pre_reservation', true)->count();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function gethasOwnerAttribute()
+    {
+        return $this->user_id != null;
+    }
+
+    /**
+     * -------------------------------
+     * Relationships
+     * -------------------------------
+     */
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -110,14 +168,6 @@ class Place extends Model implements Transformable
     }
 
     /**
-     * @return mixed
-     */
-    public function getAppointmentsCountAttribute()
-    {
-        return $this->hasMany(PlaceAppointment::class)->count();
-    }
-
-    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function calendar_settings()
@@ -133,28 +183,9 @@ class Place extends Model implements Transformable
         return $this->hasMany(PlaceReservations::class)->with('client');
     }
 
-    /**
-     * @return mixed
-     */
-    public function getReservationsCountAttribute()
+    public function created_by()
     {
-        return $this->hasMany(PlaceReservations::class)->where('is_pre_reservation', false)->count();
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPreReservationsCountAttribute()
-    {
-        return $this->hasMany(PlaceReservations::class)->where('is_pre_reservation', true)->count();
-    }
-
-    /**
-     * @return mixed
-     */
-    public function gethasOwnerAttribute()
-    {
-        return $this->user_id  != null;
+        return $this->morphTo(null, 'created_by_type', 'created_by_id');
     }
 
 }

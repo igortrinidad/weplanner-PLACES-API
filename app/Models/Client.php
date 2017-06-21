@@ -44,10 +44,44 @@ class Client extends Authenticatable implements JWTSubject
         'password', 'remember_token',
     ];
 
-    /*
-    * Append the those attributes to a record
-    */
+    /**
+     * The accessors to append to the model's array.
+     *
+     * @var array
+     */
     protected $appends = ['full_name', 'blank_password', 'role'];
+
+    /**
+     * -------------------------------
+     * JWT Auth
+     * -------------------------------
+     */
+
+    /**
+     * Get the identifier that will be stored in the subject claim of the JWT
+     *
+     * @return mixed
+     */
+    public function getJWTIdentifier(){
+        return $this->getKey();
+    }
+
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT
+     *
+     * @return array
+     */
+    public function getJWTCustomClaims(){
+        return [];
+    }
+
+
+
+    /**
+     * -------------------------------
+     * Custom fields
+     * -------------------------------
+     */
 
     /*
      * Full name attribute
@@ -74,25 +108,24 @@ class Client extends Authenticatable implements JWTSubject
     }
 
     /**
-     * Get the identifier that will be stored in the subject claim of the JWT
-     *
-     * @return mixed
+     * -------------------------------
+     * Relationships
+     * -------------------------------
      */
-    public function getJWTIdentifier(){
-        return $this->getKey();
-    }
 
     /**
-     * Return a key value array, containing any custom claims to be added to the JWT
-     *
-     * @return array
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function getJWTCustomClaims(){
-        return [];
-    }
-
     public function socialProviders()
     {
         return $this->hasMany(ClientSocialProvider::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function created_by()
+    {
+        return $this->hasMany(Place::class, 'created_by_id');
     }
 }

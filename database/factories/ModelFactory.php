@@ -39,10 +39,11 @@ $factory->define(App\Models\Place::class, function () use ($faker) {
     $tyle = $faker->randomElement([true, false, true]);
     $localization = $faker->randomElement([true, false]);
     $roof = $faker->randomElement([true, false]);
+    $user_id = $faker->randomElement($users);
 
     return [
         'name' => $name,
-        'user_id' => $faker->randomElement($users),
+        'user_id' => $user_id,
         'cerimony' => $categoy,
         'party_space' => !$categoy,
         'city' => $faker->city,
@@ -65,6 +66,8 @@ $factory->define(App\Models\Place::class, function () use ($faker) {
         'instructions' => json_decode('{"reservation": "<p><strong>Documentos necessários para </strong><strong style=\"color: rgb(102, 185, 102);\">reserva</strong></p><ul><li>Documento oficial <u>com foto </u>(carteira de identidade, CNH, carteira de trabalho, passaporte)&nbsp;</li><li>Documentos que possuem<u> data de validade</u> devem estar dentro do prazo.</li><li>Comprovante de endereço recente, emitido há no máximo <u>90 dias </u>(Contas de concessionárias públicas: Água, Luz, Gás, Telefonia Fixa ou Móvel)</li></ul>", "pre_reservation": "<p><strong>Documentos necessários para </strong><strong style=\"color: rgb(0, 102, 204);\">pré reserva</strong></p><ul><li>Documento oficial <u>com foto </u>(carteira de identidade, CNH, carteira de trabalho, passaporte)&nbsp;</li><li>Documentos que possuem<u> data de validade</u> devem estar dentro do prazo.</li><li>Comprovante de endereço recente, emitido há no máximo <u>90 dias </u>(Contas de concessionárias públicas: Água, Luz, Gás, Telefonia Fixa ou Móvel)</li></ul><p><br></p>"}'),
         'reservation_price' => rand(100, 200),
         'pre_reservation_price' => rand(50, 150),
+        'created_by_id' => $user_id,
+        'created_by_type' => User::class,
         'slug' => str_slug($name, '-')
 
     ];

@@ -44,8 +44,10 @@ class User extends Authenticatable implements JWTSubject
         'password', 'remember_token',
     ];
 
-     /*
-     * Append the those attributes to a record
+    /**
+     * The accessors to append to the model's array.
+     *
+     * @var array
      */
     protected $appends = ['full_name', 'blank_password', 'role', 'places_count'];
 
@@ -57,36 +59,19 @@ class User extends Authenticatable implements JWTSubject
     protected $with = ['socialProviders'];
 
 
-    /*
-     * Full name attribute
+    /**
+     * -------------------------------
+     * JWT Auth
+     * -------------------------------
      */
-    public function getFullNameAttribute() {
-
-        return $this->name . ' ' . $this->last_name;
-    }
-
-    /*
-     * if user has blank password
-     */
-    public function getBlankPasswordAttribute() {
-
-       return $this->password == '' || $this->password == null;
-    }
-
-    /*
-     * Role attribute used in auth
-     */
-    public function getRoleAttribute() {
-
-        return 'admin';
-    }
 
     /**
      * Get the identifier that will be stored in the subject claim of the JWT
      *
      * @return mixed
      */
-    public function getJWTIdentifier(){
+    public function getJWTIdentifier()
+    {
         return $this->getKey();
     }
 
@@ -95,9 +80,57 @@ class User extends Authenticatable implements JWTSubject
      *
      * @return array
      */
-    public function getJWTCustomClaims(){
+    public function getJWTCustomClaims()
+    {
         return [];
     }
+
+    /**
+     * -------------------------------
+     * Custom fields
+     * -------------------------------
+     */
+
+    /*
+     * Full name attribute
+     */
+    public function getFullNameAttribute()
+    {
+
+        return $this->name . ' ' . $this->last_name;
+    }
+
+    /*
+     * if user has blank password
+     */
+    public function getBlankPasswordAttribute()
+    {
+
+        return $this->password == '' || $this->password == null;
+    }
+
+    /*
+     * Role attribute used in auth
+     */
+    public function getRoleAttribute()
+    {
+
+        return 'admin';
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPlacesCountAttribute()
+    {
+        return $this->hasMany(Place::class)->count();
+    }
+
+    /**
+     * -------------------------------
+     * Relationships
+     * -------------------------------
+     */
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -108,10 +141,19 @@ class User extends Authenticatable implements JWTSubject
     }
 
     /**
-     * @return mixed
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function getPlacesCountAttribute()
+    public function places()
     {
-        return $this->hasMany(Place::class)->count();
+        return $this->hasMany(Place::class);
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function created_by()
+    {
+        return $this->hasMany(Place::class, 'created_by_id');
+    }
+
 }

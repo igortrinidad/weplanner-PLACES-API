@@ -66,6 +66,12 @@ class PlaceAppointment extends Model implements Transformable
     ];
 
     /**
+     * -------------------------------
+     * Relationships
+     * -------------------------------
+     */
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function place()

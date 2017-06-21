@@ -27,6 +27,7 @@ Route::group(['prefix' => 'auth'], function () {
 Route::group(['prefix' => 'places'], function () {
     //admin resources
     Route::get('/list', 'PlacesController@index')->middleware('auth:admin');
+    Route::get('/created_by', 'PlacesController@createdBy')->middleware('auth:admin');
     Route::get('/show/{id}', 'PlacesController@show')->middleware('auth:admin');
     Route::post('/create', 'PlacesController@store')->middleware('auth:admin');
     Route::post('/update', 'PlacesController@update')->middleware('auth:admin');

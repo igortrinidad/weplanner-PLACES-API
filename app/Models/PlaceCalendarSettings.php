@@ -47,6 +47,13 @@ class PlaceCalendarSettings extends Model implements Transformable
 
     ];
 
+
+    /**
+     * -------------------------------
+     * Relationships
+     * -------------------------------
+     */
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

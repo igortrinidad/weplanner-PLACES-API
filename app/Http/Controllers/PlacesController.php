@@ -63,9 +63,22 @@ class PlacesController extends Controller
      */
     public function index()
     {
-
         $places = $this->repository->scopeQuery(function ($query) {
             return $query->where(['user_id' => \Auth::user()->id])->with('photos');
+        })->orderBy('name', 'ASC')->paginate(10);
+
+        return response()->json($places);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function createdBy()
+    {
+        $places = $this->repository->scopeQuery(function ($query) {
+            return $query->where(['created_by_id' => \Auth::user()->id])->where('user_id', null)->with('photos');
         })->orderBy('name', 'ASC')->paginate(10);
 
         return response()->json($places);
@@ -112,8 +125,13 @@ class PlacesController extends Controller
      */
     public function store(PlaceCreateRequest $request)
     {
-
         try {
+
+            $request->merge([
+                'created_by_id' => \Auth::user()->id,
+                'created_by_type' => get_class(\Auth::user())
+            ]);
+
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
 
             $place = $this->repository->create($request->all());
