@@ -58,7 +58,8 @@ class Place extends Model implements Transformable
         'reservation_price',
         'pre_reservation_price',
         'created_by_id',
-        'created_by_type'
+        'created_by_type',
+        'list_common'
     ];
 
     /**
@@ -82,7 +83,8 @@ class Place extends Model implements Transformable
         'informations' => 'json',
         'therms' => 'json',
         'confirmed' => 'boolean',
-        'instructions' => 'json'
+        'instructions' => 'json',
+        'list_common' => 'boolean'
     ];
 
     /**

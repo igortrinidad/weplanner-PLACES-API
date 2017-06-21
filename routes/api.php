@@ -55,7 +55,8 @@ Route::group(['prefix' => 'places'], function () {
     //Client reservation
     Route::post('/client/reservation', 'PlaceReservationsController@store')->middleware('auth:client');
 
-    //Client place create
+    //Client place resrouces
+    Route::get('/client/created_by', 'PlacesController@createdByClient')->middleware('auth:client');
     Route::post('/client/create', 'PlacesController@store')->middleware('auth:client');
     Route::post('/client/update', 'PlacesController@update')->middleware('auth:client');
 

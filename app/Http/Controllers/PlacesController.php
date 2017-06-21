@@ -78,7 +78,21 @@ class PlacesController extends Controller
     public function createdBy()
     {
         $places = $this->repository->scopeQuery(function ($query) {
-            return $query->where(['created_by_id' => \Auth::user()->id])->where('user_id', null)->with('photos');
+            return $query->where('list_common', true)->where(['created_by_id' => \Auth::user()->id])->with('photos');
+        })->orderBy('name', 'ASC')->paginate(10);
+
+        return response()->json($places);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function createdByClient()
+    {
+        $places = $this->repository->scopeQuery(function ($query) {
+            return $query->where('list_common', true)->where(['created_by_id' => \Auth::user()->id])->with('photos');
         })->orderBy('name', 'ASC')->paginate(10);
 
         return response()->json($places);
