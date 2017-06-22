@@ -66,6 +66,7 @@ Route::group(['prefix' => 'places'], function () {
 
     //Public resources
     Route::get('/search', 'PlacesController@nameSearch');
+    Route::get('/check_url', 'PlacesController@checkUrl');
     Route::get('{category_slug}', 'PlacesController@listByCategory');
     Route::get('{category_slug}/search', 'PlacesController@search');
     Route::get('{category_slug}/{place_slug}', 'PlacesController@showPublic');
