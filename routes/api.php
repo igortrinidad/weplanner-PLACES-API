@@ -73,6 +73,9 @@ Route::group(['prefix' => 'places'], function () {
 
 });
 
+/*
+ * Clients
+ */
 Route::group(['prefix' => 'client'], function () {
     Route::post('/auth/login', 'Auth\ClientLoginController@login');
 
@@ -84,15 +87,24 @@ Route::group(['prefix' => 'client'], function () {
     Route::get('/reservations/cancel/{id}', 'PlaceReservationsController@cancel')->middleware('auth:client');
 });
 
-
-
-
-
-
+/*
+ * Users
+ */
 Route::group(['prefix' => 'user','middleware' => 'auth:admin'], function () {
     Route::get('/index', 'UserController@index');
     Route::post('/show', 'UserController@show');
     Route::post('/create', 'UserController@create');
     Route::post('/update', 'UserController@update');
     Route::post('/destroy', 'UserController@destroy');
+});
+
+/*
+ * Oracle
+ */
+
+Route::group(['prefix' => 'oracle'], function () {
+    Route::post('/auth/login', 'Auth\OracleLoginController@login');
+
+    //profile update
+    Route::post('/update', 'ClientsController@update')->middleware('auth:oracle');
 });

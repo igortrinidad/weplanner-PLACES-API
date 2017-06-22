@@ -50,6 +50,11 @@ return [
             'driver' => 'jwt',
             'provider' => 'clients',
         ],
+
+        'oracle' => [
+            'driver' => 'jwt',
+            'provider' => 'oracle_users',
+        ],
     ],
 
     /*
@@ -80,6 +85,11 @@ return [
             'model' => App\Models\Client::class,
         ],
 
+        'oracle_users' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\OracleUser::class,
+        ],
+
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',
@@ -104,6 +114,18 @@ return [
     'passwords' => [
         'users' => [
             'provider' => 'users',
+            'table' => 'password_resets',
+            'expire' => 60,
+        ],
+
+        'clients' => [
+            'provider' => 'clients',
+            'table' => 'password_resets',
+            'expire' => 60,
+        ],
+
+        'oracle_users' => [
+            'provider' => 'oracle_users',
             'table' => 'password_resets',
             'expire' => 60,
         ],
