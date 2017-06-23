@@ -36,9 +36,12 @@ class OracleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function placesList()
+    public function placesList(Request $request)
     {
-        $places = $this->placeRepository->orderBy('name', 'ASC')->paginate(10);
+
+        $places = $this->placeRepository->scopeQuery(function ($query) use ( $request) {
+                return $query->where('confirmed', '=', $request->get('confirmed'))->orderBy('name', 'ASC');
+            })->paginate(10);
 
         return response()->json($places);
     }

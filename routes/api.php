@@ -119,7 +119,7 @@ Route::group(['prefix' => 'oracle'], function () {
 
         //Places
         Route::group(['prefix' => 'places'], function () {
-            Route::get('/list', 'OracleController@placesList');
+            Route::post('/list', 'OracleController@placesList');
             Route::get('/show/{id}', 'OracleController@placeShow');
             Route::post('/update', 'PlacesController@update');
             Route::get('/search', 'OracleController@search');
