@@ -66,13 +66,20 @@ Route::group(['prefix' => 'places'], function () {
 
     //Public resources
     Route::get('/search', 'PlacesController@nameSearch');
+<<<<<<< HEAD
     Route::post('/searchByCity', 'PlacesController@searchByCity');
+=======
+    Route::get('/check_url', 'PlacesController@checkUrl');
+>>>>>>> facdef6b729ca9209886a929b2c8465561361e4f
     Route::get('{category_slug}', 'PlacesController@listByCategory');
     Route::get('{category_slug}/search', 'PlacesController@search');
     Route::get('show/{place_slug}', 'PlacesController@showPublic');
 
 });
 
+/*
+ * Clients
+ */
 Route::group(['prefix' => 'client'], function () {
     Route::post('/auth/login', 'Auth\ClientLoginController@login');
 
@@ -84,15 +91,24 @@ Route::group(['prefix' => 'client'], function () {
     Route::get('/reservations/cancel/{id}', 'PlaceReservationsController@cancel')->middleware('auth:client');
 });
 
-
-
-
-
-
+/*
+ * Users
+ */
 Route::group(['prefix' => 'user','middleware' => 'auth:admin'], function () {
     Route::get('/index', 'UserController@index');
     Route::post('/show', 'UserController@show');
     Route::post('/create', 'UserController@create');
     Route::post('/update', 'UserController@update');
     Route::post('/destroy', 'UserController@destroy');
+});
+
+/*
+ * Oracle
+ */
+
+Route::group(['prefix' => 'oracle'], function () {
+    Route::post('/auth/login', 'Auth\OracleLoginController@login');
+
+    //profile update
+    Route::post('/update', 'ClientsController@update')->middleware('auth:oracle');
 });

@@ -40,5 +40,13 @@ class DatabaseSeeder extends Seeder
         ]);
 
         factory(App\Models\Client::class, 10)->create();
+
+        factory(App\Models\OracleUser::class)->create([
+            'name' => 'Matheus',
+            'last_name' => 'Lima',
+            'email' => 'me@matheuslima.com.br',
+            'password' => bcrypt('password'),
+            'remember_token' => str_random(10),
+        ]);
     }
 }

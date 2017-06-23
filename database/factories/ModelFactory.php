@@ -86,3 +86,16 @@ $factory->define(App\Models\Client::class, function () use($faker){
     ];
 });
 
+$factory->define(App\Models\OracleUser::class, function () use($faker){
+    static $password;
+
+    return [
+        'name' => $faker->firstName,
+        'last_name' => $faker->lastName,
+        'email' => $faker->unique()->safeEmail,
+        'password' => $password ?: $password = bcrypt('password'),
+        'remember_token' => str_random(10),
+    ];
+});
+
+

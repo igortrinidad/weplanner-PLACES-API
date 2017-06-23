@@ -373,6 +373,22 @@ class PlacesController extends Controller
         }
     }
 
+    /**
+     * check place unique url.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function checkUrl(Request $request)
+    {
+        $has_place = $this->repository->findWhere(['slug' => $request->get('slug')])->first();
+
+        if($has_place){
+            return response()->json(['has_place' => true]);
+        }
+
+        return response()->json(['has_place' => false]);
+    }
 
         /**
      * Display the specified resource.
