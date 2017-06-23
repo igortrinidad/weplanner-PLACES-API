@@ -66,11 +66,8 @@ Route::group(['prefix' => 'places'], function () {
 
     //Public resources
     Route::get('/search', 'PlacesController@nameSearch');
-<<<<<<< HEAD
     Route::post('/searchByCity', 'PlacesController@searchByCity');
-=======
     Route::get('/check_url', 'PlacesController@checkUrl');
->>>>>>> facdef6b729ca9209886a929b2c8465561361e4f
     Route::get('{category_slug}', 'PlacesController@listByCategory');
     Route::get('{category_slug}/search', 'PlacesController@search');
     Route::get('show/{place_slug}', 'PlacesController@showPublic');
