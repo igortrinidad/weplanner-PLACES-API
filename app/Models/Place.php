@@ -185,9 +185,20 @@ class Place extends Model implements Transformable
         return $this->hasMany(PlaceReservations::class)->with('client');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     */
     public function created_by()
     {
         return $this->morphTo(null, 'created_by_type', 'created_by_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
 }

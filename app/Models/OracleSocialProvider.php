@@ -41,7 +41,7 @@ class OracleSocialProvider extends Model implements Transformable
      */
     public function user()
     {
-        return $this->belongsTo(OracleUser::class, 'iser');
+        return $this->belongsTo(OracleUser::class);
     }
 
 }

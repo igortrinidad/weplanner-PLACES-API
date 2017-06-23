@@ -405,7 +405,7 @@ class PlacesController extends Controller
 
         $places = $this->repository
             ->scopeQuery(function ($query) use ($request) {
-                return $query->where(function ($query) use ($request) {
+                return $query->where('confirmed', true)->where(function ($query) use ($request) {
                         foreach ($request->all() as $key => $value) {
 
                             if ($key === 'max_guests') {

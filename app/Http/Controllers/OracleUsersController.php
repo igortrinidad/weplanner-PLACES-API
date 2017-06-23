@@ -139,18 +139,28 @@ class OracleUsersController extends Controller
      *
      * @return Response
      */
-    public function update(OracleUserUpdateRequest $request, $id)
+    public function update(OracleUserUpdateRequest $request)
     {
 
         try {
 
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
 
-            $oracleUser = $this->repository->update($request->all(), $id);
+            $user = \Auth::guard('oracle')->user();
+
+            if ($request->has('current_password') && $request->has('current_password') != '') {
+
+                if (!\Hash::check($request->get('current_password'), $user->password)) {
+
+                    return response()->json(['error' => true, 'message' => 'Senha atual incorreta'], 200);
+                }
+            }
+
+            $oracleUser = $this->repository->update($request->all(), $request->get('id'));
 
             $response = [
                 'message' => 'OracleUser updated.',
-                'data'    => $oracleUser->toArray(),
+                'user'    => $oracleUser->load('socialProviders')->toArray(),
             ];
 
             if ($request->wantsJson()) {

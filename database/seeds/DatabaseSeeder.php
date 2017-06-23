@@ -20,6 +20,23 @@ class DatabaseSeeder extends Seeder
             'remember_token' => str_random(10),
         ]);
 
+
+        factory(App\Models\User::class)->create([
+            'name' => 'Igor',
+            'last_name' => 'Trindade',
+            'email' => 'contato@maisbartenders.com.br',
+            'password' => bcrypt('password'),
+            'remember_token' => str_random(10),
+        ]);
+
+        factory(App\Models\User::class)->create([
+            'name' => 'Andre',
+            'last_name' => 'Brandão',
+            'email' => 'andrebf4@gmail.com',
+            'password' => bcrypt('password'),
+            'remember_token' => str_random(10),
+        ]);
+
         factory(App\Models\User::class, 10)->create();
 
         factory(App\Models\Place::class, 100)->create();
@@ -41,10 +58,29 @@ class DatabaseSeeder extends Seeder
 
         factory(App\Models\Client::class, 10)->create();
 
+        /*
+         * Oracle users
+         */
         factory(App\Models\OracleUser::class)->create([
             'name' => 'Matheus',
             'last_name' => 'Lima',
             'email' => 'me@matheuslima.com.br',
+            'password' => bcrypt('password'),
+            'remember_token' => str_random(10),
+        ]);
+
+        factory(App\Models\OracleUser::class)->create([
+            'name' => 'Igor',
+            'last_name' => 'Trindade',
+            'email' => 'contato@maisbartenders.com.br',
+            'password' => bcrypt('password'),
+            'remember_token' => str_random(10),
+        ]);
+
+        factory(App\Models\OracleUser::class)->create([
+            'name' => 'Andre',
+            'last_name' => 'Brandão',
+            'email' => 'andrebf4@gmail.com',
             'password' => bcrypt('password'),
             'remember_token' => str_random(10),
         ]);
