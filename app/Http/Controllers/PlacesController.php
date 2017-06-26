@@ -14,6 +14,8 @@ use App\Http\Requests\PlaceCreateRequest;
 use App\Http\Requests\PlaceUpdateRequest;
 use App\Repositories\PlaceRepository;
 
+use App\Models\Place;
+
 
 class PlacesController extends Controller
 {
@@ -423,11 +425,21 @@ class PlacesController extends Controller
                     });
             })->with(['photos'])->orderBy('name');
 
+
+        $cerimonyCount = Place::where('confirmed', true)->where('cerimony', true)->where('city', $request->get('city'))->count();
+        $partyCount = Place::where('confirmed', true)->where('party_space', true)->where('city', $request->get('city'))->count();
+
         $per_page == 'all' ? $places = $places->all() : $places = $places->paginate($per_page);
 
         if (request()->wantsJson()) {
 
-            return response()->json($places);
+            $data = new Class{};
+
+            $data->cerimonyCount =  $cerimonyCount;
+            $data->partyCount =  $partyCount;
+            $data->places = $places;
+
+            return response()->json($data);
         }
     }
 
