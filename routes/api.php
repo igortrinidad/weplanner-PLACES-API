@@ -122,7 +122,7 @@ Route::group(['prefix' => 'oracle'], function () {
             Route::post('/list', 'OracleController@placesList');
             Route::get('/show/{id}', 'OracleController@placeShow');
             Route::post('/update', 'PlacesController@update');
-            Route::get('/search', 'OracleController@search');
+            Route::post('/search', 'OracleController@search');
         });
 
         //profile update

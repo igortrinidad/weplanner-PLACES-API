@@ -84,7 +84,9 @@ class OracleController extends Controller
     {
         $places = $this->placeRepository
             ->scopeQuery(function ($query) use ( $request) {
-                return $query->where('name', 'LIKE', '%'.$request->get('therm').'%');
+                return $query->where('confirmed', '=', $request->get('confirmed'))
+                    ->where('name', 'LIKE', '%'.$request->get('therm').'%')
+                    ->orderBy('name', 'ASC');
             })->with(['photos', 'documents', 'appointments', 'calendar_settings', 'user'])->paginate(10);
 
         if (request()->wantsJson()) {
