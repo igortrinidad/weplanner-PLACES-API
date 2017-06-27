@@ -121,8 +121,17 @@ Route::group(['prefix' => 'oracle'], function () {
         Route::group(['prefix' => 'places'], function () {
             Route::post('/list', 'OracleController@placesList');
             Route::get('/show/{id}', 'OracleController@placeShow');
+            Route::post('/create', 'PlacesController@store');
             Route::post('/update', 'PlacesController@update');
             Route::post('/search', 'OracleController@search');
+
+            //Photo upload
+            Route::post('/media/upload', 'PlacePhotosController@store');
+            Route::get('/media/destroy/{id}', 'PlacePhotosController@destroy');
+
+            //Document upload
+            Route::post('/document/upload', 'PlaceDocumentsController@store');
+            Route::get('/document/destroy/{id}', 'PlaceDocumentsController@destroy');
         });
 
         //profile update

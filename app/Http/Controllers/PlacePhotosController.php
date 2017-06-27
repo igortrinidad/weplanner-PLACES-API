@@ -34,6 +34,8 @@ class PlacePhotosController extends Controller
     {
         $this->repository = $repository;
         $this->validator = $validator;
+
+        \Tinify\setKey(env('TINIFY_APY_KEY', null));
     }
 
     /**
@@ -54,7 +56,15 @@ class PlacePhotosController extends Controller
 
             $filePath = 'places/media/' . $fileName;
 
-            \Storage::disk('media')->put($filePath, file_get_contents($image), 'public');
+            //tinify
+            $sourceData = file_get_contents($image);
+            $resultData = \Tinify\fromBuffer($sourceData)
+                ->resize([
+                    "method" => "scale",
+                    "width" => 1400,
+                ])->toBuffer();
+
+            \Storage::disk('media')->put($filePath, $resultData, 'public');
 
             //merge file path on request
             $request->merge(['path' => $filePath]);

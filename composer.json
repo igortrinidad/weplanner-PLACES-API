@@ -13,6 +13,7 @@
         "league/flysystem-aws-s3-v3": "^1.0",
         "prettus/l5-repository": "^2.6",
         "spatie/laravel-fractal": "^3.5",
+        "tinify/tinify": "^1.5",
         "tymon/jwt-auth": "1.0.0-beta.3",
         "webpatser/laravel-uuid": "2.*"
     },
