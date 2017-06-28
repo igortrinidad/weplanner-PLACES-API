@@ -39,7 +39,7 @@ class DatabaseSeeder extends Seeder
 
         factory(App\Models\User::class, 10)->create();
 
-        factory(App\Models\Place::class, 100)->create();
+        factory(App\Models\Place::class, 50)->create();
 
         $this->call(PlaceCallendarSettingsTableSeeder::class);
 

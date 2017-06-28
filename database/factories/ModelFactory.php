@@ -49,6 +49,7 @@ $factory->define(App\Models\Place::class, function () use ($faker) {
         'city' => $faker->city,
         'state' => $faker->stateAbbr,
         'description' => $faker->sentence(100),
+        'phone' => $faker->cellphoneNumber(),
         'min_guests' => rand(100, 200),
         'max_guests' => rand(300, 1000),
         'style_rustic' => $tyle,
