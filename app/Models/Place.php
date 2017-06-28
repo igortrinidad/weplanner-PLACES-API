@@ -36,6 +36,7 @@ class Place extends Model implements Transformable
         'party_space',
         'name',
         'description',
+        'phone',
         'city',
         'state',
         'address',
