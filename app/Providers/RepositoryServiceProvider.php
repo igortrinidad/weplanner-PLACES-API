@@ -33,6 +33,8 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(\App\Repositories\ClientRepository::class, \App\Repositories\ClientRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\PlaceReservationsRepository::class, \App\Repositories\PlaceReservationsRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\OracleUserRepository::class, \App\Repositories\OracleUserRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\OwnerRequestRepository::class, \App\Repositories\OwnerRequestRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\OwnerRequestDocumentRepository::class, \App\Repositories\OwnerRequestDocumentRepositoryEloquent::class);
         //:end-bindings:
     }
 }

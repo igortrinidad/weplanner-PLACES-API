@@ -51,6 +51,14 @@ Route::group(['prefix' => 'places'], function () {
 
         //Reservations
         Route::get('/reservations/cancel/{id}', 'PlaceReservationsController@cancel');
+
+        //Owner request
+        Route::group(['prefix' => 'owner_request'], function(){
+            Route::post('/create', 'OwnerRequestsController@store');
+            Route::post('/update', 'OwnerRequestsController@update');
+            Route::post('/document/upload', 'OwnerRequestDocumentsController@store');
+            Route::get('/document/destroy/{id}', 'OwnerRequestDocumentsController@destroy');
+        });
     });
 
     //Protected routes for client
@@ -132,6 +140,11 @@ Route::group(['prefix' => 'oracle'], function () {
             //Document upload
             Route::post('/document/upload', 'PlaceDocumentsController@store');
             Route::get('/document/destroy/{id}', 'PlaceDocumentsController@destroy');
+        });
+
+        //Owner request
+        Route::group(['prefix' => 'owner_request'], function(){
+            Route::get('/list', 'OwnerRequestsController@index');
         });
 
         //profile update

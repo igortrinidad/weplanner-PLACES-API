@@ -7,26 +7,26 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
-use App\Http\Requests\PlaceDocumentCreateRequest;
-use App\Http\Requests\PlaceDocumentUpdateRequest;
-use App\Repositories\PlaceDocumentRepository;
-use App\Validators\PlaceDocumentValidator;
+use App\Http\Requests\OwnerRequestDocumentCreateRequest;
+use App\Http\Requests\OwnerRequestDocumentUpdateRequest;
+use App\Repositories\OwnerRequestDocumentRepository;
+use App\Validators\OwnerRequestDocumentValidator;
 
 
-class PlaceDocumentsController extends Controller
+class OwnerRequestDocumentsController extends Controller
 {
 
     /**
-     * @var PlaceDocumentRepository
+     * @var OwnerRequestDocumentRepository
      */
     protected $repository;
 
     /**
-     * @var PlaceDocumentValidator
+     * @var OwnerRequestDocumentValidator
      */
     protected $validator;
 
-    public function __construct(PlaceDocumentRepository $repository, PlaceDocumentValidator $validator)
+    public function __construct(OwnerRequestDocumentRepository $repository, OwnerRequestDocumentValidator $validator)
     {
         $this->repository = $repository;
         $this->validator  = $validator;
@@ -34,13 +34,33 @@ class PlaceDocumentsController extends Controller
 
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  PlaceDocumentCreateRequest $request
+     * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(PlaceDocumentCreateRequest $request)
+    public function index()
+    {
+        $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
+        $ownerRequestDocuments = $this->repository->all();
+
+        if (request()->wantsJson()) {
+
+            return response()->json([
+                'data' => $ownerRequestDocuments,
+            ]);
+        }
+
+        return view('ownerRequestDocuments.index', compact('ownerRequestDocuments'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  OwnerRequestDocumentCreateRequest $request
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function store(OwnerRequestDocumentCreateRequest $request)
     {
 
         try {
@@ -53,18 +73,18 @@ class PlaceDocumentsController extends Controller
             $extension = $document->getClientOriginalExtension();
             $fileName = bin2hex(random_bytes(16)) . '.' . $extension;
 
-            $filePath = 'places/documents/' . $fileName;
+            $filePath = 'places/owner_requests/documents/' . $fileName;
 
             \Storage::disk('media')->put($filePath, file_get_contents($document), 'public');
 
             //merge file path on request
             $request->merge(['path' => $filePath, 'filename' => $originalName, 'extension' => $extension]);
 
-            $placeDocument = $this->repository->create($request->all());
+            $ownerRequestDocument = $this->repository->create($request->all());
 
             $response = [
-                'message' => 'PlaceDocument created.',
-                'document'    => $placeDocument->fresh()->toArray(),
+                'message' => 'OwnerRequestDocument created.',
+                'document'    => $ownerRequestDocument->toArray(),
             ];
 
             if ($request->wantsJson()) {
@@ -85,26 +105,65 @@ class PlaceDocumentsController extends Controller
         }
     }
 
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int $id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $ownerRequestDocument = $this->repository->find($id);
+
+        if (request()->wantsJson()) {
+
+            return response()->json([
+                'data' => $ownerRequestDocument,
+            ]);
+        }
+
+        return view('ownerRequestDocuments.show', compact('ownerRequestDocument'));
+    }
+
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int $id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+
+        $ownerRequestDocument = $this->repository->find($id);
+
+        return view('ownerRequestDocuments.edit', compact('ownerRequestDocument'));
+    }
+
+
     /**
      * Update the specified resource in storage.
      *
-     * @param  PlaceDocumentUpdateRequest $request
+     * @param  OwnerRequestDocumentUpdateRequest $request
      * @param  string            $id
      *
      * @return Response
      */
-    public function update(PlaceDocumentUpdateRequest $request, $id)
+    public function update(OwnerRequestDocumentUpdateRequest $request, $id)
     {
 
         try {
 
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
 
-            $placeDocument = $this->repository->update($request->all(), $id);
+            $ownerRequestDocument = $this->repository->update($request->all(), $id);
 
             $response = [
-                'message' => 'PlaceDocument updated.',
-                'data'    => $placeDocument->toArray(),
+                'message' => 'OwnerRequestDocument updated.',
+                'data'    => $ownerRequestDocument->toArray(),
             ];
 
             if ($request->wantsJson()) {
@@ -146,11 +205,11 @@ class PlaceDocumentsController extends Controller
         if (request()->wantsJson()) {
 
             return response()->json([
-                'message' => 'PlaceDocument deleted.',
+                'message' => 'OwnerRequestDocument deleted.',
                 'deleted' => $deleted,
             ]);
         }
 
-        return redirect()->back()->with('message', 'PlaceDocument deleted.');
+        return redirect()->back()->with('message', 'OwnerRequestDocument deleted.');
     }
 }
