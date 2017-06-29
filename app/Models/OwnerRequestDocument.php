@@ -30,4 +30,39 @@ class OwnerRequestDocument extends Model implements Transformable
         'extension'
     ];
 
+    /**
+     * The accessors to append to the model's array.
+     *
+     * @var array
+     */
+    protected $appends = ['url'];
+
+    /**
+     * -------------------------------
+     * Custom fields
+     * -------------------------------
+     */
+
+    /**
+     * @return string
+     */
+    public function getUrlAttribute()
+    {
+        if($this->attributes['path'])
+        {
+            return $this->getFileUrl($this->attributes['path']);
+        }
+
+    }
+
+    /**
+     * @param $key
+     * @return string
+     */
+    private function getFileUrl($key) {
+
+        return (string) \Storage::disk('media')->url($key);
+
+    }
+
 }

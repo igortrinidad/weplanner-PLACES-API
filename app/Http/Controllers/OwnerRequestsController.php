@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\OwnerRequestDocumentRepository;
+use App\Repositories\PlaceDocumentRepository;
+use App\Repositories\PlaceRepository;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -25,11 +28,35 @@ class OwnerRequestsController extends Controller
      * @var OwnerRequestValidator
      */
     protected $validator;
+    /**
+     * @var PlaceRepository
+     */
+    private $placeRepository;
+    /**
+     * @var PlaceDocumentRepository
+     */
+    private $placeDocumentRepository;
 
-    public function __construct(OwnerRequestRepository $repository, OwnerRequestValidator $validator)
+    /**
+     * OwnerRequestsController constructor.
+     * @param OwnerRequestRepository $repository
+     * @param PlaceRepository $placeRepository
+     * @param PlaceDocumentRepository $placeDocumentRepository
+     * @param OwnerRequestDocumentRepository $ownerRequestDocumentRepository
+     * @param OwnerRequestValidator $validator
+     */
+    public function __construct(
+        OwnerRequestRepository $repository,
+        PlaceRepository $placeRepository,
+        PlaceDocumentRepository $placeDocumentRepository,
+        OwnerRequestDocumentRepository $ownerRequestDocumentRepository,
+        OwnerRequestValidator $validator
+    )
     {
         $this->repository = $repository;
         $this->validator  = $validator;
+        $this->placeRepository = $placeRepository;
+        $this->placeDocumentRepository = $placeDocumentRepository;
     }
 
 
@@ -42,7 +69,7 @@ class OwnerRequestsController extends Controller
     {
         $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
 
-        $ownerRequests = $this->repository->with(['documents', 'place', 'user'])->paginate(10);
+        $ownerRequests = $this->repository->with(['place', 'user'])->paginate(10);
 
         if (request()->wantsJson()) {
 
@@ -106,7 +133,7 @@ class OwnerRequestsController extends Controller
         if (request()->wantsJson()) {
 
             return response()->json([
-                'data' => $ownerRequest,
+                'data' => $ownerRequest->load('documents', 'place', 'user'),
             ]);
         }
 
@@ -193,5 +220,77 @@ class OwnerRequestsController extends Controller
         }
 
         return redirect()->back()->with('message', 'OwnerRequest deleted.');
+    }
+
+    /**
+     * Cancel the specified owner request.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     *
+     */
+    public function cancel(Request $request)
+    {
+        $owner_request = $this->repository->find($request->get('id'));
+
+        $owner_request->canceled = true;
+        $owner_request->save();
+
+        if (request()->wantsJson()) {
+
+            return response()->json([
+                'message' => 'OwnerRequest canceled.',
+                'data' => $owner_request->load('documents', 'place', 'user'),
+            ]);
+        }
+
+        return redirect()->back()->with('message', 'OwnerRequest canceled.');
+    }
+
+    /**
+     * Cancel the specified owner request.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     *
+     */
+    public function confirm(Request $request)
+    {
+        $owner_request = $this->repository->find($request->get('id'))->load('documents', 'place', 'user');
+        $place = $this->placeRepository->find($owner_request->place_id);
+
+        //transfer the place to the user
+        $place->user_id = $owner_request->user_id;
+        $place->save();
+
+        // copy the file to place documents
+        foreach ($owner_request->documents as $document){
+
+            $new_file_path = 'places/documents/'.basename($document->path);
+
+            if(! \Storage::disk('media')->has($new_file_path )) {
+                \Storage::disk('media')->copy($document->path, $new_file_path );
+
+                $new_document = $document->toArray();
+                $new_document['path'] = $new_file_path;
+                $new_document['place_id'] = $place->id;
+
+                $this->placeDocumentRepository->create($new_document);
+            }
+        }
+
+        //save the owner request
+        $owner_request->confirmed = true;
+        $owner_request->save();
+
+        if (request()->wantsJson()) {
+
+            return response()->json([
+                'message' => 'OwnerRequest confirmed.',
+                'data' => $owner_request->load('documents', 'place', 'user'),
+            ]);
+        }
+
+        return redirect()->back()->with('message', 'OwnerRequest confirmed.');
     }
 }

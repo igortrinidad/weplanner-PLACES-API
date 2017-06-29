@@ -145,6 +145,10 @@ Route::group(['prefix' => 'oracle'], function () {
         //Owner request
         Route::group(['prefix' => 'owner_request'], function(){
             Route::get('/list', 'OwnerRequestsController@index');
+            Route::get('/show/{id}', 'OwnerRequestsController@show');
+
+            Route::post('/cancel', 'OwnerRequestsController@cancel');
+            Route::post('/confirm', 'OwnerRequestsController@confirm');
         });
 
         //profile update
