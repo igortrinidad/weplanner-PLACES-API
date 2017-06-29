@@ -58,6 +58,8 @@ class Place extends Model implements Transformable
         'instructions',
         'reservation_price',
         'pre_reservation_price',
+        'virtual_tour_url',
+        'featured_position',
         'created_by_id',
         'created_by_type',
         'list_common'
@@ -85,7 +87,8 @@ class Place extends Model implements Transformable
         'therms' => 'json',
         'confirmed' => 'boolean',
         'instructions' => 'json',
-        'list_common' => 'boolean'
+        'list_common' => 'boolean',
+        'featured_position' => 'integer'
     ];
 
     /**
@@ -93,7 +96,7 @@ class Place extends Model implements Transformable
      *
      * @var array
      */
-    protected $appends = ['appointments_count', 'reservations_count', 'pre_reservations_count', 'has_owner'];
+    protected $appends = ['appointments_count', 'reservations_count', 'pre_reservations_count', 'has_owner', 'has_virtual_tour'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -138,6 +141,14 @@ class Place extends Model implements Transformable
     public function gethasOwnerAttribute()
     {
         return $this->user_id != null;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function gethasVirtualTourAttribute()
+    {
+        return $this->virtual_tour_url != null;
     }
 
     /**
@@ -200,6 +211,14 @@ class Place extends Model implements Transformable
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function videos()
+    {
+        return $this->hasMany(PlaceVideo::class);
     }
 
 }

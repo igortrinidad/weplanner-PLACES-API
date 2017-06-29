@@ -110,7 +110,7 @@ class PlacesController extends Controller
     public function show($id)
     {
         $place = $this->repository->findWhere(['id' => $id, 'user_id' => \Auth::user()->id])
-            ->load('photos', 'documents', 'appointments', 'calendar_settings')
+            ->load('photos', 'documents', 'appointments', 'calendar_settings', 'videos')
             ->load(['reservations' => function ($query) {
                 $query->orderBy('created_at');
             }])
@@ -156,7 +156,7 @@ class PlacesController extends Controller
 
             $response = [
                 'message' => 'Place created.',
-                'data' => $place->load('photos', 'documents','appointments', 'calendar_settings', 'reservations')->toArray(),
+                'data' => $place->load('photos', 'documents','appointments', 'calendar_settings', 'reservations', 'videos')->toArray(),
             ];
 
             if ($request->wantsJson()) {
@@ -204,7 +204,7 @@ class PlacesController extends Controller
 
             $response = [
                 'message' => 'Place updated.',
-                'data' => $place->load('photos', 'documents','appointments', 'calendar_settings', 'reservations')->toArray(),
+                'data' => $place->load('photos', 'documents','appointments', 'calendar_settings', 'reservations', 'videos')->toArray(),
             ];
 
             if ($request->wantsJson()) {
@@ -292,7 +292,7 @@ class PlacesController extends Controller
     {
 
         $place = $this->repository->findWhere(['slug' => $place_slug])
-            ->load('photos', 'documents', 'appointments', 'calendar_settings')
+            ->load('photos', 'appointments', 'calendar_settings', 'videos')
             ->load(['reservations' => function ($query) {
                 $query->orderBy('created_at');
             }])
@@ -410,6 +410,10 @@ class PlacesController extends Controller
                 return $query->where('confirmed', true)->where(function ($query) use ($request) {
                         foreach ($request->all() as $key => $value) {
 
+                            if($key === 'page'){
+                                continue;
+                            }
+
                             if ($key === 'max_guests') {
                                 $query->where($key, '>=', $value);
                             }
@@ -440,6 +444,28 @@ class PlacesController extends Controller
             $data->places = $places;
 
             return response()->json($data);
+        }
+    }
+
+    /**
+     * Display the featured places.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function featuredPlaces($category_slug)
+    {
+        $category_slug = $category_slug === 'cerimonia' ? 'cerimony' : 'party_space';
+
+        $places = $this->repository->scopeQuery(function ($query) use ($category_slug) {
+            return $query->where([$category_slug => true])
+                ->where('confirmed', true)
+                ->where('featured_position', '>', 0);;
+        })->orderBy('name', 'ASC')
+            ->with(['photos'])->orderBy('featured_position')->all();
+
+        if (request()->wantsJson()) {
+
+            return response()->json($places);
         }
     }
 

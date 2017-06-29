@@ -35,6 +35,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(\App\Repositories\OracleUserRepository::class, \App\Repositories\OracleUserRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\OwnerRequestRepository::class, \App\Repositories\OwnerRequestRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\OwnerRequestDocumentRepository::class, \App\Repositories\OwnerRequestDocumentRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\PlaceVideoRepository::class, \App\Repositories\PlaceVideoRepositoryEloquent::class);
         //:end-bindings:
     }
 }

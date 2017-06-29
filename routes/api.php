@@ -80,8 +80,9 @@ Route::group(['prefix' => 'places'], function () {
     Route::get('/search', 'PlacesController@nameSearch');
     Route::post('/searchByCity', 'PlacesController@searchByCity');
     Route::get('/check_url', 'PlacesController@checkUrl');
-    Route::get('/public/show/{place_slug}', 'PlacesController@showPublic');
+    Route::get('/featured_places', 'PlacesController@featuredPlaces');
     Route::get('{category_slug}', 'PlacesController@listByCategory');
+    Route::get('{category_slug}/featured', 'PlacesController@featuredPlaces');
     Route::get('{category_slug}/search', 'PlacesController@search');
 
 });
@@ -140,6 +141,11 @@ Route::group(['prefix' => 'oracle'], function () {
             //Document upload
             Route::post('/document/upload', 'PlaceDocumentsController@store');
             Route::get('/document/destroy/{id}', 'PlaceDocumentsController@destroy');
+
+            //Video
+            Route::post('/video/create', 'PlaceVideosController@store');
+            Route::post('/video/update', 'PlaceVideosController@update');
+            Route::get('/video/destroy/{id}', 'PlaceVideosController@destroy');
         });
 
         //Owner request

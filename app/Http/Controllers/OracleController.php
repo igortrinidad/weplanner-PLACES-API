@@ -55,7 +55,7 @@ class OracleController extends Controller
     public function placeShow($id)
     {
         $place = $this->placeRepository->findWhere(['id' => $id])
-            ->load('photos', 'documents', 'appointments', 'calendar_settings', 'user')
+            ->load('photos', 'documents', 'appointments', 'calendar_settings', 'user', 'videos')
             ->first();
 
 
