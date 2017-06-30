@@ -134,6 +134,12 @@ Route::group(['prefix' => 'oracle'], function () {
             Route::post('/create', 'PlacesController@store');
             Route::post('/update', 'PlacesController@update');
             Route::post('/search', 'OracleController@search');
+            Route::get('/trashed', 'OracleController@trashed');
+            Route::post('/restore', 'OracleController@restore');
+            Route::post('/destroy', 'OracleController@destroy');
+
+            //calendar settings
+            Route::post('/calendar_settings/update', 'PlaceCalendarSettingsController@update');
 
             //Photo upload
             Route::post('/media/upload', 'PlacePhotosController@store');
@@ -147,6 +153,7 @@ Route::group(['prefix' => 'oracle'], function () {
             Route::post('/video/create', 'PlaceVideosController@store');
             Route::post('/video/update', 'PlaceVideosController@update');
             Route::get('/video/destroy/{id}', 'PlaceVideosController@destroy');
+
         });
 
         //Owner request
@@ -161,6 +168,8 @@ Route::group(['prefix' => 'oracle'], function () {
         //profile update
         Route::post('/user/update', 'OracleUsersController@update');
 
+
+        Route::get('/statistics', 'OracleController@statistics');
     });
 
 });
