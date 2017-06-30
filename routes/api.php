@@ -81,6 +81,7 @@ Route::group(['prefix' => 'places'], function () {
     Route::post('/searchByCity', 'PlacesController@searchByCity');
     Route::get('/check_url', 'PlacesController@checkUrl');
     Route::get('/featured_places', 'PlacesController@featuredPlaces');
+    Route::get('/public/show/{place_slug}', 'PlacesController@showPublic');
     Route::get('{category_slug}', 'PlacesController@listByCategory');
     Route::get('{category_slug}/featured', 'PlacesController@featuredPlaces');
     Route::get('{category_slug}/search', 'PlacesController@search');
