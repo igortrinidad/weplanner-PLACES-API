@@ -405,6 +405,10 @@ class PlacesController extends Controller
 
         $request->get('per_page') ? $per_page = $request->get('per_page') : $per_page = 8;
 
+        if($request['city'] == 'todas-cidades'){
+           $request['city'] = '';
+        }
+
         $places = $this->repository
             ->scopeQuery(function ($query) use ($request) {
                 return $query->where('confirmed', true)->where(function ($query) use ($request) {
@@ -418,11 +422,11 @@ class PlacesController extends Controller
                                 $query->where($key, '>=', $value);
                             }
 
-                            if ($key === 'name') {
+                            if ($key === 'name' || $key === 'city') {
                                 $query->where($key, 'LIKE', '%' . $value . '%');
                             }
 
-                            if ($key != 'max_guests' && $key != 'name' && $value) {
+                            if ($key != 'max_guests' && $key != 'name' && $value && $key != 'city') {
                                 $query->where($key, $value);
                             }
                         }
@@ -430,8 +434,8 @@ class PlacesController extends Controller
             })->with(['photos'])->orderBy('name');
 
 
-        $cerimonyCount = Place::where('confirmed', true)->where('cerimony', true)->where('city', $request->get('city'))->count();
-        $partyCount = Place::where('confirmed', true)->where('party_space', true)->where('city', $request->get('city'))->count();
+        $cerimonyCount = Place::where('confirmed', true)->where('cerimony', true)->where('city', 'LIKE', '%'. $request->get('city') .'%')->count();
+        $partyCount = Place::where('confirmed', true)->where('party_space', true)->where('city', 'LIKE', '%'. $request->get('city') .'%')->count();
 
         $per_page == 'all' ? $places = $places->all() : $places = $places->paginate($per_page);
 
