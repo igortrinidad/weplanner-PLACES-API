@@ -34,7 +34,11 @@ class PlaceCalendarSettings extends Model implements Transformable
         'place_id',
         'available_dates_range',
         'available_days_config',
+        'calendar_is_public',
+        'calendar_is_active',
+        'workday_is_active',
     ];
+
 
     /**
      * The attributes that should be cast to native types.
@@ -44,6 +48,9 @@ class PlaceCalendarSettings extends Model implements Transformable
     protected $casts = [
         'available_dates_range' => 'json',
         'available_days_config' => 'json',
+        'calendar_is_public' => 'boolean',
+        'calendar_is_active' => 'boolean',
+        'workday_is_active' => 'boolean',
 
     ];
 
