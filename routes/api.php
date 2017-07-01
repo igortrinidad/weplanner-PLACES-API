@@ -59,6 +59,9 @@ Route::group(['prefix' => 'places'], function () {
             Route::post('/document/upload', 'OwnerRequestDocumentsController@store');
             Route::get('/document/destroy/{id}', 'OwnerRequestDocumentsController@destroy');
         });
+
+        //WantsReservations
+        Route::get('/client-wants-reservation/{id}', 'PlacesController@clientWantsReservation');
     });
 
     //Protected routes for client

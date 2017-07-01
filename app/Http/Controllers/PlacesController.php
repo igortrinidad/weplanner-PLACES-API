@@ -473,4 +473,44 @@ class PlacesController extends Controller
         }
     }
 
+    /**
+     * Display the featured places.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function clientWantsReservation($id)
+    {
+
+        $place = Place::find($id);
+
+        //SALVAR AQUI O INTERESSE DO CLIENTE;
+
+        $data = [];
+        $data['place_name'] = $place->name;
+        $data['place_email'] = $place->email;
+
+        $data['messageTitle'] = 'Olá,';
+        $data['messageOne'] = 'Seu espaço '. $data['place_name']. ' cadastrado no aplicativo Places We-Planner acabou de receber uma solicitação de reserva, mas ainda não está disponível para reservas online através de nosso APP.';
+        $data['messageThree'] = 'Cadastre-se agora e disponibilize para todos os clientes a agenda online exclusiva para espaços de cerimônia e festa.';
+        $data['button_link'] = 'https://places.we-planner.com/#/ID DO LOCAL/cadastre-se';
+        $data['button_name'] = 'Cadastrar agora';
+        $data['messageFour'] = 'Uma facilidade para você e seus clientes.';
+        $data['messageSubject'] = 'Solicitação de reserva para '. $data['place_name'];
+
+        \Mail::send('emails.standart-with-btn',['data' => $data], function ($message) use ($data){
+            $message->from('comercial@we-planner.com', 'App Places We-Planner');
+            $message->to($data['place_email'], $data['place_name'])->subject($data['messageSubject']);
+        });
+
+        if(!count(\Mail::failures())) {
+            return response()->json(['alert' => ['type' => 'success', 'title' => 'Atenção!', 'message' => 'E-mail enviado com sucesso.', 'status_code' => 200]], 200);
+        }
+
+        if(count(\Mail::failures())){
+            return response()->json(['alert' => ['type' => 'error', 'title' => 'Atenção!', 'message' => 'Ocorreu um erro ao enviar o e-mail.', 'status_code' => 500]], 500);
+        }
+
+
+    }
+
 }
