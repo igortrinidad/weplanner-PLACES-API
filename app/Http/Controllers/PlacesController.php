@@ -426,7 +426,7 @@ class PlacesController extends Controller
                                 $query->where($key, 'LIKE', '%' . $value . '%');
                             }
 
-                            if ($key != 'max_guests' && $key != 'name' && $value && $key != 'city') {
+                            if ($key != 'max_guests' && $key != 'name' && $value && $key != 'city' && $key != 'per_page') {
                                 $query->where($key, $value);
                             }
                         }
