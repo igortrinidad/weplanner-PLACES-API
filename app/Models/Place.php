@@ -39,6 +39,7 @@ class Place extends Model implements Transformable
         'description',
         'phone',
         'email',
+        'website',
         'city',
         'state',
         'address',
