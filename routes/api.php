@@ -59,9 +59,6 @@ Route::group(['prefix' => 'places'], function () {
             Route::post('/document/upload', 'OwnerRequestDocumentsController@store');
             Route::get('/document/destroy/{id}', 'OwnerRequestDocumentsController@destroy');
         });
-
-        //WantsReservations
-        Route::get('/client-wants-reservation/{id}', 'PlacesController@clientWantsReservation');
     });
 
     //Protected routes for client
@@ -84,6 +81,7 @@ Route::group(['prefix' => 'places'], function () {
     Route::post('/searchByCity', 'PlacesController@searchByCity');
     Route::get('/check_url', 'PlacesController@checkUrl');
     Route::get('/featured_places', 'PlacesController@featuredPlaces');
+    Route::post('/tracker', 'PlaceTrackingsController@tracker');
     Route::get('/public/show/{place_slug}', 'PlacesController@showPublic');
     Route::get('{category_slug}', 'PlacesController@listByCategory');
     Route::get('{category_slug}/featured', 'PlacesController@featuredPlaces');
@@ -99,6 +97,9 @@ Route::group(['prefix' => 'client'], function () {
 
     //Client protected routes
     Route::group(['middleware' => 'auth:client'], function () {
+
+        //WantsReservations
+        Route::post('/wants-reservation', 'ReservationInterestsController@store');
 
         Route::post('/index', 'ClientsController@index');
 
