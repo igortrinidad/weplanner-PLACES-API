@@ -161,12 +161,18 @@ class UserController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request)
+    public function destroy($id)
     {
-       $destroy = $this->repository->delete($request->get('id'));
+        $deleted = $this->repository->delete($id);
 
-       if($destroy){
-           return response()->json(['success' => $destroy]);
-       }
+        if (request()->wantsJson()) {
+
+            return response()->json([
+                'message' => 'User deleted.',
+                'deleted' => $deleted,
+            ]);
+        }
+
+        return redirect()->back()->with('message', 'Client deleted.');
     }
 }
