@@ -4,12 +4,13 @@ namespace App\Models;
 
 use App\Models\Traits\Uuids;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 class Place extends Model implements Transformable
 {
-    use TransformableTrait, Uuids;
+    use TransformableTrait, Uuids, SoftDeletes;
 
     /**
      * The table associated with the model.
@@ -37,6 +38,8 @@ class Place extends Model implements Transformable
         'name',
         'description',
         'phone',
+        'email',
+        'website',
         'city',
         'state',
         'address',

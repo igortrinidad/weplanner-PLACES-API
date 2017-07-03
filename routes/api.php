@@ -59,6 +59,9 @@ Route::group(['prefix' => 'places'], function () {
             Route::post('/document/upload', 'OwnerRequestDocumentsController@store');
             Route::get('/document/destroy/{id}', 'OwnerRequestDocumentsController@destroy');
         });
+
+        //WantsReservations
+        Route::get('/client-wants-reservation/{id}', 'PlacesController@clientWantsReservation');
     });
 
     //Protected routes for client
@@ -81,6 +84,7 @@ Route::group(['prefix' => 'places'], function () {
     Route::post('/searchByCity', 'PlacesController@searchByCity');
     Route::get('/check_url', 'PlacesController@checkUrl');
     Route::get('/featured_places', 'PlacesController@featuredPlaces');
+    Route::get('/public/show/{place_slug}', 'PlacesController@showPublic');
     Route::get('{category_slug}', 'PlacesController@listByCategory');
     Route::get('{category_slug}/featured', 'PlacesController@featuredPlaces');
     Route::get('{category_slug}/search', 'PlacesController@search');
@@ -133,6 +137,12 @@ Route::group(['prefix' => 'oracle'], function () {
             Route::post('/create', 'PlacesController@store');
             Route::post('/update', 'PlacesController@update');
             Route::post('/search', 'OracleController@search');
+            Route::get('/trashed', 'OracleController@trashed');
+            Route::post('/restore', 'OracleController@restore');
+            Route::post('/destroy', 'OracleController@destroy');
+
+            //calendar settings
+            Route::post('/calendar_settings/update', 'PlaceCalendarSettingsController@update');
 
             //Photo upload
             Route::post('/media/upload', 'PlacePhotosController@store');
@@ -146,6 +156,7 @@ Route::group(['prefix' => 'oracle'], function () {
             Route::post('/video/create', 'PlaceVideosController@store');
             Route::post('/video/update', 'PlaceVideosController@update');
             Route::get('/video/destroy/{id}', 'PlaceVideosController@destroy');
+
         });
 
         //Owner request
@@ -160,6 +171,8 @@ Route::group(['prefix' => 'oracle'], function () {
         //profile update
         Route::post('/user/update', 'OracleUsersController@update');
 
+
+        Route::get('/statistics', 'OracleController@statistics');
     });
 
 });

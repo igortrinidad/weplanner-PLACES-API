@@ -14,3 +14,7 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/web/test-email/{template}', function ($template) {
+    return view($template);
+});
