@@ -100,6 +100,8 @@ Route::group(['prefix' => 'client'], function () {
     //Client protected routes
     Route::group(['middleware' => 'auth:client'], function () {
 
+        Route::post('/index', 'ClientsController@index');
+
         //profile update
         Route::post('/update', 'ClientsController@update');
 
@@ -167,6 +169,26 @@ Route::group(['prefix' => 'oracle'], function () {
             Route::post('/cancel', 'OwnerRequestsController@cancel');
             Route::post('/confirm', 'OwnerRequestsController@confirm');
         });
+
+        //Users
+        Route::group(['prefix' => 'users'], function(){
+            //List
+            Route::get('/admin', 'UserController@index');
+            Route::get('/client', 'ClientsController@index');
+            Route::get('/oracle', 'OracleUsersController@index');
+
+            //Show
+            Route::get('/show/admin/{id}', 'UserController@show');
+            Route::get('/show/client/{id}', 'ClientsController@show');
+            Route::get('/show/oracle/{id}', 'OracleUsersController@show');
+
+            //Show
+            Route::get('/generateNewPass/admin/{id}', 'UserController@generateNewPass');
+            Route::get('/generateNewPass/client/{id}', 'ClientsController@generateNewPass');
+            Route::get('/generateNewPass/oracle/{id}', 'OracleUsersController@generateNewPass');
+
+
+        });            
 
         //profile update
         Route::post('/user/update', 'OracleUsersController@update');

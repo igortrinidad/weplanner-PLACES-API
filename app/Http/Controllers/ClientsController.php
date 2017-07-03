@@ -114,6 +114,51 @@ class ClientsController extends Controller
         return view('clients.show', compact('client'));
     }
 
+    /**
+     * Generate new Password to the user and send the email for him.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function generateNewPass($id)
+    {
+        $client = $this->repository->find($id);
+        $pass = substr(md5(time()), 0, 6);
+
+        $client = $this->repository->update([
+                'password' => $pass
+            ], $client->id);
+
+        //Email
+        $data = [];
+        $data['full_name'] = $client->full_name;
+        $data['user_email'] = $client->email;
+
+        $data['messageTitle'] = 'Olá, ' . $client->full_name;
+        $data['messageOne'] = 'Alguém solicitou recentemente uma alteração na senha da sua conta do Places We-Planner. ';
+        $data['messageTwo'] = 'Caso não tenha sido você, acesse sua conta vinculada a este email e altere a senha para sua segurança.';
+        $data['messageThree'] = 'Nova senha:';
+        $data['button_link'] = 'https://places.we-planner.com';
+        $data['button_name'] = $pass;
+        $data['messageFour'] = 'Para manter sua conta segura, não encaminhe este e-mail para ninguém.';
+        $data['messageSubject'] = 'Alteração de senha Places We-Planner';
+
+        \Mail::send('emails.standart-with-btn',['data' => $data], function ($message) use ($data){
+            $message->from('no-reply@we-planner.com', 'Places We-Planner');
+            $message->to($data['user_email'], $data['full_name'])->subject($data['messageSubject']);
+        });
+
+        if(!count(\Mail::failures())) {
+            return response()->json(['alert' => ['type' => 'success', 'title' => 'Atenção!', 'message' => 'Senha alterada com sucesso.', 'status_code' => 200]], 200);
+        }
+
+        if(count(\Mail::failures())){
+            return response()->json(['alert' => ['type' => 'error', 'title' => 'Atenção!', 'message' => 'Ocorreu um erro ao enviar o e-mail.', 'status_code' => 500]], 500);
+        }
+
+        return view('clients.show', compact('client'));
+    }
+
 
     /**
      * Show the form for editing the specified resource.
