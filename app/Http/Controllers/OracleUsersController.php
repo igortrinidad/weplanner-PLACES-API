@@ -114,6 +114,51 @@ class OracleUsersController extends Controller
         return view('oracleUsers.show', compact('oracleUser'));
     }
 
+     /**
+     * Generate new Password to the user and send the email for him.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function generateNewPass($id)
+    {
+        $oracle = $this->repository->find($id);
+        $pass = substr(md5(time()), 0, 6);
+
+        $oracle = $this->repository->update([
+                'password' => $pass
+            ], $oracle->id);
+
+        //Email
+        $data = [];
+        $data['full_name'] = $oracle->full_name;
+        $data['oracle_email'] = $oracle->email;
+
+        $data['messageTitle'] = 'Olá, ' . $oracle->full_name;
+        $data['messageOne'] = 'Alguém solicitou recentemente uma alteração na senha da sua conta do Places We-Planner.';
+        $data['messageTwo'] = 'Caso não tenha sido você, acesse sua conta vinculada a este email e altere a senha para sua segurança.';
+        $data['messageThree'] = 'Nova senha:';
+        $data['button_link'] = 'https://places.we-planner.com';
+        $data['button_name'] = $pass;
+        $data['messageFour'] = 'Para manter sua conta segura, não encaminhe este e-mail para ninguém.';
+        $data['messageSubject'] = 'Alteração de senha Places We-Planner';
+
+        \Mail::send('emails.standart-with-btn',['data' => $data], function ($message) use ($data){
+            $message->from('no-reply@we-planner.com', 'Places We-Planner');
+            $message->to($data['oracle_email'], $data['full_name'])->subject($data['messageSubject']);
+        });
+
+        if(!count(\Mail::failures())) {
+            return response()->json(['alert' => ['type' => 'success', 'title' => 'Atenção!', 'message' => 'Senha alterada com sucesso.', 'status_code' => 200]], 200);
+        }
+
+        if(count(\Mail::failures())){
+            return response()->json(['alert' => ['type' => 'error', 'title' => 'Atenção!', 'message' => 'Ocorreu um erro ao enviar o e-mail.', 'status_code' => 500]], 500);
+        }
+
+        return view('oracles.show', compact('oracle'));
+    }
+
 
     /**
      * Show the form for editing the specified resource.

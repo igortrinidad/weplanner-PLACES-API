@@ -101,6 +101,8 @@ Route::group(['prefix' => 'client'], function () {
         //WantsReservations
         Route::post('/wants-reservation', 'ReservationInterestsController@store');
 
+        Route::post('/index', 'ClientsController@index');
+
         //profile update
         Route::post('/update', 'ClientsController@update');
 
@@ -168,6 +170,41 @@ Route::group(['prefix' => 'oracle'], function () {
             Route::post('/cancel', 'OwnerRequestsController@cancel');
             Route::post('/confirm', 'OwnerRequestsController@confirm');
         });
+
+        //Users
+        Route::group(['prefix' => 'users'], function(){
+            //List
+            Route::get('/admin', 'UserController@index');
+            Route::get('/client', 'ClientsController@index');
+            Route::get('/oracle', 'OracleUsersController@index');
+
+            //Show
+            Route::get('/show/admin/{id}', 'UserController@show');
+            Route::get('/show/client/{id}', 'ClientsController@show');
+            Route::get('/show/oracle/{id}', 'OracleUsersController@show');
+
+            //Store
+            Route::post('/store/admin', 'UserController@create');
+            Route::post('/store/client', 'ClientsController@store');
+            Route::post('/store/oracle', 'OracleUsersController@store');
+
+            //Update
+            Route::post('/update/admin', 'UserController@update');
+            Route::post('/update/client', 'ClientsController@update');
+            Route::post('/update/oracle', 'OracleUsersController@update');
+
+            //Destroy
+            Route::get('/destroy/admin/{id}', 'UserController@destroy');
+            Route::get('/destroy/client/{id}', 'ClientsController@destroy');
+            Route::get('/destroy/oracle/{id}', 'OracleUsersController@destroy');
+
+            //Generate new Pass
+            Route::get('/generateNewPass/admin/{id}', 'UserController@generateNewPass');
+            Route::get('/generateNewPass/client/{id}', 'ClientsController@generateNewPass');
+            Route::get('/generateNewPass/oracle/{id}', 'OracleUsersController@generateNewPass');
+
+
+        });            
 
         //profile update
         Route::post('/user/update', 'OracleUsersController@update');
