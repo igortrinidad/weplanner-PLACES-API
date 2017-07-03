@@ -35,6 +35,7 @@ class Place extends Model implements Transformable
         'user_id',
         'cerimony',
         'party_space',
+        'plan',
         'name',
         'description',
         'phone',
