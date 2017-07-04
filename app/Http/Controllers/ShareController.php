@@ -38,7 +38,7 @@ class ShareController extends Controller
                         <head>
                             <meta property="og:app_id" content="210359702307953" />
                             <meta property="og:title" content="We Places: ' . $place['name'] .'" />
-                            <meta property="og:description" content="' . $place['description'] .'" />
+                            <meta property="og:description" content="' . strip_tags($place['description']) .'" />
                             <meta property="og:image" content="' . $place['photo_url'] .'" />
                         </head>
                     <body style="text-align:center;font-family:sans;">
