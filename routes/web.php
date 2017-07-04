@@ -18,3 +18,12 @@ Route::get('/', function () {
 Route::get('/web/test-email/{template}', function ($template) {
     return view($template);
 });
+
+/*
+ * Auth
+ */
+Route::group(['prefix' => 'share'], function () {
+
+    Route::get('/places/{place_slug}', 'ShareController@placeShow');
+
+});
