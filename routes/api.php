@@ -200,9 +200,9 @@ Route::group(['prefix' => 'oracle'], function () {
             Route::get('/destroy/oracle/{id}', 'OracleUsersController@destroy');
 
             //Generate new Pass
-            Route::get('/generateNewPass/admin/{id}', 'UserController@generateNewPass');
-            Route::get('/generateNewPass/client/{id}', 'ClientsController@generateNewPass');
-            Route::get('/generateNewPass/oracle/{id}', 'OracleUsersController@generateNewPass');
+            Route::get('/generateNewPass/admin/{email}', 'UserController@generateNewPass');
+            Route::get('/generateNewPass/client/{email}', 'ClientsController@generateNewPass');
+            Route::get('/generateNewPass/oracle/{email}', 'OracleUsersController@generateNewPass');
 
 
         });            
@@ -213,5 +213,18 @@ Route::group(['prefix' => 'oracle'], function () {
 
         Route::get('/statistics', 'OracleController@statistics');
     });
+
+});
+
+
+/*
+* Unprotected Router
+*/
+Route::group(['prefix' => 'tools'], function(){
+
+    //Generate new Pass
+    Route::get('users/generateNewPass/admin/{email}', 'UserController@generateNewPass');
+    Route::get('users/generateNewPass/client/{email}', 'ClientsController@generateNewPass');
+    Route::get('users/generateNewPass/oracle/{email}', 'OracleUsersController@generateNewPass');
 
 });

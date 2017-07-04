@@ -120,9 +120,14 @@ class ClientsController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function generateNewPass($id)
+    public function generateNewPass($email)
     {
-        $client = $this->repository->find($id);
+        $client = $this->repository->findWhere(['email' => $email])->first();
+
+        if(!$client){
+            return response()->json(['alert' => ['type' => 'success', 'title' => 'Atenção!', 'message' => 'Email não localizado', 'status_code' => 404]], 404);
+        }
+
         $pass = substr(md5(time()), 0, 6);
 
         $client = $this->repository->update([

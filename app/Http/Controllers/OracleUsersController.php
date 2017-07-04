@@ -120,9 +120,14 @@ class OracleUsersController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function generateNewPass($id)
+    public function generateNewPass($email)
     {
-        $oracle = $this->repository->find($id);
+        $oracle = $this->repository->findWhere(['email' => $email])->first();
+
+        if(!$oracle){
+            return response()->json(['alert' => ['type' => 'success', 'title' => 'Atenção!', 'message' => 'Email não localizado', 'status_code' => 404]], 404);
+        }
+
         $pass = substr(md5(time()), 0, 6);
 
         $oracle = $this->repository->update([

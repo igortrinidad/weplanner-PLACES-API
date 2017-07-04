@@ -90,9 +90,14 @@ class UserController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function generateNewPass($id)
+    public function generateNewPass($email)
     {
-        $user = $this->repository->find($id);
+        $user = $this->repository->findWhere(['email' => $email])->first();
+
+        if(!$user){
+            return response()->json(['alert' => ['type' => 'success', 'title' => 'Atenção!', 'message' => 'Email não localizado', 'status_code' => 404]], 404);
+        }
+
         $pass = substr(md5(time()), 0, 6);
 
         $user = $this->repository->update([
