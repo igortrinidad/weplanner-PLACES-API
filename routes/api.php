@@ -79,6 +79,7 @@ Route::group(['prefix' => 'places'], function () {
     //Public resources
     Route::get('/search', 'PlacesController@nameSearch');
     Route::post('/searchByCity', 'PlacesController@searchByCity');
+    Route::post('/searchByCityToMap', 'PlacesController@searchByCityToMap');
     Route::get('/check_url', 'PlacesController@checkUrl');
     Route::get('/featured_places', 'PlacesController@featuredPlaces');
     Route::post('/tracker', 'PlaceTrackingsController@tracker');

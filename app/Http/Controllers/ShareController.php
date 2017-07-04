@@ -21,8 +21,13 @@ class ShareController extends Controller
 
     	$place = Place::whereSlug($place_slug)->with('photos')->first();
 
-    	if(is_array($place->photos)){
-    		$photo = $place->photos[0]['photo_url'];
+    	if(count($place->photos)){
+
+            $arr = $place->photos->toArray();
+
+            $item = reset($arr);
+            $photo = $item['photo_url'];
+
     	} else {
     		$photo = 'https://s3.amazonaws.com/weplanner-places-assets/img/presentation_1.png';
     	}
@@ -48,7 +53,7 @@ class ShareController extends Controller
                         <img src="' . $photo  .'" width="70%">
                         <script>
                             setTimeout(function(){
-                                window.location.replace("https://weplaces.com.br/#/lista/'. $place['city'] . '/' . $place['slug'] .'");
+                                //window.location.replace("https://weplaces.com.br/#/lista/'. $place['city'] . '/' . $place['slug'] .'");
                             },50)
                         </script>
                     </body>

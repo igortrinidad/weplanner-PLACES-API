@@ -456,6 +456,21 @@ class PlacesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function searchByCityToMap(Request $request)
+    {
+        $places = Place::where('confirmed', true)->where('city', 'LIKE', '%'. $request->get('city') .'%')->select('id', 'address', 'name', 'city', 'slug')->get();
+
+        if (request()->wantsJson()) {
+
+            return response()->json($places);
+        }
+    }
+
+    /**
+     * Display the featured places.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function featuredPlaces($category_slug)
     {
         $category_slug = $category_slug === 'cerimonia' ? 'cerimony' : 'party_space';
