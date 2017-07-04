@@ -42,7 +42,10 @@ class ShareController extends Controller
                     <html>
                         <head>
                             <meta property="fb:app_id" content="151705885358217" />
+                            <meta property="og:locale" content="pt_BR">
+                            <meta property="og:site_name" content="We Places App">
                             <meta property="og:title" content="We Places: ' . $place['name'] .'" />
+                            <meta property="og:url" content="https://weplaces.com.br">
                             <meta property="og:description" content="' . strip_tags($place['description']) .'" />
                             <meta property="og:image" content="' . $photo .'" />
                             <meta property="og:image:url" content="' . $photo .'" />
@@ -53,7 +56,7 @@ class ShareController extends Controller
                         <img src="' . $photo  .'" width="70%">
                         <script>
                             setTimeout(function(){
-                                //window.location.replace("https://weplaces.com.br/#/lista/'. $place['city'] . '/' . $place['slug'] .'");
+                                window.location.replace("https://weplaces.com.br/#/lista/'. $place['city'] . '/' . $place['slug'] .'");
                             },50)
                         </script>
                     </body>
@@ -66,7 +69,10 @@ class ShareController extends Controller
                 <html>
                     <head>
                         <meta property="fb:app_id" content="151705885358217" />
+                        <meta property="og:locale" content="pt_BR">
+                        <meta property="og:site_name" content="We Places App">
                         <meta property="og:title" content="We Places App" />
+                        <meta property="og:url" content="https://weplaces.com.br">
                         <meta property="og:description" content="Encontre o espaço de sua cerimônia ou festa em um só local." />
                         <meta property="og:image" content="https://s3.amazonaws.com/weplanner-places-assets/img/presentation_1.png" />
                         <meta property="og:image:url" content="https://s3.amazonaws.com/weplanner-places-assets/img/presentation_1.png" />
