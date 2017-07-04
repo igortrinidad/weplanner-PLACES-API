@@ -39,7 +39,8 @@ class ShareController extends Controller
                             <meta property="og:app_id" content="210359702307953" />
                             <meta property="og:title" content="We Places: ' . $place['name'] .'" />
                             <meta property="og:description" content="' . strip_tags($place['description']) .'" />
-                            <meta property="og:image" content="' . $place['photo_url'] .'" />
+                            <meta property="og:image" content="' . $photo .'" />
+                            <meta property="og:image:url" content="' . $photo .'" />
                         </head>
                     <body style="text-align:center;font-family:sans;">
                         <h1>' . $place['name'] .'</h1>
@@ -63,6 +64,7 @@ class ShareController extends Controller
                         <meta property="og:title" content="We Places App" />
                         <meta property="og:description" content="Encontre o espaço de sua cerimônia ou festa em um só local." />
                         <meta property="og:image" content="https://s3.amazonaws.com/weplanner-places-assets/img/presentation_1.png" />
+                        <meta property="og:image:url" content="https://s3.amazonaws.com/weplanner-places-assets/img/presentation_1.png" />
                     </head>
                 <body style="text-align:center;font-family:sans;">
                     <h1>Aplicativo We Places</h1>
