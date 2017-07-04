@@ -136,29 +136,9 @@ class SocialAuthController extends Controller
 
             if(!$userSocialProvider)
             {
-                if($request->has('user_email')){
+                $user = OracleUser::whereEmail($request->get('email'))->first();
 
-                    $user = OracleUser::whereEmail($request->get('user_email'))->first();
-
-                    if($user){
-                        $user->socialProviders()->create([
-                            'provider' => 'facebook',
-                            'provider_id' => $request->get('id'),
-                            'access_token' =>$request->get('access_token'),
-                            'photo_url' => $request->get('photo_url')
-                        ]);
-                    }
-                }
-
-                if(!$request->has('user_email')){
-
-                    //Create user
-                    $user = OracleUser::firstOrCreate([
-                        'name' => $request->get('first_name'),
-                        'last_name' => $request->get('last_name'),
-                        'email' => $request->get('email')
-                    ]);
-
+                if($user){
                     $user->socialProviders()->create([
                         'provider' => 'facebook',
                         'provider_id' => $request->get('id'),

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Repositories\ClientRepository;
+use App\Repositories\OracleUserRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 
@@ -28,22 +29,29 @@ class OracleController extends Controller
      * @var UserRepository
      */
     private $userRepository;
+    /**
+     * @var OracleUserRepository
+     */
+    private $oracleUserRepository;
 
     /**
      * OracleController constructor.
      * @param PlaceRepository $placeRepository
      * @param ClientRepository $clientRepository
      * @param UserRepository $userRepository
+     * @param OracleUserRepository $oracleUserRepository
      */
     public function __construct(
         PlaceRepository $placeRepository,
         ClientRepository $clientRepository,
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        OracleUserRepository $oracleUserRepository
     )
     {
         $this->placeRepository = $placeRepository;
         $this->clientRepository = $clientRepository;
         $this->userRepository = $userRepository;
+        $this->oracleUserRepository = $oracleUserRepository;
     }
 
     /**
@@ -199,13 +207,15 @@ class OracleController extends Controller
 
         $clients = $this->clientRepository->all()->count();
         $admins = $this->userRepository->all()->count();
+        $oracles = $this->oracleUserRepository->all()->count();
 
         $data = [
             'confirmed_places' => $confirmed_places,
             'unconfirmed_places' => $unconfirmed_places,
             'trashed_places' => $trashed_places,
             'clients' => $clients,
-            'admins' => $admins
+            'admins' => $admins,
+            'oracles' => $oracles
         ];
 
         if (request()->wantsJson()) {
