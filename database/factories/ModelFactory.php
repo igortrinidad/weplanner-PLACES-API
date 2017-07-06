@@ -40,12 +40,14 @@ $factory->define(App\Models\Place::class, function () use ($faker) {
     $localization = $faker->randomElement([true, false]);
     $roof = $faker->randomElement([true, false]);
     $user_id = $faker->randomElement($users);
+    $confirmed = $faker->randomElement([true, false]);
 
     return [
         'name' => $name,
         'user_id' => $user_id,
         'cerimony' => $categoy,
         'party_space' => !$categoy,
+        'plan' => 'free',
         'city' => $faker->city,
         'state' => $faker->stateAbbr,
         'description' => $faker->sentence(100),
@@ -69,7 +71,8 @@ $factory->define(App\Models\Place::class, function () use ($faker) {
         'pre_reservation_price' => rand(50, 150),
         'created_by_id' => $user_id,
         'created_by_type' => User::class,
-        'slug' => str_slug($name, '-')
+        'slug' => str_slug($name, '-'),
+        'confirmed' => $confirmed
 
     ];
 });
