@@ -211,7 +211,12 @@ class PlaceReservationsController extends Controller
      */
     public function cancel($id)
     {
-        $reservation = $this->repository->update(['is_canceled' => true, 'canceled_at' => Carbon::now()], $id);
+        $reservation = $this->repository->makeModel()->find($id);
+
+        $reservation->is_canceled = true;
+        $reservation->canceled_at = Carbon::now();
+
+        $reservation->save();
 
         if (request()->wantsJson()) {
 
@@ -222,5 +227,25 @@ class PlaceReservationsController extends Controller
         }
 
         return redirect()->back()->with('message', 'PlaceReservations deleted.');
+    }
+
+    /**
+     * Place Reservations
+     *
+     * @param  int $id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function placeReservations($id)
+    {
+
+        $placeReservations = $this->repository->scopeQuery(function ($query) use ($id) {
+            return $query->where(['place_id' => $id, 'is_canceled' => false])->select('date', 'all_day');
+        })->all();
+
+        if (request()->wantsJson()) {
+
+            return response()->json($placeReservations);
+        }
     }
 }
