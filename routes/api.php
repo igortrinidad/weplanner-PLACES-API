@@ -50,7 +50,9 @@ Route::group(['prefix' => 'places'], function () {
         Route::post('/calendar_settings/update', 'PlaceCalendarSettingsController@update');
 
         //Reservations
+        Route::post('/reservation', 'PlaceReservationsController@store');
         Route::get('/reservations/cancel/{id}', 'PlaceReservationsController@cancel');
+        Route::get('/reservations/confirm/{id}', 'PlaceReservationsController@confirm');
 
         //Owner request
         Route::group(['prefix' => 'owner_request'], function(){

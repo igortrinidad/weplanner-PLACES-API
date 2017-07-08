@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\ClientRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -26,11 +27,22 @@ class PlaceReservationsController extends Controller
      * @var PlaceReservationsValidator
      */
     protected $validator;
+    /**
+     * @var ClientRepository
+     */
+    private $clientRepository;
 
-    public function __construct(PlaceReservationsRepository $repository, PlaceReservationsValidator $validator)
+    /**
+     * PlaceReservationsController constructor.
+     * @param PlaceReservationsRepository $repository
+     * @param ClientRepository $clientRepository
+     * @param PlaceReservationsValidator $validator
+     */
+    public function __construct(PlaceReservationsRepository $repository, PlaceReservationsValidator $validator, ClientRepository $clientRepository)
     {
         $this->repository = $repository;
         $this->validator  = $validator;
+        $this->clientRepository = $clientRepository;
     }
 
 
@@ -73,11 +85,27 @@ class PlaceReservationsController extends Controller
 
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
 
+            //Check if the client exist
+            if($request->has('client')){
+                $client_data = $request->get('client');
+
+                $client_exists = $this->clientRepository->findWhere(['email' => $client_data['email']])->first();
+
+                if($client_exists){
+                    $request->merge(['client_id' => $client_exists->id]);
+                }
+
+                if(!$client_exists){
+                    $new_client = $this->clientRepository->create($client_data);
+                    $request->merge(['client_id' => $new_client->id]);
+                }
+            }
+
             $placeReservation = $this->repository->create($request->all());
 
             $response = [
                 'message' => 'PlaceReservations created.',
-                'reservation'    => $placeReservation->load('place'),
+                'reservation'    => $placeReservation->load('place', 'client'),
             ];
 
             if ($request->wantsJson()) {
@@ -240,12 +268,39 @@ class PlaceReservationsController extends Controller
     {
 
         $placeReservations = $this->repository->scopeQuery(function ($query) use ($id) {
-            return $query->where(['place_id' => $id, 'is_canceled' => false])->select('date', 'all_day');
+            return $query->where(['place_id' => $id, 'is_confirmed' => true])->select('date', 'all_day');
         })->all();
 
         if (request()->wantsJson()) {
 
             return response()->json($placeReservations);
         }
+    }
+
+    /**
+     * Confirm the specified reservation.
+     *
+     * @param  int $id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function confirm($id)
+    {
+        $reservation = $this->repository->makeModel()->find($id);
+
+        $reservation->is_confirmed = true;
+        $reservation->confirmed_at = Carbon::now();
+
+        $reservation->save();
+
+        if (request()->wantsJson()) {
+
+            return response()->json([
+                'message' => 'PlaceReservations canceled.',
+                'confirmed' => $reservation,
+            ]);
+        }
+
+        return redirect()->back()->with('message', 'PlaceReservations confirmed.');
     }
 }
