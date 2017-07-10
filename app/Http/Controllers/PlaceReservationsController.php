@@ -301,20 +301,24 @@ class PlaceReservationsController extends Controller
     /**
      * Place Reservations
      *
-     * @param  int $id
-     *
+     * @param Request $request
      * @return \Illuminate\Http\Response
+     *
      */
-    public function placeReservationsPublic($id)
+    public function monthReservationsPublic(Request $request)
     {
 
-        $placeReservations = $this->repository->scopeQuery(function ($query) use ($id) {
-            return $query->where(['place_id' => $id, 'is_confirmed' => true])->select('date', 'all_day');
+        $reservations = $this->repository->scopeQuery(function ($query)  use ($request){
+            return $query->where(['place_id' => $request->get('place_id'), 'is_confirmed' => true])
+                ->whereBetween('date', [$request->get('start'), $request->get('end')])
+                ->select('date', 'all_day')
+                ->orderBy('date', 'ASC');
         })->all();
+
 
         if (request()->wantsJson()) {
 
-            return response()->json($placeReservations);
+            return response()->json($reservations);
         }
     }
 
@@ -355,7 +359,8 @@ class PlaceReservationsController extends Controller
     {
 
          $reservations = $this->repository->scopeQuery(function ($query)  use ($request){
-            return $query  ->whereBetween('date', [$request->get('start'), $request->get('end')])
+            return $query->where('place_id', $request->get('place_id'))
+                ->whereBetween('date', [$request->get('start'), $request->get('end')])
                 ->orderBy('date', 'ASC');
         })->with('client')->all();
 

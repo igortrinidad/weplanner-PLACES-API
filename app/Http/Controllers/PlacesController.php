@@ -289,10 +289,7 @@ class PlacesController extends Controller
     {
 
         $place = $this->repository->findWhere(['slug' => $place_slug])
-            ->load('photos', 'appointments', 'calendar_settings', 'videos')
-            ->load(['reservations' => function ($query) {
-                $query->orderBy('created_at');
-            }])
+            ->load('photos','calendar_settings', 'videos')
             ->first();
 
         if (request()->wantsJson()) {

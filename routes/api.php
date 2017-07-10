@@ -87,7 +87,7 @@ Route::group(['prefix' => 'places'], function () {
     Route::get('/check_url', 'PlacesController@checkUrl');
     Route::get('/featured_places', 'PlacesController@featuredPlaces');
     Route::post('/tracker', 'PlaceTrackingsController@tracker');
-    Route::get('/reservations/{id}', 'PlaceReservationsController@placeReservationsPublic');
+    Route::post('/public/reservations/month_reservations', 'PlaceReservationsController@monthReservationsPublic');
     Route::get('/public/show/{place_slug}', 'PlacesController@showPublic');
     Route::get('{category_slug}', 'PlacesController@listByCategory');
     Route::get('{category_slug}/featured', 'PlacesController@featuredPlaces');
