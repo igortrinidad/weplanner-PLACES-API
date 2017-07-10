@@ -51,6 +51,9 @@ Route::group(['prefix' => 'places'], function () {
 
         //Reservations
         Route::post('/reservation', 'PlaceReservationsController@store');
+        Route::post('/reservations/month_reservations', 'PlaceReservationsController@monthReservations');
+        Route::get('/reservations/list/{id}', 'PlaceReservationsController@reservationsList');
+        Route::get('/pre-reservations/list/{id}', 'PlaceReservationsController@PreReservationsList');
         Route::get('/reservations/cancel/{id}', 'PlaceReservationsController@cancel');
         Route::get('/reservations/confirm/{id}', 'PlaceReservationsController@confirm');
 
@@ -84,7 +87,7 @@ Route::group(['prefix' => 'places'], function () {
     Route::get('/check_url', 'PlacesController@checkUrl');
     Route::get('/featured_places', 'PlacesController@featuredPlaces');
     Route::post('/tracker', 'PlaceTrackingsController@tracker');
-    Route::get('/reservations/{id}', 'PlaceReservationsController@placeReservations');
+    Route::get('/reservations/{id}', 'PlaceReservationsController@placeReservationsPublic');
     Route::get('/public/show/{place_slug}', 'PlacesController@showPublic');
     Route::get('{category_slug}', 'PlacesController@listByCategory');
     Route::get('{category_slug}/featured', 'PlacesController@featuredPlaces');

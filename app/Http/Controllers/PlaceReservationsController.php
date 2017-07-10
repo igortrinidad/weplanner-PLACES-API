@@ -258,13 +258,54 @@ class PlaceReservationsController extends Controller
     }
 
     /**
+     * Place reservations paginated list
+     *
+     * @param  int $id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function reservationsList($id)
+    {
+
+        $placeReservations = $this->repository->scopeQuery(function ($query) use ($id) {
+            return $query->where(['place_id' => $id, 'is_pre_reservation' => false])->orderBy('date', 'ASC');
+        })->with('client')->paginate(10);
+
+        if (request()->wantsJson()) {
+
+            return response()->json($placeReservations);
+        }
+    }
+
+    /**
+     * Place pré reservations paginated list
+     *
+     * @param  int $id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function PreReservationsList($id)
+    {
+
+        $placeReservations = $this->repository->scopeQuery(function ($query) use ($id) {
+            return $query->where(['place_id' => $id , 'is_pre_reservation' => true])->orderBy('date', 'ASC');
+        })->with('client')->all();
+
+        if (request()->wantsJson()) {
+
+            return response()->json($placeReservations);
+        }
+    }
+
+
+    /**
      * Place Reservations
      *
      * @param  int $id
      *
      * @return \Illuminate\Http\Response
      */
-    public function placeReservations($id)
+    public function placeReservationsPublic($id)
     {
 
         $placeReservations = $this->repository->scopeQuery(function ($query) use ($id) {
@@ -302,5 +343,29 @@ class PlaceReservationsController extends Controller
         }
 
         return redirect()->back()->with('message', 'PlaceReservations confirmed.');
+    }
+
+    /**
+     * Reservations by month.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function monthReservations(Request $request)
+    {
+
+         $reservations = $this->repository->scopeQuery(function ($query)  use ($request){
+            return $query  ->whereBetween('date', [$request->get('start'), $request->get('end')])
+                ->orderBy('date', 'ASC');
+        })->with('client')->all();
+
+        if (request()->wantsJson()) {
+
+            return response()->json([
+                'reservations' => $reservations,
+            ]);
+        }
+
+        return view('placeReservations.index', compact('placeReservations'));
     }
 }

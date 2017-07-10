@@ -110,10 +110,7 @@ class PlacesController extends Controller
     public function show($id)
     {
         $place = $this->repository->findWhere(['id' => $id, 'user_id' => \Auth::user()->id])
-            ->load('photos', 'documents', 'appointments', 'calendar_settings', 'videos')
-            ->load(['reservations' => function ($query) {
-                $query->orderBy('created_at');
-            }])
+            ->load('photos', 'documents', 'calendar_settings', 'videos')
             ->first();
 
         if (request()->wantsJson()) {
