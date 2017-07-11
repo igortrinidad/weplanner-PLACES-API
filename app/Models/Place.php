@@ -226,4 +226,12 @@ class Place extends Model implements Transformable
         return $this->hasMany(PlaceVideo::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function tracking()
+    {
+        return $this->hasMany(PlaceTracking::class);
+    }
+
 }

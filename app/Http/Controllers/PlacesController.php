@@ -55,6 +55,7 @@ class PlacesController extends Controller
         $this->validator = $validator;
         $this->photoRepository = $photoRepository;
         $this->calendarSettingsRepository = $calendarSettingsRepository;
+        setlocale(LC_TIME, 'pt_BR.utf8');
     }
 
 
@@ -115,7 +116,7 @@ class PlacesController extends Controller
 
         if (request()->wantsJson()) {
 
-            if($place){
+            if ($place) {
                 return response()->json([
                     'data' => $place,
                 ]);
@@ -149,11 +150,11 @@ class PlacesController extends Controller
 
             $place = $this->repository->create($request->all());
 
-            $placeSettings = $this->calendarSettingsRepository->create(array_collapse([['place_id' => $place->id],$request->get('calendar_settings')]));
+            $placeSettings = $this->calendarSettingsRepository->create(array_collapse([['place_id' => $place->id], $request->get('calendar_settings')]));
 
             $response = [
                 'message' => 'Place created.',
-                'data' => $place->load('photos', 'documents','appointments', 'calendar_settings', 'reservations', 'videos')->toArray(),
+                'data' => $place->load('photos', 'documents', 'appointments', 'calendar_settings', 'reservations', 'videos')->toArray(),
             ];
 
             if ($request->wantsJson()) {
@@ -191,8 +192,8 @@ class PlacesController extends Controller
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
 
             //update photos
-            if(array_key_exists('photos', $request->all())){
-                foreach ($request->get('photos') as $photo){
+            if (array_key_exists('photos', $request->all())) {
+                foreach ($request->get('photos') as $photo) {
                     $this->photoRepository->update($photo, $photo['id']);
                 }
             }
@@ -201,7 +202,7 @@ class PlacesController extends Controller
 
             $response = [
                 'message' => 'Place updated.',
-                'data' => $place->load('photos', 'documents','appointments', 'calendar_settings', 'reservations', 'videos')->toArray(),
+                'data' => $place->load('photos', 'documents', 'appointments', 'calendar_settings', 'reservations', 'videos')->toArray(),
             ];
 
             if ($request->wantsJson()) {
@@ -289,12 +290,12 @@ class PlacesController extends Controller
     {
 
         $place = $this->repository->findWhere(['slug' => $place_slug])
-            ->load('photos','calendar_settings', 'videos')
+            ->load('photos', 'calendar_settings', 'videos')
             ->first();
 
         if (request()->wantsJson()) {
 
-            if($place){
+            if ($place) {
                 return response()->json([
                     'data' => $place,
                 ]);
@@ -324,20 +325,20 @@ class PlacesController extends Controller
         $places = $this->repository
             ->scopeQuery(function ($query) use ($request) {
                 return $query->where(function ($query) use ($request) {
-                        foreach ($request->all() as $key => $value) {
-                            if ($key === 'city') {
-                                $query->where($key, $value);
-                            }
-
-                            if ($key === 'max_guests') {
-                                $query->where($key, '>=', $value);
-                            }
-
-                            if ($key != 'city' && $key != 'max_guests') {
-                                $query->where($key,  $value === 'true' ? true: false);
-                            }
+                    foreach ($request->all() as $key => $value) {
+                        if ($key === 'city') {
+                            $query->where($key, $value);
                         }
-                    });
+
+                        if ($key === 'max_guests') {
+                            $query->where($key, '>=', $value);
+                        }
+
+                        if ($key != 'city' && $key != 'max_guests') {
+                            $query->where($key, $value === 'true' ? true : false);
+                        }
+                    }
+                });
             })->with(['photos'])->orderBy('name');
 
         $per_page == 'all' ? $places = $places->all() : $places = $places->paginate($per_page);
@@ -349,7 +350,6 @@ class PlacesController extends Controller
     }
 
 
-
     /**
      * Place search by name.
      *
@@ -359,8 +359,8 @@ class PlacesController extends Controller
     public function nameSearch(Request $request)
     {
         $places = $this->repository
-            ->scopeQuery(function ($query) use ( $request) {
-                return $query->where('name', 'LIKE', '%'.$request->get('therm').'%');
+            ->scopeQuery(function ($query) use ($request) {
+                return $query->where('name', 'LIKE', '%' . $request->get('therm') . '%');
             })->with(['photos'])->all();
 
         if (request()->wantsJson()) {
@@ -379,14 +379,14 @@ class PlacesController extends Controller
     {
         $has_place = $this->repository->findWhere(['slug' => $request->get('slug')])->first();
 
-        if($has_place){
+        if ($has_place) {
             return response()->json(['has_place' => true]);
         }
 
         return response()->json(['has_place' => false]);
     }
 
-        /**
+    /**
      * Display the specified resource.
      *
      * @param Request $request
@@ -399,46 +399,48 @@ class PlacesController extends Controller
 
         $request->get('per_page') ? $per_page = $request->get('per_page') : $per_page = 8;
 
-        if($request['city'] == 'todas-cidades'){
-           $request['city'] = '';
+        if ($request['city'] == 'todas-cidades') {
+            $request['city'] = '';
         }
 
         $places = $this->repository
             ->scopeQuery(function ($query) use ($request) {
                 return $query->where('confirmed', true)->where(function ($query) use ($request) {
-                        foreach ($request->all() as $key => $value) {
+                    foreach ($request->all() as $key => $value) {
 
-                            if($key === 'page'){
-                                continue;
-                            }
-
-                            if ($key === 'max_guests') {
-                                $query->where($key, '>=', $value);
-                            }
-
-                            if ($key === 'name' || $key === 'city') {
-                                $query->where($key, 'LIKE', '%' . $value . '%');
-                            }
-
-                            if ($key != 'max_guests' && $key != 'name' && $value && $key != 'city' && $key != 'per_page') {
-                                $query->where($key, $value);
-                            }
+                        if ($key === 'page') {
+                            continue;
                         }
-                    });
+
+                        if ($key === 'max_guests') {
+                            $query->where($key, '>=', $value);
+                        }
+
+                        if ($key === 'name' || $key === 'city') {
+                            $query->where($key, 'LIKE', '%' . $value . '%');
+                        }
+
+                        if ($key != 'max_guests' && $key != 'name' && $value && $key != 'city' && $key != 'per_page') {
+                            $query->where($key, $value);
+                        }
+                    }
+                });
             })->with(['photos'])->orderBy('name');
 
 
-        $cerimonyCount = Place::where('confirmed', true)->where('cerimony', true)->where('city', 'LIKE', '%'. $request->get('city') .'%')->count();
-        $partyCount = Place::where('confirmed', true)->where('party_space', true)->where('city', 'LIKE', '%'. $request->get('city') .'%')->count();
+        $cerimonyCount = Place::where('confirmed', true)->where('cerimony', true)->where('city', 'LIKE', '%' . $request->get('city') . '%')->count();
+        $partyCount = Place::where('confirmed', true)->where('party_space', true)->where('city', 'LIKE', '%' . $request->get('city') . '%')->count();
 
         $per_page == 'all' ? $places = $places->all() : $places = $places->paginate($per_page);
 
         if (request()->wantsJson()) {
 
-            $data = new Class{};
+            $data = new Class
+            {
+            };
 
-            $data->cerimonyCount =  $cerimonyCount;
-            $data->partyCount =  $partyCount;
+            $data->cerimonyCount = $cerimonyCount;
+            $data->partyCount = $partyCount;
             $data->places = $places;
 
             return response()->json($data);
@@ -452,7 +454,7 @@ class PlacesController extends Controller
      */
     public function searchByCityToMap(Request $request)
     {
-        $places = Place::where('confirmed', true)->where('city', 'LIKE', '%'. $request->get('city') .'%')->select('id', 'address', 'name', 'city', 'slug')->get();
+        $places = Place::where('confirmed', true)->where('city', 'LIKE', '%' . $request->get('city') . '%')->select('id', 'address', 'name', 'city', 'slug')->get();
 
         if (request()->wantsJson()) {
 
@@ -479,6 +481,79 @@ class PlacesController extends Controller
         if (request()->wantsJson()) {
 
             return response()->json($places);
+        }
+    }
+
+    public function statistics()
+    {
+
+        $places = $this->repository->scopeQuery(function ($query) {
+            return $query->where(['user_id' => \Auth::user()->id])
+                ->orderBy('name', 'ASC')->select('name', 'id')
+                ->withCount('tracking');
+        })->with(['tracking' => function($query){
+            $query->orderBy('created_at', 'ASC');
+        }])->all();
+
+        $return = [];
+
+        foreach ($places as $key => $place) {
+
+            $return[$key]['id'] = $place->id;
+            $return[$key]['name'] = $place->name;
+
+
+            $grouped = $place->tracking->groupBy(function ($item) {
+                return $item->created_at->formatLocalized('%m/%Y');
+            });
+
+
+            $result = [];
+            foreach ($grouped as $key_result => $item) {
+
+                //collect and sum clicks
+                $contact_calls = collect($item)->sum('contact_call');
+                $contact_whatsapp = collect($item)->sum('contact_whatsapp');
+                $contact_message = collect($item)->sum('contact_message');
+                $link_share = collect($item)->sum('share_copy');
+                $whatsapp_share = collect($item)->sum('share_whatsapp');
+                $facebook_share = collect($item)->sum('share_facebook');
+
+                $result[$key_result]['month_order'] = \Carbon\Carbon::createFromFormat('m/Y', $key_result)->month;
+                $result[$key_result]['month_name'] = ucfirst(\Carbon\Carbon::createFromFormat('m/Y', $key_result)->formatLocalized('%B'));
+                $result[$key_result]['year'] =  \Carbon\Carbon::createFromFormat('m/Y', $key_result)->year;
+                $result[$key_result]['views'] = $item->count();
+                $result[$key_result]['call_clicks'] = $contact_calls;
+                $result[$key_result]['whatsapp_clicks'] = $contact_whatsapp;
+                $result[$key_result]['contact_clicks'] = $contact_message;
+                $result[$key_result]['link_shares'] = $link_share;
+                $result[$key_result]['whatsapp_shares'] = $whatsapp_share;
+                $result[$key_result]['facebook_shares'] = $facebook_share;
+            }
+
+            $return[$key]['statistics'] =  $result;
+
+            /*
+             *   $views = collect($item)->count();
+
+                $contact_message = collect($item)->sum('contact_message');
+                $contact_whatsapp = collect($item)->sum('contact_whatsapp');
+
+                $result[$key_result]['month_order'] = \Carbon\Carbon::createFromFormat('m/Y', $key_result)->month;
+                $result[$key_result]['month_name'] = ucfirst(\Carbon\Carbon::createFromFormat('m/Y', $key_result)->formatLocalized('%B'));
+                $result[$key_result]['year'] = \Carbon\Carbon::createFromFormat('m/Y', $key_result)->year;
+                $result[$key_result]['views'] = $views;
+                $result[$key_result]['call_clicks'] = $contact_calls;
+                $result[$key_result]['message_clicks'] = $contact_message;
+                $result[$key_result]['whatsapp_clicks'] = $contact_whatsapp;*/
+
+        }
+
+
+
+        if (request()->wantsJson()) {
+
+            return response()->json($return);
         }
     }
 

@@ -58,7 +58,17 @@ class PlaceTrackingsController extends Controller
             if($request->has('id') && !$request->has('place_id')){
                 $placeTracking = $this->repository->find(['id' => $request->get('id')])->first();
 
-                $placeTracking->increment('duration', 60);
+
+                //increment other fields
+                if($request->has('info')){
+
+                   $placeTracking->increment($request->get('info'), 1);
+                }
+
+                //increment duration
+                if(!$request->has('info')){
+                    $placeTracking->increment('duration', 60);
+                }
 
                 $response = [
                     'message' => 'tracking  updated.',

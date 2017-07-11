@@ -31,6 +31,7 @@ Route::group(['prefix' => 'places'], function () {
         Route::get('/show/{id}', 'PlacesController@show');
         Route::post('/create', 'PlacesController@store');
         Route::post('/update', 'PlacesController@update');
+        Route::get('/statistics', 'PlacesController@statistics');
         Route::get('/destroy/{id}', 'PlacesController@destroy');
 
         //Photo upload
