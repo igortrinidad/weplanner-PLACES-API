@@ -56,7 +56,7 @@ class ShareController extends Controller
                         <img src="' . $photo  .'" width="70%">
                         <script>
                             setTimeout(function(){
-                                window.location.replace("https://weplaces.com.br/#/lista/'. $place['city'] . '/' . $place['slug'] .'");
+                                window.location.replace("https://weplaces.com.br/#/detalhes/'. $place['city'] . '/' . $place['slug'] .'");
                             },50)
                         </script>
                     </body>
