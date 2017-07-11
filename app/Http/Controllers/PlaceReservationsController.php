@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\ClientRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -26,11 +27,22 @@ class PlaceReservationsController extends Controller
      * @var PlaceReservationsValidator
      */
     protected $validator;
+    /**
+     * @var ClientRepository
+     */
+    private $clientRepository;
 
-    public function __construct(PlaceReservationsRepository $repository, PlaceReservationsValidator $validator)
+    /**
+     * PlaceReservationsController constructor.
+     * @param PlaceReservationsRepository $repository
+     * @param ClientRepository $clientRepository
+     * @param PlaceReservationsValidator $validator
+     */
+    public function __construct(PlaceReservationsRepository $repository, PlaceReservationsValidator $validator, ClientRepository $clientRepository)
     {
         $this->repository = $repository;
         $this->validator  = $validator;
+        $this->clientRepository = $clientRepository;
     }
 
 
@@ -73,11 +85,27 @@ class PlaceReservationsController extends Controller
 
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
 
+            //Check if the client exist
+            if($request->has('client')){
+                $client_data = $request->get('client');
+
+                $client_exists = $this->clientRepository->findWhere(['email' => $client_data['email']])->first();
+
+                if($client_exists){
+                    $request->merge(['client_id' => $client_exists->id]);
+                }
+
+                if(!$client_exists){
+                    $new_client = $this->clientRepository->create($client_data);
+                    $request->merge(['client_id' => $new_client->id]);
+                }
+            }
+
             $placeReservation = $this->repository->create($request->all());
 
             $response = [
                 'message' => 'PlaceReservations created.',
-                'reservation'    => $placeReservation->load('place'),
+                'reservation'    => $placeReservation->load('place', 'client'),
             ];
 
             if ($request->wantsJson()) {
@@ -211,7 +239,12 @@ class PlaceReservationsController extends Controller
      */
     public function cancel($id)
     {
-        $reservation = $this->repository->update(['is_canceled' => true, 'canceled_at' => Carbon::now()], $id);
+        $reservation = $this->repository->makeModel()->find($id);
+
+        $reservation->is_canceled = true;
+        $reservation->canceled_at = Carbon::now();
+
+        $reservation->save();
 
         if (request()->wantsJson()) {
 
@@ -222,5 +255,122 @@ class PlaceReservationsController extends Controller
         }
 
         return redirect()->back()->with('message', 'PlaceReservations deleted.');
+    }
+
+    /**
+     * Place reservations paginated list
+     *
+     * @param  int $id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function reservationsList($id)
+    {
+
+        $placeReservations = $this->repository->scopeQuery(function ($query) use ($id) {
+            return $query->where(['place_id' => $id, 'is_pre_reservation' => false])->orderBy('date', 'ASC');
+        })->with('client')->paginate(10);
+
+        if (request()->wantsJson()) {
+
+            return response()->json($placeReservations);
+        }
+    }
+
+    /**
+     * Place pré reservations paginated list
+     *
+     * @param  int $id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function PreReservationsList($id)
+    {
+
+        $placeReservations = $this->repository->scopeQuery(function ($query) use ($id) {
+            return $query->where(['place_id' => $id , 'is_pre_reservation' => true])->orderBy('date', 'ASC');
+        })->with('client')->all();
+
+        if (request()->wantsJson()) {
+
+            return response()->json($placeReservations);
+        }
+    }
+
+
+    /**
+     * Place Reservations
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     *
+     */
+    public function monthReservationsPublic(Request $request)
+    {
+
+        $reservations = $this->repository->scopeQuery(function ($query)  use ($request){
+            return $query->where(['place_id' => $request->get('place_id'), 'is_confirmed' => true])
+                ->whereBetween('date', [$request->get('start'), $request->get('end')])
+                ->select('date', 'all_day')
+                ->orderBy('date', 'ASC');
+        })->all();
+
+
+        if (request()->wantsJson()) {
+
+            return response()->json($reservations);
+        }
+    }
+
+    /**
+     * Confirm the specified reservation.
+     *
+     * @param  int $id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function confirm($id)
+    {
+        $reservation = $this->repository->makeModel()->find($id);
+
+        $reservation->is_confirmed = true;
+        $reservation->confirmed_at = Carbon::now();
+
+        $reservation->save();
+
+        if (request()->wantsJson()) {
+
+            return response()->json([
+                'message' => 'PlaceReservations canceled.',
+                'confirmed' => $reservation,
+            ]);
+        }
+
+        return redirect()->back()->with('message', 'PlaceReservations confirmed.');
+    }
+
+    /**
+     * Reservations by month.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function monthReservations(Request $request)
+    {
+
+         $reservations = $this->repository->scopeQuery(function ($query)  use ($request){
+            return $query->where('place_id', $request->get('place_id'))
+                ->whereBetween('date', [$request->get('start'), $request->get('end')])
+                ->orderBy('date', 'ASC');
+        })->with('client')->all();
+
+        if (request()->wantsJson()) {
+
+            return response()->json([
+                'reservations' => $reservations,
+            ]);
+        }
+
+        return view('placeReservations.index', compact('placeReservations'));
     }
 }

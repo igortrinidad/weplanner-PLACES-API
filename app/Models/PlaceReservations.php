@@ -34,8 +34,8 @@ class PlaceReservations extends Model implements Transformable
     protected $fillable = [
         'place_id',
         'client_id',
-        'start',
-        'end',
+        'date',
+        'all_day',
         'is_pre_reservation',
         'is_confirmed',
         'confirmed_at',
@@ -54,6 +54,7 @@ class PlaceReservations extends Model implements Transformable
         'is_pre_reservation' => 'boolean',
         'is_confirmed' => 'boolean',
         'is_canceled' => 'boolean',
+        'all_day' => 'boolean',
         'therms' => 'json',
         'history' => 'json',
     ];

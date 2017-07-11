@@ -50,7 +50,12 @@ Route::group(['prefix' => 'places'], function () {
         Route::post('/calendar_settings/update', 'PlaceCalendarSettingsController@update');
 
         //Reservations
+        Route::post('/reservation', 'PlaceReservationsController@store');
+        Route::post('/reservations/month_reservations', 'PlaceReservationsController@monthReservations');
+        Route::get('/reservations/list/{id}', 'PlaceReservationsController@reservationsList');
+        Route::get('/pre-reservations/list/{id}', 'PlaceReservationsController@PreReservationsList');
         Route::get('/reservations/cancel/{id}', 'PlaceReservationsController@cancel');
+        Route::get('/reservations/confirm/{id}', 'PlaceReservationsController@confirm');
 
         //Owner request
         Route::group(['prefix' => 'owner_request'], function(){
@@ -83,11 +88,11 @@ Route::group(['prefix' => 'places'], function () {
     Route::get('/check_url', 'PlacesController@checkUrl');
     Route::get('/featured_places', 'PlacesController@featuredPlaces');
     Route::post('/tracker', 'PlaceTrackingsController@tracker');
+    Route::post('/public/reservations/month_reservations', 'PlaceReservationsController@monthReservationsPublic');
     Route::get('/public/show/{place_slug}', 'PlacesController@showPublic');
     Route::get('{category_slug}', 'PlacesController@listByCategory');
     Route::get('{category_slug}/featured', 'PlacesController@featuredPlaces');
     Route::get('{category_slug}/search', 'PlacesController@search');
-
 });
 
 /*
