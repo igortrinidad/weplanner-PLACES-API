@@ -140,16 +140,16 @@ class ClientsController extends Controller
         $data['user_email'] = $client->email;
 
         $data['messageTitle'] = 'Olá, ' . $client->full_name;
-        $data['messageOne'] = 'Alguém solicitou recentemente uma alteração na senha da sua conta do Places We-Planner. ';
+        $data['messageOne'] = 'Alguém solicitou recentemente uma alteração na senha da sua conta do We Places. ';
         $data['messageTwo'] = 'Caso não tenha sido você, acesse sua conta vinculada a este email e altere a senha para sua segurança.';
         $data['messageThree'] = 'Nova senha:';
-        $data['button_link'] = 'https://places.we-planner.com';
+        $data['button_link'] = 'https://weplaces.com.br';
         $data['button_name'] = $pass;
         $data['messageFour'] = 'Para manter sua conta segura, não encaminhe este e-mail para ninguém.';
-        $data['messageSubject'] = 'Alteração de senha Places We-Planner';
+        $data['messageSubject'] = 'Alteração de senha We Places';
 
         \Mail::send('emails.standart-with-btn',['data' => $data], function ($message) use ($data){
-            $message->from('no-reply@we-planner.com', 'Places We-Planner');
+            $message->from('no-reply@we-planner.com', 'We Places');
             $message->to($data['user_email'], $data['full_name'])->subject($data['messageSubject']);
         });
 

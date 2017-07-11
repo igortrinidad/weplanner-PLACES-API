@@ -482,4 +482,48 @@ class PlacesController extends Controller
         }
     }
 
+
+    /**
+     * Contact form
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function contactForm(Request $request)
+    {
+
+        if(empty($request['name']) || empty($request['last_name']) || empty($request['client_email']) || empty($request['message']) || empty($request['phone']) || empty($request['place_email']) || empty($request['place_name']) ) {
+
+            return response()->json([
+                'data' => 'no data provided',
+            ]);
+        }
+
+        //Email
+        $data = [];
+        $data['full_name'] = $request['name'] . ' ' .$request['last_name'];
+        $data['client_email'] = $request['client_email'];
+        $data['place_email'] = $request['place_email'];
+        $data['place_name'] = $request['place_name'];
+
+        $data['messageTitle'] = 'Olá,';
+        $data['messageOne'] = 'Você acabou de receber a mensagem abaixo através do Aplicativo We Places:';
+        $data['messageTwo'] = 'Enviada por: ' . $request['name'] . ' ' .$request['last_name'];
+        $data['messageThree'] = 'Email: ' . $data['client_email'];
+        $data['messageFour'] = 'Mensagem: ' . $request['message'];
+        $data['messageSubject'] = 'Mensagem recebida no We Places';
+
+        \Mail::send('emails.standart-with-btn',['data' => $data], function ($message) use ($data){
+            $message->from('no-reply@weplaces.com.br', 'We Places');
+            $message->to($data['place_email'], $data['place_name'])->subject($data['messageSubject']);
+        });
+
+        if(!count(\Mail::failures())) {
+            return response()->json(['alert' => ['type' => 'success', 'title' => 'Atenção!', 'message' => 'Mensagem enviada com sucesso', 'status_code' => 200]], 200);
+        }
+
+        if(count(\Mail::failures())){
+            return response()->json(['alert' => ['type' => 'error', 'title' => 'Atenção!', 'message' => 'Ocorreu um erro ao enviar o e-mail.', 'status_code' => 500]], 500);
+        }
+    }
+
 }
