@@ -15,6 +15,7 @@ use App\Http\Requests\PlaceUpdateRequest;
 use App\Repositories\PlaceRepository;
 
 use App\Models\Place;
+use Carbon\Carbon as Carbon;
 
 
 class PlacesController extends Controller
@@ -484,61 +485,23 @@ class PlacesController extends Controller
         }
     }
 
-    /**
-     * Contact form
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function contactForm(Request $request)
-    {
-
-        if(empty($request['client_name']) || empty($request['client_email']) || empty($request['message']) || empty($request['phone']) || empty($request['place_email']) || empty($request['place_name']) ) {
-
-            return response()->json([
-                'data' => 'no data provided',
-            ]);
-        }
-
-        //Email
-        $data = [];
-        $data['client_name'] = $request['client_name'];
-        $data['client_email'] = $request['client_email'];
-        $data['place_email'] = $request['place_email'];
-        $data['place_name'] = $request['place_name'];
-        $data['align'] = 'left';
-
-        $data['messageTitle'] = 'Olá,';
-        $data['messageOne'] = 'Você acabou de receber a mensagem abaixo através do Aplicativo We Places:';
-        $data['messageTwo'] = 'Enviada por: ' . $data['client_name'];
-        $data['messageThree'] = 'Email: ' . $data['client_email'];
-        $data['messageFour'] = 'Mensagem: ' . $request['message'];
-        $data['messageSubject'] = 'Mensagem recebida no We Places';
-
-        \Mail::send('emails.standart-with-btn',['data' => $data], function ($message) use ($data){
-            $message->from('no-reply@weplaces.com.br', 'We Places');
-            $message->to($data['place_email'], $data['place_name'])->subject($data['messageSubject']);
-        });
-
-        if(!count(\Mail::failures())) {
-            return response()->json(['alert' => ['type' => 'success', 'title' => 'Atenção!', 'message' => 'Mensagem enviada com sucesso', 'status_code' => 200]], 200);
-        }
-
-        if(count(\Mail::failures())){
-            return response()->json(['alert' => ['type' => 'error', 'title' => 'Atenção!', 'message' => 'Ocorreu um erro ao enviar o e-mail.', 'status_code' => 500]], 500);
-        }
-
-    }
-
-
     public function statistics()
     {
+        //12 months
+        $start = Carbon::now()->subMonths(12)->startOfMonth()->format('Y-m-d');
+        $end = Carbon::now()->endOfMonth()->startOfDay()->format('Y-m-d');
+
+        //1 month
+        /*$start = Carbon::now()->subDays(30)->format('Y-m-d');
+        $end = Carbon::now()->endOfDay()->format('Y-m-d');*/
 
         $places = $this->repository->scopeQuery(function ($query) {
             return $query->where(['user_id' => \Auth::user()->id])
                 ->orderBy('name', 'ASC')->select('name', 'id')
                 ->withCount('tracking');
-        })->with(['tracking' => function($query){
-            $query->orderBy('created_at', 'ASC');
+        })->with(['tracking' => function($query) use($start, $end){
+            $query->whereBetween('created_at',[$start, $end])->orderBy('created_at', 'ASC');
+
         }])->all();
 
         $return = [];
@@ -579,28 +542,11 @@ class PlacesController extends Controller
 
             $return[$key]['statistics'] =  $result;
 
-            /*
-             *   $views = collect($item)->count();
-
-                $contact_message = collect($item)->sum('contact_message');
-                $contact_whatsapp = collect($item)->sum('contact_whatsapp');
-
-                $result[$key_result]['month_order'] = \Carbon\Carbon::createFromFormat('m/Y', $key_result)->month;
-                $result[$key_result]['month_name'] = ucfirst(\Carbon\Carbon::createFromFormat('m/Y', $key_result)->formatLocalized('%B'));
-                $result[$key_result]['year'] = \Carbon\Carbon::createFromFormat('m/Y', $key_result)->year;
-                $result[$key_result]['views'] = $views;
-                $result[$key_result]['call_clicks'] = $contact_calls;
-                $result[$key_result]['message_clicks'] = $contact_message;
-                $result[$key_result]['whatsapp_clicks'] = $contact_whatsapp;*/
-
         }
-
-
-
+        
         if (request()->wantsJson()) {
 
             return response()->json($return);
-
         }
     }
 

@@ -231,7 +231,7 @@ class Place extends Model implements Transformable
      */
     public function tracking()
     {
-        return $this->hasMany(PlaceTracking::class);
+        return $this->hasMany(PlaceTracking::class, 'place_id', 'id');
     }
 
 }
