@@ -65,6 +65,12 @@ Route::group(['prefix' => 'places'], function () {
             Route::post('/document/upload', 'OwnerRequestDocumentsController@store');
             Route::get('/document/destroy/{id}', 'OwnerRequestDocumentsController@destroy');
         });
+
+        //Promotional dates
+        Route::post('/promotional_dates', 'PromotionalDatesController@index');
+        Route::post('/promotional_dates/create', 'PromotionalDatesController@store');
+        Route::post('/promotional_dates/update', 'PromotionalDatesController@update');
+        Route::get('/promotional_dates/destroy/{id}', 'PromotionalDatesController@destroy');
     });
 
     //Protected routes for client

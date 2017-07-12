@@ -543,7 +543,7 @@ class PlacesController extends Controller
             $return[$key]['statistics'] =  $result;
 
         }
-        
+
         if (request()->wantsJson()) {
 
             return response()->json($return);
