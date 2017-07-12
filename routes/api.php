@@ -31,6 +31,7 @@ Route::group(['prefix' => 'places'], function () {
         Route::get('/show/{id}', 'PlacesController@show');
         Route::post('/create', 'PlacesController@store');
         Route::post('/update', 'PlacesController@update');
+        Route::get('/statistics', 'PlacesController@statistics');
         Route::get('/destroy/{id}', 'PlacesController@destroy');
 
         //Photo upload
@@ -85,6 +86,7 @@ Route::group(['prefix' => 'places'], function () {
     Route::get('/search', 'PlacesController@nameSearch');
     Route::post('/searchByCity', 'PlacesController@searchByCity');
     Route::post('/searchByCityToMap', 'PlacesController@searchByCityToMap');
+    Route::post('/contactForm', 'PlacesController@contactForm');
     Route::get('/check_url', 'PlacesController@checkUrl');
     Route::get('/featured_places', 'PlacesController@featuredPlaces');
     Route::post('/tracker', 'PlaceTrackingsController@tracker');

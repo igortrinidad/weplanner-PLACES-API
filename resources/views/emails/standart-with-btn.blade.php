@@ -36,10 +36,16 @@
                             </td>
                         </tr>
 
+                        <?php
+                            if(!isset($data['align']) && empty($data['align'])){
+                                $data['align'] = 'center';
+                            }
+                        ?>
+
                         <!-- TITULO -->
                         @if(isset($data['messageTitle']) && !empty($data['messageTitle']))
                         <tr>
-                            <td style="padding: 10px 20px; text-align: center; max-width: 80% !important; background-color: rgb(255, 255, 255); color: rgb(85, 85, 85);"
+                            <td style="padding: 10px 20px; text-align: {{ $data['align'] }}; max-width: 80% !important; background-color: rgb(255, 255, 255); color: rgb(85, 85, 85);"
                                 align="center">
                                 <span style="font-size: 16px;">
                                     {!! $data['messageTitle'] !!}
@@ -51,9 +57,9 @@
                         <!-- MESSAGE TWO -->
                         @if(isset($data['messageOne']) && !empty($data['messageOne']))
                         <tr>
-                            <td style="padding: 10px 20px; text-align: center; max-width: 80% !important; background-color: rgb(255, 255, 255); color: rgb(85, 85, 85);"
-                                align="center">
-                                <p style="text-align: center; ">
+                            <td style="padding: 10px 20px; text-align: {{ $data['align'] }}; max-width: 80% !important; background-color: rgb(255, 255, 255); color: rgb(85, 85, 85);"
+                                align="{{ $data['align'] }}">
+                                <p style="text-align: {{ $data['align'] }}; ">
                                     <span style="font-size: 14px;">
                                         {!! $data['messageOne'] !!}
                                     </span>
@@ -65,9 +71,9 @@
                         <!-- MESSAGE THREE -->
                         @if(isset($data['messageTwo']) && !empty($data['messageTwo']))
                         <tr>
-                            <td style="padding: 10px 20px; text-align: center; max-width: 80% !important; background-color: rgb(255, 255, 255); color: rgb(85, 85, 85);"
-                                align="center">
-                                <p style="text-align: center; ">
+                            <td style="padding: 10px 20px; text-align: {{ $data['align'] }}; max-width: 80% !important; background-color: rgb(255, 255, 255); color: rgb(85, 85, 85);"
+                                align="{{ $data['align'] }}">
+                                <p style="text-align: {{ $data['align'] }}; ">
                                     <span style="font-size: 14px;">
                                         {!! $data['messageTwo'] !!}
                                     </span>
@@ -79,9 +85,9 @@
                         <!-- MESSAGE THREE -->
                         @if(isset($data['messageThree']) && !empty($data['messageThree']))
                         <tr>
-                            <td style="padding: 10px 20px; text-align: center; max-width: 80% !important; background-color: rgb(255, 255, 255); color: rgb(85, 85, 85);"
-                                align="center">
-                                <p style="text-align: center; ">
+                            <td style="padding: 10px 20px; text-align: {{ $data['align'] }}; max-width: 80% !important; background-color: rgb(255, 255, 255); color: rgb(85, 85, 85);"
+                                align="{{ $data['align'] }}">
+                                <p style="text-align: {{ $data['align'] }}; ">
                                     <span style="font-size: 14px;">
                                         {!! $data['messageThree'] !!}
                                     </span>
@@ -93,9 +99,9 @@
                         <!-- MESSAGE THREE -->
                         @if(isset($data['access_code']) && !empty($data['access_code']))
                         <tr>
-                            <td style="padding: 10px 20px; text-align: center; max-width: 80% !important; background-color: rgb(255, 255, 255); color: rgb(85, 85, 85);"
-                                align="center">
-                                <p style="text-align: center; ">
+                            <td style="padding: 10px 20px; text-align: {{ $data['align'] }}; max-width: 80% !important; background-color: rgb(255, 255, 255); color: rgb(85, 85, 85);"
+                                align="{{ $data['align'] }}">
+                                <p style="text-align: {{ $data['align'] }}; ">
                                     <span style="font-size: 22px;">
                                         {!!$data['access_code'] !!}
                                     </span>
@@ -126,9 +132,9 @@
                         <!-- ULTIMO BLOCO -->
                         @if(isset($data['messageFour']) && !empty($data['messageFour']))
                         <tr>
-                            <td style="padding: 20px 20px 40px 20px; text-align: center; max-width: 80% !important; background-color: rgb(255, 255, 255); color: rgb(85, 85, 85);"
-                                align="center">
-                                <p style="text-align: center; "><span style="font-size: 14px;">
+                            <td style="padding: 20px 20px 40px 20px; text-align: {{ $data['align'] }}; max-width: 80% !important; background-color: rgb(255, 255, 255); color: rgb(85, 85, 85);"
+                                align="{{ $data['align'] }}">
+                                <p style="text-align: {{ $data['align'] }}; "><span style="font-size: 14px;">
                                     {!! $data['messageFour'] !!}
                                 </span>
                                 </p>
