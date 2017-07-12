@@ -18,6 +18,8 @@ class CreatePromotionalDatesTable extends Migration
             $table->uuid('place_id')->index();
             $table->date('date')->index();
             $table->string('title');
+            $table->decimal('value', 12, 2)->default(0);
+            $table->decimal('discount', 12, 2)->default(0);
             $table->text('rules');
             $table->timestamps();
             $table->primary('id');

@@ -34,6 +34,8 @@ class PromotionalDate extends Model implements Transformable
         'place_id',
         'date',
         'title',
+        'value',
+        'discount',
         'rules'
     ];
 
