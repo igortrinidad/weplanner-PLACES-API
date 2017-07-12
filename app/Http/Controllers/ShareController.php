@@ -45,7 +45,7 @@ class ShareController extends Controller
                             <meta property="og:locale" content="pt_BR">
                             <meta property="og:site_name" content="We Places App">
                             <meta property="og:title" content="We Places: ' . $place['name'] .'" />
-                            <meta property="og:url" content="https://weplaces.com.br/#/detalhes/'.$place['slug'] .'">
+                            <meta property="og:url" content="https://api.weplaces.com.br/share/places/'.$place['slug'] .'">
                             <meta property="og:description" content="' . strip_tags($place['description']) .'" />
                             <meta property="og:image" content="' . $photo .'" />
                             <meta property="og:image:url" content="' . $photo .'" />
