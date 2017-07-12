@@ -21,7 +21,7 @@ class ShareController extends Controller
 
     	$place = Place::whereSlug($place_slug)->with('photos')->first();
 
-    	if(count($place->photos)){
+    	if($place && count($place->photos)){
 
             $arr = $place->photos->toArray();
 
