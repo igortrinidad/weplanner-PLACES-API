@@ -11,6 +11,7 @@ use App\Http\Requests\PromotionalDateCreateRequest;
 use App\Http\Requests\PromotionalDateUpdateRequest;
 use App\Repositories\PromotionalDateRepository;
 use App\Validators\PromotionalDateValidator;
+use Carbon\Carbon as Carbon;
 
 
 class PromotionalDatesController extends Controller
@@ -194,5 +195,31 @@ class PromotionalDatesController extends Controller
         }
 
         return redirect()->back()->with('message', 'PromotionalDate deleted.');
+    }
+
+
+    /**
+     * List of promotional dates to display in home
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function homeList()
+    {
+        //from now to next month
+        $start = Carbon::now()->format('Y-m-d');
+        $end = Carbon::now()->addDays(30)->format('Y-m-d');
+
+        $promotionalDates = $this->repository->makeModel()->whereBetween('date', [$start, $end])
+            ->orderByRaw('RAND()')
+            ->take(8) // take 8 records randomly
+            ->with(['place' => function ($query) {
+                $query->select('id', 'name', 'city', 'state', 'slug');
+            }])
+            ->get();
+
+        if (request()->wantsJson()) {
+
+            return response()->json($promotionalDates);
+        }
     }
 }

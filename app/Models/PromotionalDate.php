@@ -39,6 +39,16 @@ class PromotionalDate extends Model implements Transformable
         'rules'
     ];
 
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'value' => 'double',
+        'discount' => 'double',
+        ];
+
 
     /**
      * -------------------------------

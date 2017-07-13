@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Repositories\PlaceCalendarSettingsRepository;
 use App\Repositories\PlacePhotoRepository;
+use App\Repositories\PlaceTrackingRepository;
 use App\Validators\PlaceValidator;
 use Illuminate\Http\Request;
 
@@ -37,6 +38,10 @@ class PlacesController extends Controller
      * @var PlaceCalendarSettingsRepository
      */
     private $calendarSettingsRepository;
+    /**
+     * @var PlaceTrackingRepository
+     */
+    private $trackingRepository;
 
 
     /**
@@ -45,11 +50,13 @@ class PlacesController extends Controller
      * @param PlaceValidator $validator
      * @param PlacePhotoRepository $photoRepository
      * @param PlaceCalendarSettingsRepository $calendarSettingsRepository
+     * @param PlaceTrackingRepository $trackingRepository
      */
     public function __construct(PlaceRepository $repository,
                                 PlaceValidator $validator,
                                 PlacePhotoRepository $photoRepository,
-                                PlaceCalendarSettingsRepository $calendarSettingsRepository
+                                PlaceCalendarSettingsRepository $calendarSettingsRepository,
+                                PlaceTrackingRepository $trackingRepository
     )
     {
         $this->repository = $repository;
@@ -57,6 +64,7 @@ class PlacesController extends Controller
         $this->photoRepository = $photoRepository;
         $this->calendarSettingsRepository = $calendarSettingsRepository;
         setlocale(LC_TIME, 'pt_BR.utf8');
+        $this->trackingRepository = $trackingRepository;
     }
 
 
@@ -527,6 +535,7 @@ class PlacesController extends Controller
                 $link_share = collect($item)->sum('share_copy');
                 $whatsapp_share = collect($item)->sum('share_whatsapp');
                 $facebook_share = collect($item)->sum('share_facebook');
+                $permanence = collect($item)->avg('duration');
 
                 $result[$key_result]['month_order'] = \Carbon\Carbon::createFromFormat('m/Y', $key_result)->month;
                 $result[$key_result]['month_name'] = ucfirst(\Carbon\Carbon::createFromFormat('m/Y', $key_result)->formatLocalized('%B'));
@@ -538,6 +547,7 @@ class PlacesController extends Controller
                 $result[$key_result]['link_shares'] = $link_share;
                 $result[$key_result]['whatsapp_shares'] = $whatsapp_share;
                 $result[$key_result]['facebook_shares'] = $facebook_share;
+                $result[$key_result]['permanence'] = $permanence;
             }
 
             $return[$key]['statistics'] =  $result;
@@ -547,6 +557,36 @@ class PlacesController extends Controller
         if (request()->wantsJson()) {
 
             return response()->json($return);
+        }
+    }
+
+
+    public function monthStatistics($id)
+    {
+        //Month statistics
+        $start = Carbon::now()->subDays(30)->format('Y-m-d');
+        $end = Carbon::now()->addDay()->format('Y-m-d');
+
+        $statistics = $this->trackingRepository->scopeQuery(function ($query) use($id, $start, $end){
+            return $query->where(['place_id' => $id])->whereBetween('created_at',[$start, $end])->orderBy('created_at', 'ASC');;
+        })->all();
+
+        $data = [
+            'views' => $statistics->count(),
+            'call_clicks' => collect($statistics)->sum('contact_call'),
+            'whatsapp_clicks' => collect($statistics)->sum('contact_whatsapp'),
+            'contact_clicks' => collect($statistics)->sum('contact_message'),
+            'link_shares' => collect($statistics)->sum('share_copy'),
+            'whatsapp_shares' => collect($statistics)->sum('share_whatsapp'),
+            'facebook_shares' => collect($statistics)->sum('share_facebook'),
+            'permanence' => collect($statistics)->avg('duration'),
+        ];
+
+
+
+        if (request()->wantsJson()) {
+
+            return response()->json($data);
         }
     }
 

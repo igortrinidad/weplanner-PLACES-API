@@ -93,7 +93,9 @@ class Place extends Model implements Transformable
         'confirmed' => 'boolean',
         'instructions' => 'json',
         'list_common' => 'boolean',
-        'featured_position' => 'integer'
+        'featured_position' => 'integer',
+        'reservation_price' => 'double',
+        'pre_reservation_price' => 'double',
     ];
 
     /**

@@ -32,6 +32,7 @@ Route::group(['prefix' => 'places'], function () {
         Route::post('/create', 'PlacesController@store');
         Route::post('/update', 'PlacesController@update');
         Route::get('/statistics', 'PlacesController@statistics');
+        Route::get('/statistics/month/{id}', 'PlacesController@monthStatistics');
         Route::get('/destroy/{id}', 'PlacesController@destroy');
 
         //Photo upload
@@ -97,6 +98,7 @@ Route::group(['prefix' => 'places'], function () {
     Route::get('/featured_places', 'PlacesController@featuredPlaces');
     Route::post('/tracker', 'PlaceTrackingsController@tracker');
     Route::post('/public/reservations/month_reservations', 'PlaceReservationsController@monthReservationsPublic');
+    Route::get('/promotional_dates/home_list', 'PromotionalDatesController@homeList');
     Route::get('/public/show/{place_slug}', 'PlacesController@showPublic');
     Route::get('{category_slug}', 'PlacesController@listByCategory');
     Route::get('{category_slug}/featured', 'PlacesController@featuredPlaces');
