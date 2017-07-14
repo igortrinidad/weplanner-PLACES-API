@@ -14,7 +14,7 @@ class PromotionalDatesTableSeeder extends Seeder
     {
         $faker = \Faker\Factory::create('pt_BR');
 
-        $places = Place::where('confirmed', true)->get()->random(24)->pluck('id');
+        $places = Place::where('confirmed', true)->get()->random(8)->pluck('id');
 
         foreach ($places as $place){
             \App\Models\PromotionalDate::create([

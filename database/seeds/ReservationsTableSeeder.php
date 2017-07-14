@@ -16,8 +16,9 @@ class ReservationsTableSeeder extends Seeder
     {
         $faker = \Faker\Factory::create('pt_BR');
 
-        $places = Place::where('confirmed', true)->get()->random(24)->pluck('id')->toArray();
+        $places = Place::where('confirmed', true)->get()->random(20)->pluck('id')->toArray();
         $clients = Client::all()->pluck('id')->toArray();
+
 
         foreach ($places as $place){
 
@@ -27,7 +28,7 @@ class ReservationsTableSeeder extends Seeder
                 PlaceReservations::create([
                     'place_id' => $place,
                     'client_id' => $faker->randomElement($clients),
-                    'date' => $faker->dateTimeBetween($startDate =  'now', $endDate =  '3 weeks')->format('Y-m-d'),
+                    'date' => $faker->dateTimeBetween($startDate =  '-2 months', $endDate =  'now')->format('Y-m-d'),
                     'all_day' => true,
                     'is_pre_reservation' => $faker->randomElement([true, false])
                 ]);

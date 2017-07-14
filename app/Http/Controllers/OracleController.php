@@ -225,15 +225,40 @@ class OracleController extends Controller
     }
 
     public function filter(Request $request){
-        $places = $this->placeRepository
-            ->scopeQuery(function ($query) use ( $request) {
-                return $query->where('city', 'LIKE', '%'.$request->get('city').'%')
-                    ->orderBy('name', 'ASC');
-            })->whereHas('tracking', function($query){
-                return $query->orderBy('created_at', 'DESC')->first();
-            })->all();
-        
-        dd($places);
+
+        $places = $this->placeRepository->scopeQuery(function ($query)  use($request){
+
+            return $query->where('confirmed', $request->get('confirmed'))->where(function ($query) use ($request) {
+
+                foreach($request->get('filters') as $key => $value){
+
+
+                    if ($key === 'city' && $value) {
+                        $query->where($key, 'LIKE', '%' . $value . '%');
+                    }
+
+                    if ($key === 'has_owner' && !$value) {
+                        $query->where('user_id', null);
+                    }
+
+                    if ($key === 'has_owner' && $value) {
+                        $query->where('user_id', '<>', null);
+                    }
+
+                    if($value && $key != 'has_owner'){
+                        $query->where($key, $value);
+                    }
+
+                }
+
+            });
+
+        })->orderBy($request->get('order_by'), $request->get('direction'))->paginate(10);
+
+        if (request()->wantsJson()) {
+
+            return response()->json($places);
+        }
     }
 
 

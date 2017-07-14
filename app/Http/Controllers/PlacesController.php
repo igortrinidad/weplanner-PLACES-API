@@ -551,7 +551,7 @@ class PlacesController extends Controller
             $query->whereBetween('reference',[$start, $end])->orderBy('reference', 'ASC');
         }])
         ->with(['reservations' => function($query) use($start, $end){
-            $query->whereBetween('created_at',[$start, $end])->orderBy('created_at', 'ASC');
+            $query->whereBetween('date',[$start, $end])->orderBy('date', 'DESC');
 
         }])->all();
 
@@ -579,9 +579,9 @@ class PlacesController extends Controller
 
 
             $grouped = $place->reservations->groupBy(function ($item) {
-                return $item->created_at->formatLocalized('%B/%Y');
-            });
 
+                return Carbon::createFromFormat('Y-m-d H:i:s', $item->date)->formatLocalized('%B/%Y');
+            });
 
             foreach ($grouped as $key_reservations => $item) {
 
