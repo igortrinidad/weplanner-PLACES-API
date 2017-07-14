@@ -299,7 +299,7 @@ class PlacesController extends Controller
     {
 
         $place = $this->repository->findWhere(['slug' => $place_slug])
-            ->load('photos', 'calendar_settings', 'videos')
+            ->load('photos', 'calendar_settings', 'videos', 'promotional_dates')
             ->first();
 
         if (request()->wantsJson()) {
@@ -493,61 +493,114 @@ class PlacesController extends Controller
         }
     }
 
+    /**
+     * Contact form
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function contactForm(Request $request)
+    {
+
+        if(empty($request['client_name']) || empty($request['client_email']) || empty($request['message']) || empty($request['phone']) || empty($request['place_email']) || empty($request['place_name']) ) {
+
+            return response()->json([
+                'data' => 'no data provided',
+            ]);
+        }
+
+        //Email
+        $data = [];
+        $data['client_name'] = $request['client_name'];
+        $data['client_email'] = $request['client_email'];
+        $data['place_email'] = $request['place_email'];
+        $data['place_name'] = $request['place_name'];
+        $data['align'] = 'left';
+
+        $data['messageTitle'] = 'Olá,';
+        $data['messageOne'] = 'Você acabou de receber a mensagem abaixo através do Aplicativo We Places:';
+        $data['messageTwo'] = 'Enviada por: ' . $data['client_name'];
+        $data['messageThree'] = 'Email: ' . $data['client_email'];
+        $data['messageFour'] = 'Mensagem: ' . $request['message'];
+        $data['messageSubject'] = 'Mensagem recebida no We Places';
+
+        \Mail::send('emails.standart-with-btn',['data' => $data], function ($message) use ($data){
+            $message->from('no-reply@weplaces.com.br', 'We Places');
+            $message->to($data['place_email'], $data['place_name'])->subject($data['messageSubject']);
+        });
+
+        if(!count(\Mail::failures())) {
+            return response()->json(['alert' => ['type' => 'success', 'title' => 'Atenção!', 'message' => 'Mensagem enviada com sucesso', 'status_code' => 200]], 200);
+        }
+
+        if(count(\Mail::failures())){
+            return response()->json(['alert' => ['type' => 'error', 'title' => 'Atenção!', 'message' => 'Ocorreu um erro ao enviar o e-mail.', 'status_code' => 500]], 500);
+        }
+
+    }
+
     public function statistics()
     {
         //12 months
         $start = Carbon::now()->subMonths(12)->startOfMonth()->format('Y-m-d');
         $end = Carbon::now()->endOfMonth()->startOfDay()->format('Y-m-d');
 
-        //1 month
-        /*$start = Carbon::now()->subDays(30)->format('Y-m-d');
-        $end = Carbon::now()->endOfDay()->format('Y-m-d');*/
-
         $places = $this->repository->scopeQuery(function ($query) {
             return $query->where(['user_id' => \Auth::user()->id])
-                ->orderBy('name', 'ASC')->select('name', 'id')
-                ->withCount('tracking');
+                ->orderBy('name', 'ASC')->select('name', 'id');
         })->with(['tracking' => function($query) use($start, $end){
+            $query->whereBetween('reference',[$start, $end])->orderBy('reference', 'ASC');
+        }])
+        ->with(['reservations' => function($query) use($start, $end){
             $query->whereBetween('created_at',[$start, $end])->orderBy('created_at', 'ASC');
 
         }])->all();
 
-        $return = [];
 
+        $return = [];
         foreach ($places as $key => $place) {
 
             $return[$key]['id'] = $place->id;
             $return[$key]['name'] = $place->name;
 
+            $result = [];
+            foreach ($place->tracking as $key_result => $item) {
 
-            $grouped = $place->tracking->groupBy(function ($item) {
-                return $item->created_at->formatLocalized('%m/%Y');
+                $item->setHidden(['id','place_id', 'created_at', 'updated_at']);
+
+                $index = Carbon::createFromFormat('Y-m-d', $item->reference)->formatLocalized('%B/%Y');
+
+                $result[$index] = $item;
+                //Average
+                $result[$index]['permanence'] = $item->permanence / $item->views;
+                
+                $result[$index]['reservations'] =  0;
+                $result[$index]['pre_reservations'] = 0;
+            }
+
+
+            $grouped = $place->reservations->groupBy(function ($item) {
+                return $item->created_at->formatLocalized('%B/%Y');
             });
 
 
-            $result = [];
-            foreach ($grouped as $key_result => $item) {
+            foreach ($grouped as $key_reservations => $item) {
 
-                //collect and sum clicks
-                $contact_calls = collect($item)->sum('contact_call');
-                $contact_whatsapp = collect($item)->sum('contact_whatsapp');
-                $contact_message = collect($item)->sum('contact_message');
-                $link_share = collect($item)->sum('share_copy');
-                $whatsapp_share = collect($item)->sum('share_whatsapp');
-                $facebook_share = collect($item)->sum('share_facebook');
-                $permanence = collect($item)->avg('duration');
+                $reservations = [];
+                $pre_reservations = [];
 
-                $result[$key_result]['month_order'] = \Carbon\Carbon::createFromFormat('m/Y', $key_result)->month;
-                $result[$key_result]['month_name'] = ucfirst(\Carbon\Carbon::createFromFormat('m/Y', $key_result)->formatLocalized('%B'));
-                $result[$key_result]['year'] =  \Carbon\Carbon::createFromFormat('m/Y', $key_result)->year;
-                $result[$key_result]['views'] = $item->count();
-                $result[$key_result]['call_clicks'] = $contact_calls;
-                $result[$key_result]['whatsapp_clicks'] = $contact_whatsapp;
-                $result[$key_result]['contact_clicks'] = $contact_message;
-                $result[$key_result]['link_shares'] = $link_share;
-                $result[$key_result]['whatsapp_shares'] = $whatsapp_share;
-                $result[$key_result]['facebook_shares'] = $facebook_share;
-                $result[$key_result]['permanence'] = $permanence;
+                foreach($item as $reservation){
+                    if(!$reservation->is_pre_reservation){
+                        $reservations[] = $reservation;
+                    }
+
+                    if($reservation->is_pre_reservation){
+                        $pre_reservations[] = $reservation;
+                    }
+                }
+
+                $result[$key_reservations]['reservations'] = count($reservations) ;
+                $result[$key_reservations]['pre_reservations'] = count($pre_reservations);
+
             }
 
             $return[$key]['statistics'] =  $result;
@@ -564,29 +617,20 @@ class PlacesController extends Controller
     public function monthStatistics($id)
     {
         //Month statistics
-        $start = Carbon::now()->subDays(30)->format('Y-m-d');
-        $end = Carbon::now()->addDay()->format('Y-m-d');
+        $reference =  Carbon::now()->startOfMonth();
 
-        $statistics = $this->trackingRepository->scopeQuery(function ($query) use($id, $start, $end){
-            return $query->where(['place_id' => $id])->whereBetween('created_at',[$start, $end])->orderBy('created_at', 'ASC');;
-        })->all();
+        $statistics = $this->trackingRepository->scopeQuery(function ($query) use($id, $reference){
+            return $query->where(['place_id' => $id, 'reference' => $reference]);
+        })->first()
+            ->setHidden(['id', 'place_id', 'created_at', 'updated_at', 'reference'])
+        ->toArray();
 
-        $data = [
-            'views' => $statistics->count(),
-            'call_clicks' => collect($statistics)->sum('contact_call'),
-            'whatsapp_clicks' => collect($statistics)->sum('contact_whatsapp'),
-            'contact_clicks' => collect($statistics)->sum('contact_message'),
-            'link_shares' => collect($statistics)->sum('share_copy'),
-            'whatsapp_shares' => collect($statistics)->sum('share_whatsapp'),
-            'facebook_shares' => collect($statistics)->sum('share_facebook'),
-            'permanence' => collect($statistics)->avg('duration'),
-        ];
-
-
+        //Average
+        $statistics['permanence'] = $statistics['permanence'] /  $statistics['views'];
 
         if (request()->wantsJson()) {
 
-            return response()->json($data);
+            return response()->json($statistics);
         }
     }
 

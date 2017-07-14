@@ -224,5 +224,17 @@ class OracleController extends Controller
         }
     }
 
+    public function filter(Request $request){
+        $places = $this->placeRepository
+            ->scopeQuery(function ($query) use ( $request) {
+                return $query->where('city', 'LIKE', '%'.$request->get('city').'%')
+                    ->orderBy('name', 'ASC');
+            })->whereHas('tracking', function($query){
+                return $query->orderBy('created_at', 'DESC')->first();
+            })->all();
+        
+        dd($places);
+    }
+
 
 }

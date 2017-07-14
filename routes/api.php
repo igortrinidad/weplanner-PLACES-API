@@ -159,6 +159,7 @@ Route::group(['prefix' => 'oracle'], function () {
             Route::get('/trashed', 'OracleController@trashed');
             Route::post('/restore', 'OracleController@restore');
             Route::post('/destroy', 'OracleController@destroy');
+            Route::post('/filter', 'OracleController@filter');
 
             //calendar settings
             Route::post('/calendar_settings/update', 'PlaceCalendarSettingsController@update');

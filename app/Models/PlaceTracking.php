@@ -32,7 +32,15 @@ class PlaceTracking extends Model implements Transformable
      */
     protected $fillable = [
         'place_id',
-        'duration'
+        'reference',
+        'views',
+        'permanence',
+        'call_clicks',
+        'whatsapp_clicks',
+        'contact_clicks',
+        'link_shares',
+        'whatsapp_shares',
+        'facebook_shares'
     ];
 
 

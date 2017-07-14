@@ -11,6 +11,7 @@ use App\Http\Requests\PlaceTrackingCreateRequest;
 use App\Http\Requests\PlaceTrackingUpdateRequest;
 use App\Repositories\PlaceTrackingRepository;
 use App\Validators\PlaceTrackingValidator;
+use Carbon\Carbon as Carbon;
 
 
 class PlaceTrackingsController extends Controller
@@ -46,7 +47,14 @@ class PlaceTrackingsController extends Controller
 
             //init the tracking
             if(!$request->has('id') && $request->has('place_id')){
-                $placeTracking = $this->repository->create($request->all());
+
+                $request->merge([
+                    'reference' => Carbon::now()->startOfMonth(),
+                ]);
+
+                $placeTracking = $this->repository->firstOrCreate($request->all());
+
+                $placeTracking->increment('views', 1);
 
                 $response = [
                     'message' => 'tracking started.',
@@ -58,16 +66,27 @@ class PlaceTrackingsController extends Controller
             if($request->has('id') && !$request->has('place_id')){
                 $placeTracking = $this->repository->find(['id' => $request->get('id')])->first();
 
-
                 //increment other fields
                 if($request->has('info')){
 
-                   $placeTracking->increment($request->get('info'), 1);
+                    //For keep the mobile apps compatibility
+                    $columns = [
+                        'contact_call' =>'call_clicks',
+                        'contact_whatsapp' => 'whatsapp_clicks',
+                        'contact_message' => 'contact_clicks',
+                        'share_copy' => 'link_shares',
+                        'share_whatsapp' => 'whatsapp_shares',
+                        'share_facebook' => 'facebook_shares'
+                    ];
+
+                    $info =  array_get($columns, $request->get('info'));
+
+                   $placeTracking->increment($info, 1);
                 }
 
                 //increment duration
                 if(!$request->has('info')){
-                    $placeTracking->increment('duration', 60);
+                    $placeTracking->increment('permanence', 60);
                 }
 
                 $response = [
