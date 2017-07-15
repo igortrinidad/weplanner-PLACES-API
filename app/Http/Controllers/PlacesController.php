@@ -538,78 +538,17 @@ class PlacesController extends Controller
 
     }
 
-    public function statistics()
+    public function statistics($id)
     {
         //12 months
         $start = Carbon::now()->subMonths(12)->startOfMonth()->format('Y-m-d');
         $end = Carbon::now()->endOfMonth()->startOfDay()->format('Y-m-d');
 
-        $places = $this->repository->scopeQuery(function ($query) {
-            return $query->where(['user_id' => \Auth::user()->id])
-                ->orderBy('name', 'ASC')->select('name', 'id');
-        })->with(['tracking' => function($query) use($start, $end){
-            $query->whereBetween('reference',[$start, $end])->orderBy('reference', 'ASC');
-        }])
-        ->with(['reservations' => function($query) use($start, $end){
-            $query->whereBetween('date',[$start, $end])->orderBy('date', 'DESC');
-
-        }])->all();
-
-
-        $return = [];
-        foreach ($places as $key => $place) {
-
-            $return[$key]['id'] = $place->id;
-            $return[$key]['name'] = $place->name;
-
-            $result = [];
-            foreach ($place->tracking as $key_result => $item) {
-
-                $item->setHidden(['id','place_id', 'created_at', 'updated_at']);
-
-                $index = Carbon::createFromFormat('Y-m-d', $item->reference)->formatLocalized('%B/%Y');
-
-                $result[$index] = $item;
-                //Average
-                $result[$index]['permanence'] = $item->permanence / $item->views;
-                
-                $result[$index]['reservations'] =  0;
-                $result[$index]['pre_reservations'] = 0;
-            }
-
-
-            $grouped = $place->reservations->groupBy(function ($item) {
-
-                return Carbon::createFromFormat('Y-m-d H:i:s', $item->date)->formatLocalized('%B/%Y');
-            });
-
-            foreach ($grouped as $key_reservations => $item) {
-
-                $reservations = [];
-                $pre_reservations = [];
-
-                foreach($item as $reservation){
-                    if(!$reservation->is_pre_reservation){
-                        $reservations[] = $reservation;
-                    }
-
-                    if($reservation->is_pre_reservation){
-                        $pre_reservations[] = $reservation;
-                    }
-                }
-
-                $result[$key_reservations]['reservations'] = count($reservations) ;
-                $result[$key_reservations]['pre_reservations'] = count($pre_reservations);
-
-            }
-
-            $return[$key]['statistics'] =  $result;
-
-        }
+        $place = Place::with('tracking', 'reservations')->find($id);
 
         if (request()->wantsJson()) {
 
-            return response()->json($return);
+            return response()->json($place);
         }
     }
 

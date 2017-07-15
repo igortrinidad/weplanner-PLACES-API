@@ -24,14 +24,14 @@ Route::group(['prefix' => 'auth'], function () {
 
 Route::group(['prefix' => 'places'], function () {
 
-    //Protected routes for admin
-    Route::group(['middleware' => 'auth:admin'], function () {
+    //Protected routes for admin 'middleware' => 'auth:admin'
+    Route::group([], function () {
         Route::get('/list', 'PlacesController@index');
         Route::get('/created_by', 'PlacesController@createdBy');
         Route::get('/show/{id}', 'PlacesController@show');
         Route::post('/create', 'PlacesController@store');
         Route::post('/update', 'PlacesController@update');
-        Route::get('/statistics', 'PlacesController@statistics');
+        Route::get('/statistics/{id}', 'PlacesController@statistics');
         Route::get('/statistics/month/{id}', 'PlacesController@monthStatistics');
         Route::get('/destroy/{id}', 'PlacesController@destroy');
 
