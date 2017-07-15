@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Repositories\PlaceCalendarSettingsRepository;
 use App\Repositories\PlacePhotoRepository;
+use App\Repositories\PlaceTrackingRepository;
 use App\Validators\PlaceValidator;
 use Illuminate\Http\Request;
 
@@ -15,6 +16,7 @@ use App\Http\Requests\PlaceUpdateRequest;
 use App\Repositories\PlaceRepository;
 
 use App\Models\Place;
+use Carbon\Carbon as Carbon;
 
 
 class PlacesController extends Controller
@@ -36,6 +38,10 @@ class PlacesController extends Controller
      * @var PlaceCalendarSettingsRepository
      */
     private $calendarSettingsRepository;
+    /**
+     * @var PlaceTrackingRepository
+     */
+    private $trackingRepository;
 
 
     /**
@@ -44,11 +50,13 @@ class PlacesController extends Controller
      * @param PlaceValidator $validator
      * @param PlacePhotoRepository $photoRepository
      * @param PlaceCalendarSettingsRepository $calendarSettingsRepository
+     * @param PlaceTrackingRepository $trackingRepository
      */
     public function __construct(PlaceRepository $repository,
                                 PlaceValidator $validator,
                                 PlacePhotoRepository $photoRepository,
-                                PlaceCalendarSettingsRepository $calendarSettingsRepository
+                                PlaceCalendarSettingsRepository $calendarSettingsRepository,
+                                PlaceTrackingRepository $trackingRepository
     )
     {
         $this->repository = $repository;
@@ -56,6 +64,7 @@ class PlacesController extends Controller
         $this->photoRepository = $photoRepository;
         $this->calendarSettingsRepository = $calendarSettingsRepository;
         setlocale(LC_TIME, 'pt_BR.utf8');
+        $this->trackingRepository = $trackingRepository;
     }
 
 
@@ -290,7 +299,7 @@ class PlacesController extends Controller
     {
 
         $place = $this->repository->findWhere(['slug' => $place_slug])
-            ->load('photos', 'calendar_settings', 'videos')
+            ->load('photos', 'calendar_settings', 'videos', 'promotional_dates')
             ->first();
 
         if (request()->wantsJson()) {
@@ -529,78 +538,38 @@ class PlacesController extends Controller
 
     }
 
-
-    public function statistics()
+    public function statistics($id)
     {
+        //12 months
+        $start = Carbon::now()->subMonths(12)->startOfMonth()->format('Y-m-d');
+        $end = Carbon::now()->endOfMonth()->startOfDay()->format('Y-m-d');
 
-        $places = $this->repository->scopeQuery(function ($query) {
-            return $query->where(['user_id' => \Auth::user()->id])
-                ->orderBy('name', 'ASC')->select('name', 'id')
-                ->withCount('tracking');
-        })->with(['tracking' => function($query){
-            $query->orderBy('created_at', 'ASC');
-        }])->all();
-
-        $return = [];
-
-        foreach ($places as $key => $place) {
-
-            $return[$key]['id'] = $place->id;
-            $return[$key]['name'] = $place->name;
-
-
-            $grouped = $place->tracking->groupBy(function ($item) {
-                return $item->created_at->formatLocalized('%m/%Y');
-            });
-
-
-            $result = [];
-            foreach ($grouped as $key_result => $item) {
-
-                //collect and sum clicks
-                $contact_calls = collect($item)->sum('contact_call');
-                $contact_whatsapp = collect($item)->sum('contact_whatsapp');
-                $contact_message = collect($item)->sum('contact_message');
-                $link_share = collect($item)->sum('share_copy');
-                $whatsapp_share = collect($item)->sum('share_whatsapp');
-                $facebook_share = collect($item)->sum('share_facebook');
-
-                $result[$key_result]['month_order'] = \Carbon\Carbon::createFromFormat('m/Y', $key_result)->month;
-                $result[$key_result]['month_name'] = ucfirst(\Carbon\Carbon::createFromFormat('m/Y', $key_result)->formatLocalized('%B'));
-                $result[$key_result]['year'] =  \Carbon\Carbon::createFromFormat('m/Y', $key_result)->year;
-                $result[$key_result]['views'] = $item->count();
-                $result[$key_result]['call_clicks'] = $contact_calls;
-                $result[$key_result]['whatsapp_clicks'] = $contact_whatsapp;
-                $result[$key_result]['contact_clicks'] = $contact_message;
-                $result[$key_result]['link_shares'] = $link_share;
-                $result[$key_result]['whatsapp_shares'] = $whatsapp_share;
-                $result[$key_result]['facebook_shares'] = $facebook_share;
-            }
-
-            $return[$key]['statistics'] =  $result;
-
-            /*
-             *   $views = collect($item)->count();
-
-                $contact_message = collect($item)->sum('contact_message');
-                $contact_whatsapp = collect($item)->sum('contact_whatsapp');
-
-                $result[$key_result]['month_order'] = \Carbon\Carbon::createFromFormat('m/Y', $key_result)->month;
-                $result[$key_result]['month_name'] = ucfirst(\Carbon\Carbon::createFromFormat('m/Y', $key_result)->formatLocalized('%B'));
-                $result[$key_result]['year'] = \Carbon\Carbon::createFromFormat('m/Y', $key_result)->year;
-                $result[$key_result]['views'] = $views;
-                $result[$key_result]['call_clicks'] = $contact_calls;
-                $result[$key_result]['message_clicks'] = $contact_message;
-                $result[$key_result]['whatsapp_clicks'] = $contact_whatsapp;*/
-
-        }
-
-
+        $place = Place::with('tracking', 'reservations')->find($id);
 
         if (request()->wantsJson()) {
 
-            return response()->json($return);
+            return response()->json($place);
+        }
+    }
 
+
+    public function monthStatistics($id)
+    {
+        //Month statistics
+        $reference =  Carbon::now()->startOfMonth();
+
+        $statistics = $this->trackingRepository->scopeQuery(function ($query) use($id, $reference){
+            return $query->where(['place_id' => $id, 'reference' => $reference]);
+        })->first()
+            ->setHidden(['id', 'place_id', 'created_at', 'updated_at', 'reference'])
+        ->toArray();
+
+        //Average
+        $statistics['permanence'] = $statistics['permanence'] /  $statistics['views'];
+
+        if (request()->wantsJson()) {
+
+            return response()->json($statistics);
         }
     }
 

@@ -24,14 +24,15 @@ Route::group(['prefix' => 'auth'], function () {
 
 Route::group(['prefix' => 'places'], function () {
 
-    //Protected routes for admin
-    Route::group(['middleware' => 'auth:admin'], function () {
+    //Protected routes for admin 'middleware' => 'auth:admin'
+    Route::group([], function () {
         Route::get('/list', 'PlacesController@index');
         Route::get('/created_by', 'PlacesController@createdBy');
         Route::get('/show/{id}', 'PlacesController@show');
         Route::post('/create', 'PlacesController@store');
         Route::post('/update', 'PlacesController@update');
-        Route::get('/statistics', 'PlacesController@statistics');
+        Route::get('/statistics/{id}', 'PlacesController@statistics');
+        Route::get('/statistics/month/{id}', 'PlacesController@monthStatistics');
         Route::get('/destroy/{id}', 'PlacesController@destroy');
 
         //Photo upload
@@ -65,6 +66,12 @@ Route::group(['prefix' => 'places'], function () {
             Route::post('/document/upload', 'OwnerRequestDocumentsController@store');
             Route::get('/document/destroy/{id}', 'OwnerRequestDocumentsController@destroy');
         });
+
+        //Promotional dates
+        Route::post('/promotional_dates', 'PromotionalDatesController@index');
+        Route::post('/promotional_dates/create', 'PromotionalDatesController@store');
+        Route::post('/promotional_dates/update', 'PromotionalDatesController@update');
+        Route::get('/promotional_dates/destroy/{id}', 'PromotionalDatesController@destroy');
     });
 
     //Protected routes for client
@@ -91,6 +98,7 @@ Route::group(['prefix' => 'places'], function () {
     Route::get('/featured_places', 'PlacesController@featuredPlaces');
     Route::post('/tracker', 'PlaceTrackingsController@tracker');
     Route::post('/public/reservations/month_reservations', 'PlaceReservationsController@monthReservationsPublic');
+    Route::get('/promotional_dates/home_list', 'PromotionalDatesController@homeList');
     Route::get('/public/show/{place_slug}', 'PlacesController@showPublic');
     Route::get('{category_slug}', 'PlacesController@listByCategory');
     Route::get('{category_slug}/featured', 'PlacesController@featuredPlaces');
@@ -151,6 +159,7 @@ Route::group(['prefix' => 'oracle'], function () {
             Route::get('/trashed', 'OracleController@trashed');
             Route::post('/restore', 'OracleController@restore');
             Route::post('/destroy', 'OracleController@destroy');
+            Route::post('/filter', 'OracleController@filter');
 
             //calendar settings
             Route::post('/calendar_settings/update', 'PlaceCalendarSettingsController@update');

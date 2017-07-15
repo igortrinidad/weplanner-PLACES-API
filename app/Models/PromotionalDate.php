@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
-class PlaceTracking extends Model implements Transformable
+class PromotionalDate extends Model implements Transformable
 {
     use TransformableTrait, Uuids;
 
@@ -16,7 +16,7 @@ class PlaceTracking extends Model implements Transformable
      *
      * @var string
      */
-    protected $table = 'place_trackings';
+    protected $table = 'promotional_dates';
 
     /**
      * Indicates if the IDs are auto-incrementing.
@@ -32,16 +32,22 @@ class PlaceTracking extends Model implements Transformable
      */
     protected $fillable = [
         'place_id',
-        'reference',
-        'views',
-        'permanence',
-        'call_clicks',
-        'whatsapp_clicks',
-        'contact_clicks',
-        'link_shares',
-        'whatsapp_shares',
-        'facebook_shares'
+        'date',
+        'title',
+        'value',
+        'discount',
+        'rules'
     ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'value' => 'double',
+        'discount' => 'double',
+        ];
 
 
     /**
@@ -55,7 +61,7 @@ class PlaceTracking extends Model implements Transformable
      */
     public function place()
     {
-        return $this->belongsTo(Place::class, 'id', 'place_id');
+        return $this->belongsTo(Place::class);
     }
 
 }

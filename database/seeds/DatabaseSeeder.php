@@ -45,7 +45,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call(PlacePhotoTableSeeder::class);
 
-        $this->call(PlaceAppointmentsTableSeeder::class);
+        //$this->call(PlaceAppointmentsTableSeeder::class);
 
         factory(App\Models\Client::class)->create([
             'name' => 'Matheus',
@@ -57,6 +57,10 @@ class DatabaseSeeder extends Seeder
         ]);
 
         factory(App\Models\Client::class, 10)->create();
+
+        $this->call(ReservationsTableSeeder::class);
+
+        $this->call(PromotionalDatesTableSeeder::class);
 
         /*
          * Oracle users

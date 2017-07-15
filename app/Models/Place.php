@@ -93,7 +93,9 @@ class Place extends Model implements Transformable
         'confirmed' => 'boolean',
         'instructions' => 'json',
         'list_common' => 'boolean',
-        'featured_position' => 'integer'
+        'featured_position' => 'integer',
+        'reservation_price' => 'double',
+        'pre_reservation_price' => 'double',
     ];
 
     /**
@@ -231,7 +233,16 @@ class Place extends Model implements Transformable
      */
     public function tracking()
     {
-        return $this->hasMany(PlaceTracking::class);
+        return $this->hasMany(PlaceTracking::class, 'place_id', 'id');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function promotional_dates()
+    {
+        return $this->hasMany(PromotionalDate::class, 'place_id', 'id');
+    }
+
 
 }
