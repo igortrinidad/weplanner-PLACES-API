@@ -72,7 +72,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = $this->repository->find($id);
+        $user = $this->repository->with(['places', 'created_by'])->find($id);
 
         if (request()->wantsJson()) {
 

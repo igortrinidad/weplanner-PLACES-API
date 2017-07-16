@@ -102,7 +102,7 @@ class OracleUsersController extends Controller
      */
     public function show($id)
     {
-        $oracleUser = $this->repository->find($id);
+        $oracleUser = $this->repository->with(['created_by'])->find($id);
 
         if (request()->wantsJson()) {
 

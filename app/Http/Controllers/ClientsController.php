@@ -102,7 +102,7 @@ class ClientsController extends Controller
      */
     public function show($id)
     {
-        $client = $this->repository->find($id);
+        $client = $this->repository->with(['created_by'])->find($id);
 
         if (request()->wantsJson()) {
 
