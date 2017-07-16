@@ -85,6 +85,15 @@ class OracleUser extends Authenticatable implements JWTSubject
         return [];
     }
 
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function created_by()
+    {
+        return $this->hasMany(Place::class, 'created_by_id');
+    }
+
     /**
      * -------------------------------
      * Custom fields
