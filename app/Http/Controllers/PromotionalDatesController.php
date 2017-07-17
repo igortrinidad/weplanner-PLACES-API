@@ -213,7 +213,7 @@ class PromotionalDatesController extends Controller
             ->orderByRaw('RAND()')
             ->take(8) // take 8 records randomly
             ->with(['place' => function ($query) {
-                $query->select('id', 'name', 'city', 'state', 'slug');
+                $query->select('id', 'name', 'city', 'state', 'slug', 'informations');
             }])
             ->get();
 
