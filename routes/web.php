@@ -19,6 +19,8 @@ Route::get('/web/test-email/{template}', function ($template) {
     return view($template);
 });
 
+Route::get('/web/test-email-with-send/{template}/{email}', 'TestController@testEmailWithSend');
+
 /*
  * Auth
  */
