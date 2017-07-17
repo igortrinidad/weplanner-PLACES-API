@@ -437,8 +437,51 @@ class PlacesController extends Controller
             })->with(['photos'])->orderBy('name');
 
 
-        $cerimonyCount = Place::where('confirmed', true)->where('cerimony', true)->where('city', 'LIKE', '%' . $request->get('city') . '%')->count();
-        $partyCount = Place::where('confirmed', true)->where('party_space', true)->where('city', 'LIKE', '%' . $request->get('city') . '%')->count();
+        $cerimonyCount = Place::where('confirmed', true)
+            ->where('cerimony', true)
+            ->where(function ($query) use ($request) {
+                    foreach ($request->all() as $key => $value) {
+
+                        if ($key === 'page') {
+                            continue;
+                        }
+
+                        if ($key === 'max_guests') {
+                            $query->where($key, '>=', $value);
+                        }
+
+                        if ($key === 'name' || $key === 'city') {
+                            $query->where($key, 'LIKE', '%' . $value . '%');
+                        }
+
+                        if ($key != 'max_guests' && $key != 'name' && $value && $key != 'city' && $key != 'per_page' && $key != 'party_space' && $key != 'cerimony') {
+                            $query->where($key, $value);
+                        }
+                    }
+                })->count();
+
+        $partyCount = Place::where('confirmed', true)
+            ->where('party_space', true)
+            ->where(function ($query) use ($request) {
+                    foreach ($request->all() as $key => $value) {
+
+                        if ($key === 'page') {
+                            continue;
+                        }
+
+                        if ($key === 'max_guests') {
+                            $query->where($key, '>=', $value);
+                        }
+
+                        if ($key === 'name' || $key === 'city') {
+                            $query->where($key, 'LIKE', '%' . $value . '%');
+                        }
+
+                        if ($key != 'max_guests' && $key != 'name' && $value && $key != 'city' && $key != 'per_page' && $key != 'party_space' && $key != 'cerimony') {
+                            $query->where($key, $value);
+                        }
+                    }
+                })->count();
 
         $per_page == 'all' ? $places = $places->all() : $places = $places->paginate($per_page);
 

@@ -50,6 +50,7 @@ class Place extends Model implements Transformable
         'style_rustic',
         'style_modern',
         'style_authentic',
+        'style_classic',
         'localization_city',
         'localization_countryside',
         'accessibility',
