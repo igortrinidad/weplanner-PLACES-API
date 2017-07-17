@@ -1,0 +1,40 @@
+#!/bin/bash
+
+
+#Retorna o ultimo commit
+commits=(`git log -1 --pretty=%s`)
+
+#Verifica em cada palavra para encontrar os padrões abaixo e executar ações especificas de acordo com cada padrão
+for commit in "${commits[@]}"
+do
+    #Se houver a palavra --build-testing ele atualiza a versão, altera no arquivo de configurações antes de gerar o build o ENV: 'testing'
+
+    if [ $commit == "--update" ]; then
+
+        cd automating
+        version=(`env=production  node update-version.js`);
+        wait
+        echo "Version updated to ${version}."
+        
+        cd ../
+        git add -A;
+        echo "**********************************************";
+        git commit -m "Generated version: ${version}.";
+        git push
+        git checkout master;
+        echo "BRANCH ALTERADA PARA: MASTER"
+        git merge development;
+
+        git add -A;
+        git commit -m "Merge from development: ${version}.";
+        git push
+
+        git checkout development
+        echo "BRANCH ALTERADA PARA: DEVELOPMENT"
+        echo "**********************************************";
+        echo "FINISHING THE JOB"
+        git push
+        git pull
+    fi
+done
+
