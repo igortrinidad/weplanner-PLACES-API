@@ -99,6 +99,7 @@ Route::group(['prefix' => 'places'], function () {
     Route::post('/tracker', 'PlaceTrackingsController@tracker');
     Route::post('/public/reservations/month_reservations', 'PlaceReservationsController@monthReservationsPublic');
     Route::get('/promotional_dates/home_list', 'PromotionalDatesController@homeList');
+    Route::post('/promotional_dates/by_city', 'PromotionalDatesController@byCity');
     Route::get('/public/show/{place_slug}', 'PlacesController@showPublic');
     Route::get('{category_slug}', 'PlacesController@listByCategory');
     Route::get('{category_slug}/featured', 'PlacesController@featuredPlaces');

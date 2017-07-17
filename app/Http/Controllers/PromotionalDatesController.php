@@ -222,4 +222,32 @@ class PromotionalDatesController extends Controller
             return response()->json($promotionalDates);
         }
     }
+
+    /**
+     * List of promotional dates by city
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function byCity(Request $request)
+    {
+
+        $promotionalDates = $this->repository->makeModel()->whereHas('place', function($query) use ($request){
+
+            if($request->get('city') != 'todas-cidades'){
+                $query->where('confirmed', true)->where('city', $request->get('city'));
+            }
+
+            if($request->get('city') == 'todas-cidades'){
+                $query->where('confirmed', true);
+            }
+        })->with(['place' => function ($query) {
+            $query->select('id', 'name', 'city', 'state', 'slug', 'informations');
+        }])->get();
+
+        if (request()->wantsJson()) {
+
+            return response()->json($promotionalDates);
+        }
+    }
 }
