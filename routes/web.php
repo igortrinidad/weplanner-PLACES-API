@@ -15,9 +15,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
+
 Route::get('/web/test-email/{template}', function ($template) {
     return view($template);
 });
+
+
+Route::get('/web/test-email-data/place/{id}', 'TestController@testEmailData');
 
 Route::get('/web/test-email-with-send/{template}/{email}', 'TestController@testEmailWithSend');
 

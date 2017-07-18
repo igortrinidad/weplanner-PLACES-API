@@ -246,3 +246,6 @@ Route::group(['prefix' => 'tools'], function(){
     Route::get('users/generateNewPass/oracle/{email}', 'OracleUsersController@generateNewPass');
 
 });
+
+
+Route::get('/test-email/{id}', 'TestController@testEmailData');
