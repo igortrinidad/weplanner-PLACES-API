@@ -83,13 +83,13 @@ class TestController extends Controller
 
         $before_last_month = $this->trackingRepository->makeModel()
             ->where('place_id', $id)
-            ->where('reference', Carbon::now()->subMonth(2)->startOfMonth()->format('Y-m-d'))
+            ->where('reference', Carbon::now()->subMonth(1)->startOfMonth()->format('Y-m-d'))
             ->first();
 
 
         $last_month = $this->trackingRepository->makeModel()
             ->where('place_id', $id)
-            ->where('reference', Carbon::now()->subMonth(1)->startOfMonth()->format('Y-m-d'))
+            ->where('reference', Carbon::now()->startOfMonth()->format('Y-m-d'))
             ->first();
 
         $empty_data = [
@@ -155,7 +155,7 @@ class TestController extends Controller
             return response()->json(['message' => 'Email enviado com sucesso']);
         }
 
-        return 'Email enviado com sucesso';
+        return 'Email enviado com sucesso para: ' . $email . ' | local: ' . $place['name'] ;
     }
 
     function calcDiff($last_month, $before_last_month)

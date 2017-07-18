@@ -70,117 +70,139 @@
                         style="background-color: #fff; padding: 30px 0;"
                     >
                         <tbody style="text-align: center; font-family: 'Lato', sans-serif;">
+
+
+                            @if(!$data['place']['has_owner'])
+                            <tr>
+                                <td colspan="2" style="padding: 15px 0;  width: 50%;">
+                                    <span style="font-size: 22px;">{{$data['reservation_interests']}} pessoas</span>
+                                    <h5 style="font-family: 'Quicksand', sans-serif; margin: 0 !important;">gostariam de reservar seu espaço</h5>
+                                </td>
+                            </tr>
+                            @endif
+
+
                             <tr style="width: 100%;">
-                                <td style="padding: 15px 0; border-right: 1px solid rgb(242, 242, 242); width: 50%;">
-                                    <h3 style="font-family: 'Quicksand', sans-serif; margin: 0 !important;">Visualizações</h3>
-                                    <span style="font-size: 25px;">{{$data['views']['last_month']}}</span>
+                                <td colspan="2" style="padding: 15px 0; border-top: 1px solid rgb(242, 242, 242); border-bottom: 1px solid rgb(242, 242, 242); width: 50%;">
+                                    <h4 style="font-family: 'Quicksand', sans-serif; margin: 0 !important;">Visualizações</h4>
+                                    <span style="font-size: 22px;">{{$data['views']['last_month']}}</span>
                                     <br />
                                     <small>
                                         @if($data['views']['stats']['no_data'])
-                                            Sem dados do mês anterior
+                                            --
                                         @endif
                                         @if(!$data['views']['stats']['value'] > 0 && !$data['views']['stats']['no_data'])
-                                            Igual ao mês anterior
+                                            Igual
                                         @endif
                                         @if($data['views']['stats']['is_positive'] && $data['views']['stats']['value'])
-                                            <span style="color:green"><strong>{{$data['views']['stats']['value']}}%</strong></span>  a mais que no mês anterior
+                                            <span style="color:green"><strong>{{$data['views']['stats']['value']}}%</strong></span>  mais
                                         @endif
                                         @if(!$data['views']['stats']['is_positive'] && $data['views']['stats']['value'])
-                                            <span style=" color:red"><strong>{{$data['views']['stats']['value']}}%</strong></span>  a menos que no mês anterior
+                                            <span style=" color:red"><strong>{{$data['views']['stats']['value']}}%</strong></span>  menos
                                         @endif
+
                                     </small>
+                                    <br>
+                                    último mês
                                 </td>
+                            </tr>
+                            <tr style="width: 100%;">
                                 <td style="padding: 15px 0; width: 50%;">
-                                    <h3 style="font-family: 'Quicksand', sans-serif; margin: 0 !important;">Tempo de Visualização</h3>
-                                    <span style="font-size: 25px;">{{$data['permanence']['last_month']}}</span>
+                                    <h4 style="font-family: 'Quicksand', sans-serif; margin: 0 !important;">Tempo de Visualização</h4>
+                                    <span style="font-size: 22px;">{{$data['permanence']['last_month']}}</span>
                                     <br />
                                     <small>
                                         @if($data['permanence']['stats']['no_data'])
-                                            Sem dados do mês anterior
+                                            --
                                         @endif
                                         @if(!$data['permanence']['stats']['value'] > 0 && !$data['permanence']['stats']['no_data'])
-                                            Igual ao mês anterior
+                                            Igual
                                         @endif
                                         @if($data['permanence']['stats']['is_positive'] && $data['permanence']['stats']['value'])
-                                            <span style="color:green"><strong>{{$data['permanence']['stats']['value']}}%</strong></span>  a mais que no mês anterior
+                                            <span style="color:green"><strong>{{$data['permanence']['stats']['value']}}%</strong></span> a mais
                                         @endif
                                         @if(!$data['permanence']['stats']['is_positive'] && $data['permanence']['stats']['value'])
-                                            <span style=" color:red"><strong>{{$data['permanence']['stats']['value']}}%</strong></span>  a menos que no mês anterior
+                                            <span style=" color:red"><strong>{{$data['permanence']['stats']['value']}}%</strong></span> a menos
                                         @endif
                                     </small>
+                                    <br>
+                                    último mês
                                 </td>
-                            </tr>
-                            <tr style="width: 100%;">
-                                <td style="padding: 15px 0; border-right: 1px solid rgb(242, 242, 242); border-top: 1px solid rgb(242, 242, 242); width: 50%;">
-                                    <h3 style="font-family: 'Quicksand', sans-serif; margin: 0 !important;">Contato <small>(whatsapp)</small></h3>
-                                    <span style="font-size: 25px;">{{$data['whatsapp_clicks']['last_month']}}</span>
+
+                                <td style="padding: 15px 0; border-left: 1px solid rgb(242, 242, 242); width: 50%;">
+                                    <h4 style="font-family: 'Quicksand', sans-serif; margin: 0 !important;">Contato <small>(whatsapp)</small></h4>
+                                    <span style="font-size: 22px;">{{$data['whatsapp_clicks']['last_month']}}</span>
                                     <br />
                                     <small>
                                         @if($data['whatsapp_clicks']['stats']['no_data'])
-                                            Sem dados do mês anterior
+                                            --
                                         @endif
                                         @if(!$data['whatsapp_clicks']['stats']['value'] > 0 && !$data['whatsapp_clicks']['stats']['no_data'])
-                                            Igual ao mês anterior
+                                            Igual
                                         @endif
                                         @if($data['whatsapp_clicks']['stats']['is_positive'] && $data['whatsapp_clicks']['stats']['value'])
-                                            <span style="color:green"><strong>{{$data['whatsapp_clicks']['stats']['value']}}%</strong></span>  a mais que no mês anterior
+                                            <span style="color:green"><strong>{{$data['whatsapp_clicks']['stats']['value']}}%</strong></span> a mais
                                         @endif
                                         @if(!$data['whatsapp_clicks']['stats']['is_positive'] && $data['whatsapp_clicks']['stats']['value'])
-                                            <span style=" color:red"><strong>{{$data['whatsapp_clicks']['stats']['value']}}%</strong></span>  a menos que no mês anterior
+                                            <span style=" color:red"><strong>{{$data['whatsapp_clicks']['stats']['value']}}%</strong></span> a menos
                                         @endif
                                     </small>
+                                    <br>
+                                    último mês
                                 </td>
-                                <td style="padding: 15px 0; border-top: 1px solid rgb(242, 242, 242); width: 50%;">
-                                    <h3 style="font-family: 'Quicksand', sans-serif; margin: 0 !important;">Contato <small>(Mensagem)</small></h3>
-                                    <span style="font-size: 25px;">{{$data['contact_clicks']['last_month']}}</span>
-                                    <br />
-                                    <small>
-                                        @if($data['contact_clicks']['stats']['no_data'])
-                                            Sem dados do mês anterior
-                                        @endif
-                                        @if(!$data['contact_clicks']['stats']['value'] > 0 && !$data['contact_clicks']['stats']['no_data'])
-                                            Igual ao mês anterior
-                                        @endif
-                                        @if($data['contact_clicks']['stats']['is_positive'] && $data['contact_clicks']['stats']['value'])
-                                            <span style="color:green"><strong>{{$data['contact_clicks']['stats']['value']}}%</strong></span>  a mais que no mês anterior
-                                        @endif
-                                        @if(!$data['contact_clicks']['stats']['is_positive'] && $data['contact_clicks']['stats']['value'])
-                                            <span style=" color:red"><strong>{{$data['contact_clicks']['stats']['value']}}%</strong></span>  a menos que no mês anterior
-                                        @endif
-                                    </small>
-                                </td>
+
                             </tr>
                             <tr style="width: 100%;">
-                                <td style="padding: 15px 0; border-right: 1px solid rgb(242, 242, 242); border-top: 1px solid rgb(242, 242, 242); width: 50%;">
-                                    <h3 style="font-family: 'Quicksand', sans-serif; margin: 0 !important;">Contato <small>(ligação)</small></h3>
-                                    <span style="font-size: 25px;">{{$data['call_clicks']['last_month']}}</span>
+                                <td style="padding: 15px 0; border-top: 1px solid rgb(242, 242, 242); width: 50%;">
+                                    <h4 style="font-family: 'Quicksand', sans-serif; margin: 0 !important;">Contato <small>(ligação)</small></h4>
+                                    <span style="font-size: 22px;">{{$data['call_clicks']['last_month']}}</span>
                                     <br />
                                     <small>
                                         @if($data['call_clicks']['stats']['no_data'])
-                                            Sem dados do mês anterior
+                                            --
                                         @endif
                                         @if(!$data['call_clicks']['stats']['value'] > 0 && !$data['call_clicks']['stats']['no_data'])
-                                            Igual ao mês anterior
+                                            Igual
                                         @endif
                                         @if($data['call_clicks']['stats']['is_positive'] && $data['call_clicks']['stats']['value'])
-                                            <span style="color:green"><strong>{{$data['call_clicks']['stats']['value']}}%</strong></span>  a mais que no mês anterior
+                                            <span style="color:green"><strong>{{$data['call_clicks']['stats']['value']}}%</strong></span>  a mais
                                         @endif
                                         @if(!$data['call_clicks']['stats']['is_positive'] && $data['call_clicks']['stats']['value'])
-                                            <span style=" color:red"><strong>{{$data['call_clicks']['stats']['value']}}%</strong></span>  a menos que no mês anterior
+                                            <span style=" color:red"><strong>{{$data['call_clicks']['stats']['value']}}%</strong></span>  a menos
                                         @endif
                                     </small>
+                                    <br>
+                                    último mês
                                 </td>
-                                @if(!$data['place']['has_owner'])
-                                    <td style="padding: 15px 0; border-top: 1px solid rgb(242, 242, 242); width: 50%;">
-                                        <h3 style="font-family: 'Quicksand', sans-serif; margin: 0 !important;">Interesse em reservar</h3>
-                                        <span style="font-size: 25px;">{{$data['reservation_interests']}}</span>
-                                    </td>
-                                @endif
+
+                                <td style="padding: 15px 0; border-top: 1px solid rgb(242, 242, 242); border-left: 1px solid rgb(242, 242, 242); width: 50%;">
+                                    <h4 style="font-family: 'Quicksand', sans-serif; margin: 0 !important;">Contato <small>(Mensagem)</small></h4>
+                                    <span style="font-size: 22px;">{{$data['contact_clicks']['last_month']}}</span>
+                                    <br />
+                                    <small>
+                                        @if($data['contact_clicks']['stats']['no_data'])
+                                            --
+                                        @endif
+                                        @if(!$data['contact_clicks']['stats']['value'] > 0 && !$data['contact_clicks']['stats']['no_data'])
+                                            Igual
+                                        @endif
+                                        @if($data['contact_clicks']['stats']['is_positive'] && $data['contact_clicks']['stats']['value'])
+                                            <span style="color:green"><strong>{{$data['contact_clicks']['stats']['value']}}%</strong></span> a mais
+                                        @endif
+                                        @if(!$data['contact_clicks']['stats']['is_positive'] && $data['contact_clicks']['stats']['value'])
+                                            <span style=" color:red"><strong>{{$data['contact_clicks']['stats']['value']}}%</strong></span> a menos
+                                        @endif
+                                    </small>
+                                    <br>
+                                    último mês
+                                </td>
                             </tr>
+
                         </tbody>
                     </table>
                     <!-- /MAIN CONTENT -->
 
+                    <!-- INIT INTERACTIONS -->
                     <table
                         cellspacing="0"
                         cellpadding="0"
@@ -199,69 +221,69 @@
                             </tr>
                             <tr style="width: 100%">
                                 <td style="padding: 15px; border-radius:4px 0px 0px 4px; background-color: rgb(242, 242, 242); width: 60%; border: 1px solid rgb(255, 255, 255)">
-                                    <h3 style="font-family: 'Quicksand', sans-serif; margin: 0 !important; color: #3b5998; ">Facebook</h3>
+                                    <h4 style="font-family: 'Quicksand', sans-serif; margin: 0 !important; color: #3b5998; ">Facebook</h4>
                                 </td>
                                 <td style="padding: 15px; border-radius:0px 4px 4px 0px; background-color: rgb(242, 242, 242); border-left: 1px solid rgb(255, 255, 255); border-top: 1px solid rgb(255, 255, 255); width: 40%;">
                                     <span><strong>{{$data['facebook_shares']['last_month']}}</strong></span>
                                     <br />
                                     <small>
                                         @if($data['facebook_shares']['stats']['no_data'])
-                                            Sem dados do mês anterior
+                                            sem dados do último mês
                                         @endif
                                         @if(!$data['facebook_shares']['stats']['value'] > 0 && !$data['facebook_shares']['stats']['no_data'])
-                                            Igual ao mês anterior
+                                            Igual
                                         @endif
                                         @if($data['facebook_shares']['stats']['is_positive'] && $data['facebook_shares']['stats']['value'])
-                                            <span style="color:green"><strong>{{$data['facebook_shares']['stats']['value']}}%</strong></span>  a mais que no mês anterior
+                                            <span style="color:green"><strong>{{$data['facebook_shares']['stats']['value']}}%</strong></span>  mais
                                         @endif
                                         @if(!$data['facebook_shares']['stats']['is_positive'] && $data['facebook_shares']['stats']['value'])
-                                            <span style=" color:red"><strong>{{$data['facebook_shares']['stats']['value']}}%</strong></span>  a menos que no mês anterior
+                                            <span style=" color:red"><strong>{{$data['facebook_shares']['stats']['value']}}%</strong></span>  menos
                                         @endif
                                     </small>
                                 </td>
                             </tr>
                             <tr style="width: 100%">
                                 <td style="padding: 15px; border-radius:4px 0px 0px 4px; background-color: rgb(242, 242, 242); width: 60%; border: 1px solid rgb(255, 255, 255)">
-                                    <h3 style="font-family: 'Quicksand', sans-serif; margin: 0 !important; color: #009688; ">Whatsapp</h3>
+                                    <h4 style="font-family: 'Quicksand', sans-serif; margin: 0 !important; color: #009688; ">Whatsapp</h4>
                                 </td>
                                 <td style="padding: 15px; border-radius:0px 4px 4px 0px; background-color: rgb(242, 242, 242); border-left: 1px solid rgb(255, 255, 255); border-top: 1px solid rgb(255, 255, 255); width: 40%;">
                                     <span><strong>{{$data['whatsapp_shares']['last_month']}}</strong></span>
                                     <br />
                                     <small>
                                         @if($data['whatsapp_shares']['stats']['no_data'])
-                                            Sem dados do mês anterior
+                                            Sem dados do último mês
                                         @endif
                                         @if(!$data['whatsapp_shares']['stats']['value'] > 0 && !$data['whatsapp_shares']['stats']['no_data'])
-                                            Igual ao mês anterior
+                                            Igual ao último mês
                                         @endif
                                         @if($data['whatsapp_shares']['stats']['is_positive'] && $data['whatsapp_shares']['stats']['value'])
-                                            <span style="color:green"><strong>{{$data['whatsapp_shares']['stats']['value']}}%</strong></span>  a mais que no mês anterior
+                                            <span style="color:green"><strong>{{$data['whatsapp_shares']['stats']['value']}}%</strong></span>  a mais que no último mês
                                         @endif
                                         @if(!$data['whatsapp_shares']['stats']['is_positive'] && $data['whatsapp_shares']['stats']['value'])
-                                            <span style=" color:red"><strong>{{$data['whatsapp_shares']['stats']['value']}}%</strong></span>  a menos que no mês anterior
+                                            <span style=" color:red"><strong>{{$data['whatsapp_shares']['stats']['value']}}%</strong></span>  a menos que no último mês
                                         @endif
                                     </small>
                                 </td>
                             </tr>
                             <tr style="width: 100%">
                                 <td style="padding: 15px; border-radius:4px 0px 0px 4px; background-color: rgb(242, 242, 242); width: 60%; border: 1px solid rgb(255, 255, 255)">
-                                    <h3 style="font-family: 'Quicksand', sans-serif; margin: 0 !important; color: #999;">Link copiados</h3>
+                                    <h4 style="font-family: 'Quicksand', sans-serif; margin: 0 !important; color: #999;">Link copiados</h4>
                                 </td>
                                 <td style="padding: 15px; border-radius:0px 4px 4px 0px; background-color: rgb(242, 242, 242); border-left: 1px solid rgb(255, 255, 255); border-top: 1px solid rgb(255, 255, 255); width: 40%;">
                                     <span><strong>{{$data['link_shares']['last_month']}}</strong></span>
                                     <br />
                                     <small>
                                         @if($data['link_shares']['stats']['no_data'])
-                                            Sem dados do mês anterior
+                                            Sem dados do último mês
                                         @endif
                                         @if(!$data['link_shares']['stats']['value'] > 0 && !$data['link_shares']['stats']['no_data'])
-                                            Igual ao mês anterior
+                                            Igual ao último mês
                                         @endif
                                         @if($data['link_shares']['stats']['is_positive'] && $data['link_shares']['stats']['value'])
-                                            <span style="color:green"><strong>{{$data['link_shares']['stats']['value']}}%</strong></span>  a mais que no mês anterior
+                                            <span style="color:green"><strong>{{$data['link_shares']['stats']['value']}}%</strong></span>  a mais que no último mês
                                         @endif
                                         @if(!$data['link_shares']['stats']['is_positive'] && $data['link_shares']['stats']['value'])
-                                            <span style=" color:red"><strong>{{$data['link_shares']['stats']['value']}}%</strong></span>  a menos que no mês anterior
+                                            <span style=" color:red"><strong>{{$data['link_shares']['stats']['value']}}%</strong></span>  a menos que no último mês
                                         @endif
                                     </small>
                                 </td>
@@ -286,10 +308,7 @@
                                     <hr>
                                     <span style="font-size: 12px; font-style: italic; font-weight: 80;">
                                         <p>
-                                            © 2017 We-Planner Soluções Tecnológicas - <a href="https://places.we-planner.com">Places We-planner</a>
-                                        </p>
-                                        <P>
-                                            SE VOCÊ RECEBEU ESTA COMUNICAÇÃO POR ENGANO, por favor, não a encaminhe a ninguém (pode conter informação confidencial ou privilegiada), por favor, apague todas as cópias da mensagem, incluindo todos anexos e notifique o remetente imediatamente. Obrigado por sua cooperação. Os termos acima reflectem um possível acordo comercial, são fornecidos exclusivamente como base para desenvolvimentos futuros e não se destinam a ser, nem constituem qualquer obrigação juridicamente vinculativa. Nenhuma obrigação juridicamente vinculativa deverá ser criada, pressuposta ou inferida até que haja um acordo final assinado por escrito por todas as partes envolvidas.
+                                            © 2017 We-Planner Soluções Tecnológicas - <a href="https://weplaces.com.br">We Places</a>
                                         </p>
                                     </span>
                                 </td>
