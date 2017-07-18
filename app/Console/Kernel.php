@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        \App\Console\Commands\UpdateTracker::class
     ];
 
     /**
@@ -24,8 +24,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        //Update the tracker autimaticaly to keep places interesting on our platform while we do not have much users
+        $schedule->command('update:tracker')->dailyAt('17:58');
     }
 
     /**
