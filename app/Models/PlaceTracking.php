@@ -55,7 +55,7 @@ class PlaceTracking extends Model implements Transformable
      */
     public function place()
     {
-        return $this->belongsTo(Place::class, 'id', 'place_id');
+        return $this->belongsTo(Place::class, 'place_id', 'id');
     }
 
 }

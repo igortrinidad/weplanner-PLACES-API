@@ -62,9 +62,9 @@ class OracleController extends Controller
     public function placesList(Request $request)
     {
 
-        $places = $this->placeRepository->scopeQuery(function ($query) use ( $request) {
-                return $query->where('confirmed', '=', $request->get('confirmed'))->orderBy('name', 'ASC');
-            })->paginate(10);
+        $places = $this->placeRepository->scopeQuery(function ($query) use ($request) {
+            return $query->where('confirmed', '=', $request->get('confirmed'))->orderBy('name', 'ASC');
+        })->paginate(10);
 
         return response()->json($places);
     }
@@ -78,7 +78,7 @@ class OracleController extends Controller
     public function placeShow($id)
     {
         $place = $this->placeRepository->findWhere(['id' => $id])
-            ->load('photos', 'documents', 'appointments', 'calendar_settings', 'user', 'videos')
+            ->load('photos', 'documents', 'reservations', 'tracking', 'calendar_settings', 'user', 'videos')
             ->first();
 
 
@@ -106,9 +106,9 @@ class OracleController extends Controller
     public function search(Request $request)
     {
         $places = $this->placeRepository
-            ->scopeQuery(function ($query) use ( $request) {
+            ->scopeQuery(function ($query) use ($request) {
                 return $query->where('confirmed', '=', $request->get('confirmed'))
-                    ->where('name', 'LIKE', '%'.$request->get('therm').'%')
+                    ->where('name', 'LIKE', '%' . $request->get('therm') . '%')
                     ->orderBy('name', 'ASC');
             })->with(['photos', 'documents', 'appointments', 'calendar_settings', 'user'])->paginate(10);
 
@@ -144,8 +144,8 @@ class OracleController extends Controller
     public function restore(Request $request)
     {
         $trashed_place = $this->placeRepository->makeModel()->withTrashed()
-        ->where('id', $request->get('id'))
-        ->restore();
+            ->where('id', $request->get('id'))
+            ->restore();
 
         if (request()->wantsJson()) {
 
@@ -166,13 +166,13 @@ class OracleController extends Controller
             ->first();
 
         //Remove photos
-        foreach($trashed_place->photos as $photo){
+        foreach ($trashed_place->photos as $photo) {
             \Storage::disk('media')->delete($photo->path);
             $photo->delete();
         }
 
         //Remove Documents
-        foreach($trashed_place->documents as $document){
+        foreach ($trashed_place->documents as $document) {
             \Storage::disk('media')->delete($document->path);
             $document->delete();
         }
@@ -224,9 +224,51 @@ class OracleController extends Controller
         }
     }
 
-    public function filter(Request $request){
+    public function filter(Request $request)
+    {
 
-        $places = $this->placeRepository->scopeQuery(function ($query)  use($request){
+        $places = $this->placeRepository->scopeQuery(function ($query) use ($request) {
+
+            return $query->where('confirmed', $request->get('confirmed'))->where(function ($query) use ($request) {
+
+                foreach ($request->get('filters') as $key => $value) {
+
+
+                    if ($key === 'city' && $value) {
+                        $query->where($key, 'LIKE', '%' . $value . '%');
+                    }
+
+                    if ($key === 'has_owner' && !$value) {
+                        $query->where('user_id', null);
+                    }
+
+                    if ($key === 'has_owner' && $value) {
+                        $query->where('user_id', '<>', null);
+                    }
+
+                    if ($value && $key != 'has_owner') {
+                        $query->where($key, $value);
+                    }
+
+                }
+
+            });
+
+        })->with(['tracking' => function ($query) use ($request) {
+            $query->where('reference', \Carbon\Carbon::now()->startOfMonth());
+        }])
+            ->orderBy($request->get('order_by'), $request->get('direction'))->paginate(10);
+
+        if (request()->wantsJson()) {
+
+            return response()->json($places);
+        }
+    }
+
+    public function filterTrackingUpdated(Request $request){
+
+
+        $places = $this->placeRepository->makeModel()->where(function ($query)  use($request){
 
             return $query->where('confirmed', $request->get('confirmed'))->where(function ($query) use ($request) {
 
@@ -253,7 +295,11 @@ class OracleController extends Controller
 
             });
 
-        })->orderBy($request->get('order_by'), $request->get('direction'))->paginate(10);
+        })->join('place_trackings', 'place_trackings.place_id', '=', 'places.id')
+            ->where('reference', \Carbon\Carbon::now()->startOfMonth())
+            ->select('places.*', 'place_trackings.views as views')
+            ->orderBy('place_trackings.updated_at', 'DESC')
+            ->paginate(10);
 
         if (request()->wantsJson()) {
 

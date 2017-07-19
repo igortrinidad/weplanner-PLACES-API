@@ -41,7 +41,7 @@ class PlaceReservationsController extends Controller
     public function __construct(PlaceReservationsRepository $repository, PlaceReservationsValidator $validator, ClientRepository $clientRepository)
     {
         $this->repository = $repository;
-        $this->validator  = $validator;
+        $this->validator = $validator;
         $this->clientRepository = $clientRepository;
     }
 
@@ -86,26 +86,35 @@ class PlaceReservationsController extends Controller
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
 
             //Check if the client exist
-            if($request->has('client')){
+            if ($request->has('client')) {
                 $client_data = $request->get('client');
 
                 $client_exists = $this->clientRepository->findWhere(['email' => $client_data['email']])->first();
 
-                if($client_exists){
+                if ($client_exists) {
                     $request->merge(['client_id' => $client_exists->id]);
                 }
 
-                if(!$client_exists){
+                if (!$client_exists) {
                     $new_client = $this->clientRepository->create($client_data);
                     $request->merge(['client_id' => $new_client->id]);
                 }
             }
 
+            $log = [
+                'full_name' => \Auth::user()->full_name,
+                'action' => 'create',
+                'label' => 'Criou a reserva',
+                'date' => Carbon::now()->format('Y-m-d H:i:s')
+            ];
+            
+            $request->merge(['history' => [$log]]);
+
             $placeReservation = $this->repository->create($request->all());
 
             $response = [
                 'message' => 'PlaceReservations created.',
-                'reservation'    => $placeReservation->load('place', 'client'),
+                'reservation' => $placeReservation->load('place', 'client'),
             ];
 
             if ($request->wantsJson()) {
@@ -117,7 +126,7 @@ class PlaceReservationsController extends Controller
         } catch (ValidatorException $e) {
             if ($request->wantsJson()) {
                 return response()->json([
-                    'error'   => true,
+                    'error' => true,
                     'message' => $e->getMessageBag()
                 ]);
             }
@@ -169,7 +178,7 @@ class PlaceReservationsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  PlaceReservationsUpdateRequest $request
-     * @param  string            $id
+     * @param  string $id
      *
      * @return Response
      */
@@ -184,7 +193,7 @@ class PlaceReservationsController extends Controller
 
             $response = [
                 'message' => 'PlaceReservations updated.',
-                'data'    => $placeReservation->toArray(),
+                'data' => $placeReservation->toArray(),
             ];
 
             if ($request->wantsJson()) {
@@ -198,7 +207,7 @@ class PlaceReservationsController extends Controller
             if ($request->wantsJson()) {
 
                 return response()->json([
-                    'error'   => true,
+                    'error' => true,
                     'message' => $e->getMessageBag()
                 ]);
             }
@@ -244,13 +253,33 @@ class PlaceReservationsController extends Controller
         $reservation->is_canceled = true;
         $reservation->canceled_at = Carbon::now();
 
+        $reservation->is_confirmed = null;
+        $reservation->confirmed_at = null;
+
+        $history = $reservation->history;
+
+        $log = [
+            'full_name' => \Auth::user()->full_name,
+            'action' => 'cancel',
+            'label' => 'Cancelou a reserva',
+            'date' => Carbon::now()->format('Y-m-d H:i:s')
+        ];
+
+        if (!$history) {
+            $history = [$log];
+        }else{
+            $history =  array_prepend($history, $log);
+        }
+
+        $reservation->history = $history;
+
         $reservation->save();
 
         if (request()->wantsJson()) {
 
             return response()->json([
                 'message' => 'PlaceReservations canceled.',
-                'canceled' => $reservation,
+                'canceled' => $reservation->load('client'),
             ]);
         }
 
@@ -288,7 +317,7 @@ class PlaceReservationsController extends Controller
     {
 
         $placeReservations = $this->repository->scopeQuery(function ($query) use ($id) {
-            return $query->where(['place_id' => $id , 'is_pre_reservation' => true])->orderBy('date', 'ASC');
+            return $query->where(['place_id' => $id, 'is_pre_reservation' => true])->orderBy('date', 'ASC');
         })->with('client')->all();
 
         if (request()->wantsJson()) {
@@ -308,7 +337,7 @@ class PlaceReservationsController extends Controller
     public function monthReservationsPublic(Request $request)
     {
 
-        $reservations = $this->repository->scopeQuery(function ($query)  use ($request){
+        $reservations = $this->repository->scopeQuery(function ($query) use ($request) {
             return $query->where(['place_id' => $request->get('place_id'), 'is_confirmed' => true])
                 ->whereBetween('date', [$request->get('start'), $request->get('end')])
                 ->select('date', 'all_day')
@@ -336,13 +365,35 @@ class PlaceReservationsController extends Controller
         $reservation->is_confirmed = true;
         $reservation->confirmed_at = Carbon::now();
 
+        $reservation->is_canceled = null;
+        $reservation->canceled_at = null;
+
+        $history = $reservation->history;
+
+        $log = [
+            'full_name' => \Auth::user()->full_name,
+            'action' => 'confirm',
+            'label' => 'Confirmou a reserva',
+            'date' => Carbon::now()->format('Y-m-d H:i:s')
+        ];
+
+
+        if (!$history) {
+            $history = [$log];
+        }else{
+            $history =  array_prepend($history, $log);
+        }
+
+
+        $reservation->history = $history;
+
         $reservation->save();
 
         if (request()->wantsJson()) {
 
             return response()->json([
                 'message' => 'PlaceReservations canceled.',
-                'confirmed' => $reservation,
+                'confirmed' => $reservation->load('client'),
             ]);
         }
 
@@ -358,7 +409,7 @@ class PlaceReservationsController extends Controller
     public function monthReservations(Request $request)
     {
 
-         $reservations = $this->repository->scopeQuery(function ($query)  use ($request){
+        $reservations = $this->repository->scopeQuery(function ($query) use ($request) {
             return $query->where('place_id', $request->get('place_id'))
                 ->whereBetween('date', [$request->get('start'), $request->get('end')])
                 ->orderBy('date', 'ASC');

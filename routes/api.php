@@ -99,6 +99,7 @@ Route::group(['prefix' => 'places'], function () {
     Route::post('/tracker', 'PlaceTrackingsController@tracker');
     Route::post('/public/reservations/month_reservations', 'PlaceReservationsController@monthReservationsPublic');
     Route::get('/promotional_dates/home_list', 'PromotionalDatesController@homeList');
+    Route::post('/promotional_dates/by_city', 'PromotionalDatesController@byCity');
     Route::get('/public/show/{place_slug}', 'PlacesController@showPublic');
     Route::get('{category_slug}', 'PlacesController@listByCategory');
     Route::get('{category_slug}/featured', 'PlacesController@featuredPlaces');
@@ -160,6 +161,7 @@ Route::group(['prefix' => 'oracle'], function () {
             Route::post('/restore', 'OracleController@restore');
             Route::post('/destroy', 'OracleController@destroy');
             Route::post('/filter', 'OracleController@filter');
+            Route::post('/filter/tracking', 'OracleController@filterTrackingUpdated');
 
             //calendar settings
             Route::post('/calendar_settings/update', 'PlaceCalendarSettingsController@update');
@@ -244,3 +246,6 @@ Route::group(['prefix' => 'tools'], function(){
     Route::get('users/generateNewPass/oracle/{email}', 'OracleUsersController@generateNewPass');
 
 });
+
+
+Route::get('/test-email/{id}', 'TestController@testEmailData');
