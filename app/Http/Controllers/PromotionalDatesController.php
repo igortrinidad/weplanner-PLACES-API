@@ -205,11 +205,8 @@ class PromotionalDatesController extends Controller
      */
     public function homeList()
     {
-        //from now to next month
-        $start = Carbon::now()->format('Y-m-d');
-        $end = Carbon::now()->addDays(30)->format('Y-m-d');
-
-        $promotionalDates = $this->repository->makeModel()->whereBetween('date', [$start, $end])
+        
+        $promotionalDates = $this->repository->makeModel()
             ->orderByRaw('RAND()')
             ->take(8) // take 8 records randomly
             ->with(['place' => function ($query) {
