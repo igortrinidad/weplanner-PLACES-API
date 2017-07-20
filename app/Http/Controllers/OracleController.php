@@ -233,6 +233,9 @@ class OracleController extends Controller
 
                 foreach ($request->get('filters') as $key => $value) {
 
+                    if ($key === 'name' && $value) {
+                        return $query->where($key, 'LIKE', '%' . $value . '%');
+                    }
 
                     if ($key === 'city' && $value) {
                         $query->where($key, 'LIKE', '%' . $value . '%');
@@ -246,7 +249,16 @@ class OracleController extends Controller
                         $query->where('user_id', '<>', null);
                     }
 
-                    if ($value && $key != 'has_owner') {
+                    if ($key === 'is_active' && !$value) {
+
+                        $query->where('is_active', false);
+                    }
+
+                    if ($key === 'is_active' && $value) {
+                        $query->where('is_active', true);
+                    }
+
+                    if($value && $key != 'has_owner' && $key != 'is_active'){
                         $query->where($key, $value);
                     }
 
@@ -274,6 +286,9 @@ class OracleController extends Controller
 
                 foreach($request->get('filters') as $key => $value){
 
+                    if ($key === 'name' && $value) {
+                        return $query->where($key, 'LIKE', '%' . $value . '%');
+                    }
 
                     if ($key === 'city' && $value) {
                         $query->where($key, 'LIKE', '%' . $value . '%');
@@ -287,7 +302,16 @@ class OracleController extends Controller
                         $query->where('user_id', '<>', null);
                     }
 
-                    if($value && $key != 'has_owner'){
+                    if ($key === 'is_active' && !$value) {
+
+                        $query->where('is_active', false);
+                    }
+
+                    if ($key === 'is_active' && $value) {
+                        $query->where('is_active', true);
+                    }
+
+                    if($value && $key != 'has_owner' && $key != 'is_active'){
                         $query->where($key, $value);
                     }
 
