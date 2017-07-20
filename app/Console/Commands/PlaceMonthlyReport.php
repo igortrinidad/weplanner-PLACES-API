@@ -1,94 +1,116 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Console\Commands;
 
 use App\Repositories\PlaceRepository;
 use App\Repositories\PlaceReservationsRepository;
 use App\Repositories\PlaceTrackingRepository;
 use App\Repositories\ReservationInterestRepository;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
-use App\Http\Requests;
+use Illuminate\Console\Command;
+use Carbon\Carbon as Carbon;
 
-
-class TestController extends Controller
+class PlaceMonthlyReport extends Command
 {
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'place:monthly-report';
+
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Send monthly report';
     /**
      * @var PlaceRepository
      */
     private $placeRepository;
     /**
-     * @var PlaceTrackingRepository
-     */
-    private $trackingRepository;
-    /**
      * @var ReservationInterestRepository
      */
     private $reservationInterestRepository;
+    /**
+     * @var PlaceTrackingRepository
+     */
+    private $trackingRepository;
     /**
      * @var PlaceReservationsRepository
      */
     private $reservationsRepository;
 
     /**
-     * TestController constructor.
-     * @param PlaceTrackingRepository $trackingRepository
+     * Create a new command instance.
+     *
      * @param PlaceRepository $placeRepository
      * @param ReservationInterestRepository $reservationInterestRepository
+     * @param PlaceTrackingRepository $trackingRepository
      * @param PlaceReservationsRepository $reservationsRepository
      */
-    function __construct(
-        PlaceTrackingRepository $trackingRepository,
-        PlaceRepository $placeRepository,
-        ReservationInterestRepository $reservationInterestRepository,
-        PlaceReservationsRepository $reservationsRepository
+    public function __construct(PlaceRepository $placeRepository,
+                                ReservationInterestRepository $reservationInterestRepository,
+                                PlaceTrackingRepository $trackingRepository,
+                                PlaceReservationsRepository $reservationsRepository
     )
     {
-        $this->trackingRepository = $trackingRepository;
+        parent::__construct();
         $this->placeRepository = $placeRepository;
         $this->reservationInterestRepository = $reservationInterestRepository;
+        $this->trackingRepository = $trackingRepository;
         $this->reservationsRepository = $reservationsRepository;
     }
 
     /**
-     * Get place to show
+     * Execute the console command.
      *
-     * @param Request $request
-     * @return \Illuminate\Http\Response
+     * @return mixed
      */
-    public function testEmailWithSend($template, $email)
+    public function handle()
     {
 
-        \Mail::send($template, [], function ($message) use ($email, $template) {
-            $message->from('no-reply@weplaces.com.br', 'We Places');
-            $message->to($email)->subject('Teste de template de email: ' . $template);
-        });
+        $this->info('Started send monthly report');
 
-        return 'Email enviado com sucesso';
+        $places = $this->placeRepository->scopeQuery(function ($query){
+
+            return $query->where('confirmed', true)->select('id', 'name', 'email', 'user_id');
+
+        })->with('user')->all();
+
+        foreach($places  as $place){
+            $place = $place->setHidden(['appointments_count', 'reservations_count', 'pre_reservations_count'])->toArray();
+
+            $email = !$place['has_owner'] ? $place['email'] : $place['user']['email'];
+
+            if(!$email){
+                $this->warn($place['name']. ' sem e-mail cadastrado');
+                continue;
+            }
+
+            //Avoid send email to test domains
+            if (preg_match("/example/i", $email) || preg_match("/teste/i", $email) || preg_match("/test/i", $email)) {
+
+                $this->warn('O email não pode ser enviado para ' . $email);
+                continue;
+            }
+
+            $data = $this->getData($place, $place['id']);
+
+            \Mail::send('emails.templatetwo', ['data' => $data], function ($message) use ($data, $email) {
+                $message->from('no-reply@weplaces.com.br', 'We Places');
+                $message->to($email)->subject('Relatório mensal We Places');
+            });
+
+            $this->info('Email enviado para ' . $email);
+        }
 
     }
 
-    public function testEmailData($id)
+    function getData($place, $id)
     {
         $before_last_month_reference = Carbon::now()->subMonth(1)->startOfMonth()->format('Y-m-d');
         $last_month_reference = Carbon::now()->startOfMonth()->format('Y-m-d');
-
-        $place = $this->placeRepository->makeModel()
-            ->where('id', $id)->select('id', 'name', 'email', 'user_id')
-            ->with('user')
-            ->first();
-
-        if (!$place) {
-
-            if (request()->wantsJson()) {
-
-                return response()->json(['message' => 'Este local não existe']);
-            }
-
-            return 'Este local não existe';
-        } else {
-            $place = $place->setHidden(['appointments_count', 'reservations_count', 'pre_reservations_count'])->toArray();
-        }
 
         $reservationInterests = $this->reservationInterestRepository->findWhere(['place_id' => $id])->all();
 
@@ -159,38 +181,9 @@ class TestController extends Controller
 
         $data['place'] = $place;
 
-        $email = !$place['has_owner'] ? $place['email'] : $place['user']['email'];
 
-        if(!$email){
-            if (request()->wantsJson()) {
+        return $data;
 
-                return response()->json(['message' => 'Nenhum email cadastrado.']);
-            }
-            return 'Nenhum email cadastrado.';
-        }
-
-        //Avoid send email to test domains
-        if (preg_match("/example/i", $email) || preg_match("/teste/i", $email) || preg_match("/test/i", $email)) {
-
-            if (request()->wantsJson()) {
-
-                return response()->json(['message' => 'O email não pode ser enviado para ' . $email]);
-            }
-            return 'O email não pode ser enviado para ' . $email;
-        }
-
-        \Mail::send('emails.templatetwo', ['data' => $data], function ($message) use ($data, $email) {
-            $message->from('no-reply@weplaces.com.br', 'We Places');
-            $message->to($email)->subject('Relatório mensal We Places');
-        });
-
-
-        if (request()->wantsJson()) {
-
-            return response()->json(['message' => 'Email enviado com sucesso']);
-        }
-
-        return 'Email enviado com sucesso para: ' . $email . ' | local: ' . $place['name'];
     }
 
     function calcDiff($last_month, $before_last_month)
@@ -419,4 +412,3 @@ class TestController extends Controller
 
     }
 }
-
