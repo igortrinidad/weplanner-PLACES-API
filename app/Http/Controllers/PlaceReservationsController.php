@@ -59,13 +59,11 @@ class PlaceReservationsController extends Controller
             return $query->where(['client_id' => \Auth::guard('client')->user()->id]);
         })->with(['place' => function ($query) {
             $query->select('id', 'name');
-        }])->all();
+        }])->paginate(10);
 
         if (request()->wantsJson()) {
 
-            return response()->json([
-                'reservations' => $placeReservations,
-            ]);
+            return response()->json($placeReservations);
         }
 
         return view('placeReservations.index', compact('placeReservations'));
