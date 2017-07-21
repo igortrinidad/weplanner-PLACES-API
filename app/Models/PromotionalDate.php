@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\Uuids;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
@@ -49,6 +50,33 @@ class PromotionalDate extends Model implements Transformable
         'discount' => 'double',
         ];
 
+    /**
+     * The accessors to append to the model's array.
+     *
+     * @var array
+     */
+    protected $appends = ['is_reserved'];
+
+    /**
+     * -------------------------------
+     * Custom fields
+     * -------------------------------
+     */
+
+    /**
+     * @return mixed
+     */
+    public function getIsReservedAttribute()
+    {
+        $date = Carbon::createFromFormat('Y-m-d', $this->date)->startOfDay()->format('Y-m-d H:i:s');
+
+        $count = PlaceReservations::where('place_id', $this->place_id)
+            ->where('date', $date)
+            ->where('is_confirmed', true)->count();
+
+        return $count > 0 ? true : false;
+    }
+
 
     /**
      * -------------------------------
@@ -63,5 +91,6 @@ class PromotionalDate extends Model implements Transformable
     {
         return $this->belongsTo(Place::class);
     }
+
 
 }
