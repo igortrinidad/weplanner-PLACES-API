@@ -74,7 +74,7 @@
 
                             @if(!$data['place']['has_owner'])
                             <tr>
-                                <td colspan="2" style="padding: 15px 0;  width: 50%;">
+                                <td colspan="2" style="padding: 15px 0;  border-bottom: 1px solid rgb(242, 242, 242); width: 50%;">
                                     <span style="font-size: 22px;">{{$data['reservation_interests']}} pessoas</span>
                                     <h5 style="font-family: 'Quicksand', sans-serif; margin: 0 !important;">gostariam de reservar seu espaço</h5>
                                 </td>
@@ -293,7 +293,7 @@
                             </tr>
 
                             <tr style="width: 100%;">
-                                <td colspan="2" style="padding: 15px 0; border-top: 1px solid rgb(242, 242, 242); border-bottom: 1px solid rgb(242, 242, 242); width: 50%;">
+                                <td colspan="2" style="padding: 15px 0; border-bottom: 1px solid rgb(242, 242, 242); width: 50%;">
                                     <h4 style="font-family: 'Quicksand', sans-serif; margin: 0 !important;">Visualizações</h4>
                                     <span style="font-size: 22px;">{{$data['views']['last_month']}}</span>
                                     <br />
