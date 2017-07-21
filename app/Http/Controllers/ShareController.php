@@ -56,7 +56,7 @@ class ShareController extends Controller
                         <img src="' . $photo  .'" width="70%">
                         <script>
                             setTimeout(function(){
-                                window.location.replace("https://weplaces.com.br/#/detalhes/'. $place['slug'] .'");
+                                window.location.replace("https://app.weplaces.com.br/#/detalhes/'. $place['slug'] .'");
                             },50)
                         </script>
                     </body>
@@ -72,7 +72,7 @@ class ShareController extends Controller
                         <meta property="og:locale" content="pt_BR">
                         <meta property="og:site_name" content="We Places App">
                         <meta property="og:title" content="We Places App" />
-                        <meta property="og:url" content="https://weplaces.com.br">
+                        <meta property="og:url" content="https://app.weplaces.com.br">
                         <meta property="og:description" content="Encontre o espaço de sua cerimônia ou festa em um só local." />
                         <meta property="og:image" content="https://s3.amazonaws.com/weplanner-places-assets/img/presentation_1.png" />
                         <meta property="og:image:url" content="https://s3.amazonaws.com/weplanner-places-assets/img/presentation_1.png" />
@@ -83,7 +83,7 @@ class ShareController extends Controller
                     <img width="70%">
                     <script>
                         setTimeout(function(){
-                            window.location.replace("https://weplaces.com.br");
+                            window.location.replace("https://app.weplaces.com.br");
                         },50)
                     </script>
                 </body>
