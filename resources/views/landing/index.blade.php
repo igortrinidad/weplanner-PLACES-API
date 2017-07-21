@@ -67,7 +67,7 @@
         <li><a href="#intro">Home</a></li>
         <li><a href="#section-voce">Sobre</a></li>
         <li><a href="#plans">Preços</a></li>
-        <li><a href="#screenshots">Acesse</a></li>
+        <li><a href="https://app.weplaces.com.br" target="_blank">Acesse</a></li>
         <li><a href="https://blog.weplaces.com.br" target="_blank">Blog</a></li>
       </ul>
     </div><!--|End Nav|-->
@@ -353,15 +353,16 @@
   </section>
 </div> <!--|End Overview|-->
 
+
 <!--|===================================================================
 / Review
-/=======================================================================|-->
+
 <section id="review" class="reviews section overlay-black wow fadeIn" data-wow-delay=".15s">
   <div class="overlay-inner">
     <div class="container">
       <div class="row">
         <div class="col-md-7 block-center">
-          <!--|Review Carousel|-->
+
           <div class="review-carousel">
             <div class="review-wrap">
               <div class="review">
@@ -410,12 +411,14 @@
                 </figure>
               </div>
             </div>
-          </div> <!--|End Review Carousel|-->
+          </div>
         </div>
       </div>
     </div>
   </div>
-</section> <!--|End Review|-->
+</section>
+
+/=======================================================================|-->
 
 <!--|===================================================================
 / Plans
@@ -476,11 +479,11 @@
               <li>Visualizações do mês</li>
               <li>Administrar agenda</li>
               <li>Administrar reservas</li>
+              <li>Até 3 promoções ativas</li>
               <li class="disable">Vídeos</li>
               <li class="disable">Tour virtual do espaço</li>
               <li class="disable">Dashboard analítico últimos 12 meses</li>
               <li class="disable">Anúncio de destaque</li>
-              <li class="disable">Até 3 promoções ativas</li>
             </ul>
           </div>
           <div class="pricing-footer">
@@ -504,11 +507,11 @@
               <li>Visualizações do mês</li>
               <li>Administrar agenda</li>
               <li>Administrar reservas</li>
+              <li>Até 10 promoções ativas</li>
               <li>Vídeos</li>
               <li>Tour virtual do espaço</li>
               <li>Dashboard analítico últimos 12 meses</li>
               <li>Anúncio de destaque</li>
-              <li>Até 10 promoções ativas</li>
             </ul>
           </div>
           <div class="pricing-footer">

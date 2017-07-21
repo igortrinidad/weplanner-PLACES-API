@@ -234,42 +234,43 @@ class OracleController extends Controller
                 foreach ($request->get('filters') as $key => $value) {
 
                     if ($key === 'name' && $value) {
-                        return $query->where($key, 'LIKE', '%' . $value . '%');
+                        return $query->where('name', 'LIKE', '%' . $value . '%');
                     }
 
                     if ($key === 'city' && $value) {
                         $query->where($key, 'LIKE', '%' . $value . '%');
                     }
 
-                    if ($key === 'has_owner' && !$value) {
-                        $query->where('user_id', null);
-                    }
-
                     if ($key === 'has_owner' && $value) {
-                        $query->where('user_id', '<>', null);
+                        $query->orWhere('user_id', '<>', null);
                     }
 
-                    if ($key === 'is_active' && !$value) {
-
-                        $query->where('is_active', false);
+                    if ($key === 'has_not_owner' && $value) {
+                        $query->orWhere('user_id', null);
                     }
 
                     if ($key === 'is_active' && $value) {
-                        $query->where('is_active', true);
+
+                        $query->orWhere('is_active', true);
                     }
 
-                    if($value && $key != 'has_owner' && $key != 'is_active'){
+                    if ($key === 'is_not_active' && $value) {
+                        $query->orWhere('is_active', false);
+                    }
+
+                    if($value && $key != 'has_owner' && $key != 'has_not_owner' && $key != 'is_active' && $key != 'is_not_active' && $key != 'name' && $key != 'city'){
                         $query->where($key, $value);
                     }
 
                 }
 
+                $query->whereIn('plan', $request->get('plans'));
+
             });
 
         })->with(['tracking' => function ($query) use ($request) {
             $query->where('reference', \Carbon\Carbon::now()->startOfMonth());
-        }])
-            ->orderBy($request->get('order_by'), $request->get('direction'))->paginate(10);
+        }])->orderBy($request->get('order_by'), $request->get('direction'))->paginate(10);
 
         if (request()->wantsJson()) {
 
@@ -278,7 +279,6 @@ class OracleController extends Controller
     }
 
     public function filterTrackingUpdated(Request $request){
-
 
         $places = $this->placeRepository->makeModel()->where(function ($query)  use($request){
 
@@ -294,35 +294,37 @@ class OracleController extends Controller
                         $query->where($key, 'LIKE', '%' . $value . '%');
                     }
 
-                    if ($key === 'has_owner' && !$value) {
-                        $query->where('user_id', null);
-                    }
-
                     if ($key === 'has_owner' && $value) {
-                        $query->where('user_id', '<>', null);
+                        $query->orWhere('user_id', '<>', null);
                     }
 
-                    if ($key === 'is_active' && !$value) {
-
-                        $query->where('is_active', false);
+                    if ($key === 'has_not_owner' && $value) {
+                        $query->orWhere('user_id', null);
                     }
 
                     if ($key === 'is_active' && $value) {
-                        $query->where('is_active', true);
+
+                        $query->orWhere('is_active', true);
                     }
 
-                    if($value && $key != 'has_owner' && $key != 'is_active'){
+                    if ($key === 'is_not_active' && $value) {
+                        $query->orWhere('is_active', false);
+                    }
+
+                    if($value && $key != 'has_owner' && $key != 'has_not_owner' && $key != 'is_active' && $key != 'is_not_active'){
                         $query->where($key, $value);
                     }
 
                 }
+
+                $query->whereIn('plan', $request->get('plans'));
 
             });
 
         })->join('place_trackings', 'place_trackings.place_id', '=', 'places.id')
             ->where('reference', \Carbon\Carbon::now()->startOfMonth())
             ->select('places.*', 'place_trackings.views as views')
-            ->orderBy('place_trackings.updated_at', 'DESC')
+            ->orderBy('place_trackings.views', 'DESC')
             ->paginate(10);
 
         if (request()->wantsJson()) {
