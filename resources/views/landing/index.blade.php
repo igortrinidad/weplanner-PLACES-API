@@ -524,11 +524,11 @@
         <div class="col-md-4 col-sm-4">
           <!--|Statistic Box|-->
           <div class="statistic-box wow fadeIn" data-wow-delay=".1s">
-            <i class="fp-icon ion-ios-cloud-download-outline"></i>
+            <i class="fp-icon ion-ios-book-outline"></i>
 
             <div class="text">
               <h4 class="title"><span class="countup">2,400</span>+</h4>
-              <span class="fp-meta">Total de Downloads</span>
+              <span class="fp-meta">Reservas realizadas</span>
             </div>
           </div> <!--|End Statistic Box|-->
         </div>
@@ -540,7 +540,7 @@
 
             <div class="text">
               <h4 class="title"><span class="countup">1,723</span>+</h4>
-              <span class="fp-meta">Eventos Realizados</span>
+              <span class="fp-meta">Reservas Realizadas</span>
             </div>
           </div> <!--|End Statistic Box|-->
         </div>
