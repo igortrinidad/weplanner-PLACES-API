@@ -205,7 +205,10 @@ class PromotionalDatesController extends Controller
      */
     public function homeList()
     {
+<<<<<<< HEAD
         
+=======
+>>>>>>> development
         $promotionalDates = $this->repository->makeModel()
             ->orderByRaw('RAND()')
             ->take(8) // take 8 records randomly

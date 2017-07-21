@@ -315,6 +315,14 @@
           </figure>
         </div> <!--|End Screenshot|-->
       </div>
+
+      <div class="row">
+        <div class="block-center text-center">
+          <a class="btn btn-primary btn-lg" href="https://app.weplaces.com.br">Acessar o app</a>
+        </div>
+      </div>
+
+
     </section> <!--|End Screenshots|-->
 
 
