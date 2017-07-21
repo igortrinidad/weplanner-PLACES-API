@@ -550,8 +550,8 @@
             <i class="fp-icon ion-ios-heart-outline"></i>
 
             <div class="text">
-              <h4 class="title"><span class="countup">1,723</span>+</h4>
-              <span class="fp-meta">Reservas Realizadas</span>
+              <h4 class="title"><span class="countup">45</span>+</h4>
+              <span class="fp-meta">Promoções</span>
             </div>
           </div> <!--|End Statistic Box|-->
         </div>
