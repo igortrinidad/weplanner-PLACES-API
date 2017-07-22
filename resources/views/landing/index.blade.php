@@ -354,69 +354,48 @@
 </div> <!--|End Overview|-->
 
 <!--|===================================================================
-/ Review
+=======================================================================|-->
+
 <section id="review" class="reviews section overlay-black wow fadeIn" data-wow-delay=".15s">
   <div class="overlay-inner">
     <div class="container">
+
+      <div class="row text-center">
+        <h1>Blog We Places</h1>
+        <h4>Últimos posts</h4>
+      </div>
       <div class="row">
         <div class="col-md-7 block-center">
 
+        
+
           <div class="review-carousel">
+
+            @foreach($posts as $post)
             <div class="review-wrap">
+              <a href="https://blog.weplaces.com.br/{{$post->post_name}}" target="_blank">
               <div class="review">
                 <div class="text">
-                  <p>Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation.</p>
+                  <h3>{{ $post->post_title }}</h3>
                 </div>
 
                 <figure class="review-meta">
-                  <img class="avatar" src="assets/images/avatar01.jpg" alt="">
+                  <!--<img class="avatar" src="assets/images/avatar01.jpg" alt=""> -->
                   <figcaption class="info">
-                    <h6 class="name">Jarne Martens</h6>
-                    <span class="meta"><em>CEO</em> &dash; <a href="#">Ogr. Name</a></span>
+                    <h6 class="name">{{ $post->post_date }}</h6>
                   </figcaption>
                 </figure>
               </div>
+              </a>
             </div>
+            @endforeach
 
-            <div class="review-wrap">
-              <div class="review">
-                <div class="text">
-                  <p>Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation.</p>
-                </div>
-
-                <figure class="review-meta">
-                  <img class="avatar" src="assets/images/avatar03.jpg" alt="">
-                  <figcaption class="info">
-                    <h6 class="name">Richard Ross</h6>
-                    <span class="meta"><em>CTO</em> &dash; <a href="#">Ogr. Name</a></span>
-                  </figcaption>
-                </figure>
-              </div>
-            </div>
-
-            <div class="review-wrap">
-              <div class="review">
-                <div class="text">
-                  <p>Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation.</p>
-                </div>
-
-                <figure class="review-meta">
-                  <img class="avatar" src="assets/images/avatar02.jpg" alt="">
-                  <figcaption class="info">
-                    <h6 class="name">Andrea May</h6>
-                    <span class="meta"><em>Founder</em> &dash; <a href="#">Ogr. Name</a></span>
-                  </figcaption>
-                </figure>
-              </div>
-            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 </section>
-
-=======================================================================|-->
 
 <!--|===================================================================
 / Plans
