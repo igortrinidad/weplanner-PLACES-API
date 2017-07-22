@@ -18,5 +18,10 @@
         "laravel-mix": "0.*",
         "lodash": "^4.17.4",
         "vue": "^2.1.10"
+    },
+    "dependencies": {
+        "gulp": "^3.9.1",
+        "gulp-htmlmin": "^3.0.0",
+        "laravel-elixir": "^6.0.0-15"
     }
 }

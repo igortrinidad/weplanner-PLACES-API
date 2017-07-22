@@ -1036,13 +1036,14 @@ img {
   font-size: 3em;
   line-height: 1;
   padding: 0;
+  margin-top: 15px;
 }
 
 .navbar-nav > li > a {
   color: #626262;
   font-size: 1em;
   font-weight: 300;
-  padding-top: 23px;
+  padding-top: 28px;
   padding-bottom: 23px;
   text-transform: uppercase;
   letter-spacing: .1em;
@@ -1772,7 +1773,8 @@ img {
   margin-bottom: 20px;
 }
 .contact-form .action-message .contact-success,
-.contact-form .action-message .contact-error {
+.contact-form .action-message .contact-error,
+.contact-form .action-message .contact-sending {
   display: none;
   margin-bottom: 0;
   padding: 5px 10px;

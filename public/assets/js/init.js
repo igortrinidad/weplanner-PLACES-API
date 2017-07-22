@@ -54,7 +54,7 @@
     //
     // Magnific Popup (Video)
     $('.play-btn').magnificPopup({
-      disableOn: 700,
+      disableOn: 300,
       type: 'iframe',
       mainClass: 'mfp-fade',
       removalDelay: 160,
@@ -97,7 +97,8 @@
     // Contact
     var contact         = $('.contact-form'),
       successMessage    = $('.contact-success'),
-      errorMessage      = $('.contact-error');
+      errorMessage      = $('.contact-error'),
+      is_sending        = false;
 
     contact.validate({
       rules: {
@@ -116,32 +117,44 @@
 
       messages: {
         name: {
-          required: "Come on! Enter your name",
-          minlength: "your name must consist of at least 2 characters"
+          required: "Oi? Por favor, insira seu nome.",
+          minlength: "Seu nome deve conter ao menos 2 caracteres."
         },
         email: {
-          required: "no email, no message"
+          required: "Sem email, sem mensagem."
         },
         message: {
-          required: "You have to write something to send this form.",
-          minlength: "thats all? really?"
+          required: "Você tem que escrever alguma coisa para enviar uma mensagem.",
+          minlength: "Só isso? Really?"
         }
       },
 
       submitHandler: function(form) {
-        $(form).ajaxSubmit({
-          type:"POST",
-          data: $(form).serialize(),
-          url:"assets/php/contact.php",
-          success: function() {
-            successMessage.fadeIn();
-          },
-          error: function() {
-            contact.fadeTo( "slow", 0.15, function() {
-              errorMessage.fadeIn();
-            });
-          }
-        });
+
+        if(!is_sending){
+          successMessage.fadeOut();
+          is_sending = true;
+          $('.contact-sending').fadeIn();
+
+          $(form).ajaxSubmit({
+            type:"POST",
+            data: $(form).serialize(),
+            url:"/sendLandingContactForm",
+            success: function() {
+              successMessage.fadeIn();
+              $('.contact-sending').fadeOut();
+              is_sending = false;
+            },
+            error: function() {
+              contact.fadeTo( "slow", 0.15, function() {
+                errorMessage.fadeIn();
+                $('.contact-sending').fadeOut();
+                is_sending = false;
+              });
+            }
+          });
+          
+        }
       }
     });
 

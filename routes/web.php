@@ -12,7 +12,7 @@
 */
 
 Route::get('/', 'LandingController@index');
-Route::get('/two', 'LandingController@indextwo');
+Route::post('/sendLandingContactForm', 'LandingController@sendLandingContactForm');
 
 
 
