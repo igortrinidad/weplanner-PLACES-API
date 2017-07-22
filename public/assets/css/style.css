@@ -480,6 +480,10 @@ img {
   color: #ffffff;
 }
 
+.link-acesse-app-header{
+  color: #ffffff !important;
+}
+
 .overlay-white .overlay-inner {
   background-color: rgba(255, 255, 255, 0.6);
 }
