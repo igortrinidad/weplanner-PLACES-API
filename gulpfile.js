@@ -18,4 +18,35 @@ elixir.extend('compress', function() {
 
 elixir(function(mix) {
     mix.compress();
+
+    //STYLES
+    mix.styles([
+
+        'animate.css',
+        'bootstrap.min.css',
+        'general.css',
+        'ionicons.min.css',
+        'magnific-popup.css',
+        'owl.carousel.css',
+        'style.css',
+    ], 'public/build/landing/css/vendors.css');
+
+    //JS
+    mix.scripts([
+        'jquery.min.js',
+        'bootstrap.min.js',
+        'html5shiv.min.js',
+        'jquery.magnific-popup.min.js',
+        'jquery.ajaxchimp.min.js',
+        'jquery.counterup.min.js',
+        'jquery.form.js',
+        'jquery.validate.min.js',
+        'owl.carousel.min.js',
+        'respond.min.js',
+        'waypoints.min.js',
+        'wow.min.js',
+        'init.js'
+
+    ], 'public/build/landing/js/vendors.js');
+
 });
