@@ -355,16 +355,8 @@
 
 
 <!--|===================================================================
-<<<<<<< HEAD
-/ Review
-<<<<<<< HEAD
-
-=======
->>>>>>> development
-=======
 =======================================================================|-->
 
->>>>>>> development
 <section id="review" class="reviews section overlay-black wow fadeIn" data-wow-delay=".15s">
   <div class="overlay-inner">
     <div class="container">
@@ -406,15 +398,6 @@
   </div>
 </section>
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-/=======================================================================|-->
-=======
-=======================================================================|-->
->>>>>>> development
-
-=======
->>>>>>> development
 <!--|===================================================================
 / Plans
 /=======================================================================|-->
@@ -474,11 +457,7 @@
               <li>Visualizações do mês</li>
               <li>Administrar agenda</li>
               <li>Administrar reservas</li>
-<<<<<<< HEAD
               <li>Até 3 promoções ativas</li>
-=======
-              <li class="disable">Até 3 promoções ativas</li>
->>>>>>> development
               <li class="disable">Vídeos</li>
               <li class="disable">Tour virtual do espaço</li>
               <li class="disable">Dashboard analítico últimos 12 meses</li>
@@ -534,19 +513,11 @@
         <div class="col-md-4 col-sm-4">
           <!--|Statistic Box|-->
           <div class="statistic-box wow fadeIn" data-wow-delay=".1s">
-<<<<<<< HEAD
-            <i class="fp-icon ion-ios-book-outline"></i>
-
-            <div class="text">
-              <h4 class="title"><span class="countup">2,400</span>+</h4>
-              <span class="fp-meta">Reservas realizadas</span>
-=======
             <i class="fp-icon ion-map"></i>
 
             <div class="text">
               <h4 class="title"><span class="countup">195</span>+</h4>
               <span class="fp-meta">Espaços de eventos</span>
->>>>>>> development
             </div>
           </div> <!--|End Statistic Box|-->
         </div>
@@ -557,13 +528,8 @@
             <i class="fp-icon ion-ios-book-outline"></i>
 
             <div class="text">
-<<<<<<< HEAD
-              <h4 class="title"><span class="countup">45</span>+</h4>
-              <span class="fp-meta">Promoções</span>
-=======
               <h4 class="title"><span class="countup">1,200</span>+</h4>
               <span class="fp-meta">Reservas realizadas</span>
->>>>>>> development
             </div>
           </div> <!--|End Statistic Box|-->
         </div>
