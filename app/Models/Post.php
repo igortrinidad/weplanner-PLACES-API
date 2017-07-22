@@ -31,8 +31,19 @@ class Post extends Model
         'post_content',
         'post_title',
         'post_status',
-        'post_name'
+        'post_name',
+        'comment_status',
+        'ping_status',
     ];
+
+        /*
+     * Change the Date attribute
+     */
+    public function getPostDateAttribute($value)
+    {
+
+        return \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $value)->format('d/m/Y');
+    }
 
 
 }

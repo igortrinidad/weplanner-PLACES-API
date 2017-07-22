@@ -21,6 +21,11 @@ class LandingController extends Controller
      */
     public function index()
     {
+        $posts = Post::where('post_status', 'publish')
+            ->where('comment_status', 'open')
+            ->limit(5)
+            ->orderBy('post_date', 'desc')
+            ->get();
 
         return view('landing.index', compact('posts'));
 
@@ -34,11 +39,7 @@ class LandingController extends Controller
      */
     public function indextwo()
     {
-        $posts = Post::where('post_status', 'publish')->get();
 
-        dd($posts);
-
-        return view('landing.index', compact('posts'));
 
     }
 
