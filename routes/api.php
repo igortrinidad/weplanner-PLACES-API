@@ -54,7 +54,7 @@ Route::group(['prefix' => 'places'], function () {
         //Reservations
         Route::post('/reservation', 'PlaceReservationsController@store');
         Route::post('/reservations/month_reservations', 'PlaceReservationsController@monthReservations');
-        Route::get('/reservations/list/{id}', 'PlaceReservationsController@reservationsList');
+        Route::post('/reservations/list', 'PlaceReservationsController@reservationsList');
         Route::get('/pre-reservations/list/{id}', 'PlaceReservationsController@PreReservationsList');
         Route::get('/reservations/cancel/{id}', 'PlaceReservationsController@cancel');
         Route::get('/reservations/confirm/{id}', 'PlaceReservationsController@confirm');

@@ -58,7 +58,7 @@ class PlaceReservationsController extends Controller
         $placeReservations = $this->repository->scopeQuery(function ($query) {
             return $query->where(['client_id' => \Auth::guard('client')->user()->id]);
         })->with(['place' => function ($query) {
-            $query->select('id', 'name');
+            $query->select('id', 'name', 'slug');
         }])->paginate(10);
 
         if (request()->wantsJson()) {
@@ -291,12 +291,17 @@ class PlaceReservationsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function reservationsList($id)
+    public function reservationsList(Request $request)
     {
+        $id = $request->get('id');
+        $search = $request->get('search');
 
         $placeReservations = $this->repository->scopeQuery(function ($query) use ($id) {
             return $query->where(['place_id' => $id, 'is_pre_reservation' => false])->orderBy('date', 'ASC');
-        })->with('client')->paginate(10);
+        })->with('client')->whereHas('client', function($q) use ($search){
+            $q->where('name', 'LIKE', '%'.$search.'%');
+            $q->orWhere('last_name', 'LIKE', '%'.$search.'%');
+        })->paginate(10);
 
         if (request()->wantsJson()) {
 
