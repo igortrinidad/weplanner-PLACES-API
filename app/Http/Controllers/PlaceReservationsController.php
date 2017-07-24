@@ -433,4 +433,22 @@ class PlaceReservationsController extends Controller
 
         return view('placeReservations.index', compact('placeReservations'));
     }
+
+    /**
+     * All client reservations.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function clientReservationsList(Request $request)
+    {
+
+        $reservations = $this->repository->scopeQuery(function ($query) use ($request) {
+            return $query->where('client_id', \Auth::user()->id)
+                ->select('place_id', 'date', 'is_pre_reservation', 'is_confirmed', 'is_canceled')
+                ->orderBy('date', 'ASC');
+        })->all();
+
+        return response()->json($reservations);
+    }
 }

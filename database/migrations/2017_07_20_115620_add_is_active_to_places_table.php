@@ -26,7 +26,7 @@ class AddIsActiveToPlacesTable extends Migration
     public function down()
     {
         Schema::table('places', function(Blueprint $table) {
-            $table->boolean('is_active');
+            $table->dropColumn('is_active');
         });
     }
 }

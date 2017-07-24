@@ -6,6 +6,7 @@ use App\Models\Traits\Uuids;
 use Illuminate\Database\Eloquent\Model;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
+use Carbon\Carbon as Carbon;
 
 class PlaceReservations extends Model implements Transformable
 {
@@ -58,6 +59,40 @@ class PlaceReservations extends Model implements Transformable
         'therms' => 'json',
         'history' => 'json',
     ];
+
+    /**
+     * The accessors to append to the model's array.
+     *
+     * @var array
+     */
+    protected $appends = ['day', 'time'];
+
+
+    /**
+     * -------------------------------
+     * Custom fields
+     * -------------------------------
+     */
+
+    /**
+     * @return mixed
+     */
+    public function getDayAttribute()
+    {
+
+        return Carbon::createFromFormat('Y-m-d H:i:s', $this->date)->format('Y-m-d');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTimeAttribute()
+    {
+
+        return Carbon::createFromFormat('Y-m-d H:i:s', $this->date)->format('H:i');
+    }
+
+
 
     /**
      * -------------------------------

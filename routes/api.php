@@ -125,6 +125,7 @@ Route::group(['prefix' => 'client'], function () {
 
         //reservations
         Route::get('/reservations', 'PlaceReservationsController@index');
+        Route::get('/reservations/list', 'PlaceReservationsController@clientReservationsList');
         Route::get('/reservations/cancel/{id}', 'PlaceReservationsController@cancel');
 
     });

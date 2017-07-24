@@ -106,7 +106,7 @@ class Place extends Model implements Transformable
      *
      * @var array
      */
-    protected $appends = ['appointments_count', 'reservations_count', 'pre_reservations_count', 'has_owner', 'has_virtual_tour'];
+    protected $appends = ['appointments_count', 'reservations_count', 'pre_reservations_count', 'has_owner', 'has_virtual_tour', 'total_views'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -159,6 +159,14 @@ class Place extends Model implements Transformable
     public function gethasVirtualTourAttribute()
     {
         return $this->virtual_tour_url != null;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTotalViewsAttribute()
+    {
+        return $this->hasMany(PlaceTracking::class)->get()->sum('views');
     }
 
     /**

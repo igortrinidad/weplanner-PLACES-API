@@ -268,9 +268,7 @@ class OracleController extends Controller
 
             });
 
-        })->with(['tracking' => function ($query) use ($request) {
-            $query->where('reference', \Carbon\Carbon::now()->startOfMonth());
-        }])->orderBy($request->get('order_by'), $request->get('direction'))->paginate(10);
+        })->orderBy($request->get('order_by'), $request->get('direction'))->paginate(10);
 
         if (request()->wantsJson()) {
 
