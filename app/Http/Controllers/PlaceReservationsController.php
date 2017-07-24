@@ -316,12 +316,18 @@ class PlaceReservationsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function PreReservationsList($id)
+    public function PreReservationsList(Request $request)
     {
+
+        $id = $request->get('id');
+        $search = $request->get('search');
 
         $placeReservations = $this->repository->scopeQuery(function ($query) use ($id) {
             return $query->where(['place_id' => $id, 'is_pre_reservation' => true])->orderBy('date', 'ASC');
-        })->with('client')->all();
+        })->with('client')->whereHas('client', function($q) use ($search){
+            $q->where('name', 'LIKE', '%'.$search.'%');
+            $q->orWhere('last_name', 'LIKE', '%'.$search.'%');
+        })->all();
 
         if (request()->wantsJson()) {
 
