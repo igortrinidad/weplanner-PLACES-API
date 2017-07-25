@@ -4,6 +4,17 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:url" content="https://weplaces.com.br">
+  <meta property="og:title" content="We Places">
+  <meta property="og:site_name" content="We Places">
+  <meta property="og:description" content="We Places é uma ferramenta para facilitar a vida de quem procura espaços de cerimônia e festas, para os organizadores de eventos e para os administradores destes espaços.">
+  <meta property="og:image" content="https://blog.weplaces.com.br/wp-content/uploads/2017/07/banner-promocional.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="800">
+  <meta property="og:image:height" content="600">
+
   <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
   <title>We Places</title>
 
