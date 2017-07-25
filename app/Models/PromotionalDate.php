@@ -34,6 +34,8 @@ class PromotionalDate extends Model implements Transformable
     protected $fillable = [
         'place_id',
         'date',
+        'all_day',
+        'slots',
         'title',
         'value',
         'discount',
@@ -48,6 +50,8 @@ class PromotionalDate extends Model implements Transformable
     protected $casts = [
         'value' => 'double',
         'discount' => 'double',
+        'all_day' => 'boolean',
+        'slots' => 'json'
         ];
 
     /**
@@ -55,7 +59,7 @@ class PromotionalDate extends Model implements Transformable
      *
      * @var array
      */
-    protected $appends = ['is_reserved'];
+    protected $appends = ['is_reserved', 'available_slots'];
 
     /**
      * -------------------------------
@@ -68,14 +72,62 @@ class PromotionalDate extends Model implements Transformable
      */
     public function getIsReservedAttribute()
     {
-        $date = Carbon::createFromFormat('Y-m-d', $this->date)->startOfDay()->format('Y-m-d H:i:s');
+        if($this->all_day){
+            $date = Carbon::createFromFormat('Y-m-d', $this->date)->startOfDay()->format('Y-m-d H:i:s');
 
-        $count = PlaceReservations::where('place_id', $this->place_id)
-            ->where('date', $date)
-            ->where('is_confirmed', true)->count();
+            $count = PlaceReservations::where('place_id', $this->place_id)
+                ->where('date', $date)
+                ->where('is_confirmed', true)->count();
 
-        return $count > 0 ? true : false;
+            return $count > 0 ? true : false;
+        }
+
+        if(!$this->all_day){
+            $slots = $this->slots;
+
+            $available = [];
+            foreach($slots as $slot){
+                $date = Carbon::createFromFormat('Y-m-d H:i', $this->date.' '.$slot['hour'])->format('Y-m-d H:i:s');
+
+                $count = PlaceReservations::where('place_id', $this->place_id)
+                    ->where('date', $date)
+                    ->where('is_confirmed', true)->count();
+
+                if(!$count){
+                    $available[] = $slot;
+                }
+            }
+            return count($available) === 0;
+        }
+
+
+
     }
+
+
+    public function getAvailableSlotsAttribute()
+    {
+        $available = [];
+
+        if(!$this->all_day){
+            $slots = $this->slots;
+            foreach($slots as $slot){
+                $date = Carbon::createFromFormat('Y-m-d H:i', $this->date.' '.$slot['hour'])->format('Y-m-d H:i:s');
+
+                $count = PlaceReservations::where('place_id', $this->place_id)
+                    ->where('date', $date)
+                    ->where('is_confirmed', true)->count();
+
+                if(!$count){
+                    $available[] = $slot;
+                }
+            }
+
+        }
+        return $available;
+    }
+
+
 
 
     /**
