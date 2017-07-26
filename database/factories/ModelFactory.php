@@ -102,4 +102,17 @@ $factory->define(App\Models\OracleUser::class, function () use($faker){
     ];
 });
 
+$factory->define(App\Models\Advertiser::class, function ( $faker) {
+    static $password;
+
+    return [
+        'name' => $faker->company,
+        'email' => $faker->unique()->safeEmail,
+        'password' => $password ? : $password = bcrypt('password'),
+        'remember_token' => str_random(10),
+        'phone' => $faker->phoneNumber,
+        'whatsapp' => $faker->e164PhoneNumber,
+        'website' => 'http://'.$faker->safeEmailDomain
+    ];
+});
 

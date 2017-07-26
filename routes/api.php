@@ -224,7 +224,25 @@ Route::group(['prefix' => 'oracle'], function () {
             Route::get('/generateNewPass/oracle/{email}', 'OracleUsersController@generateNewPass');
 
 
-        });            
+        });
+
+        //Advertisers *** use abbreviation 'cause adblock blocks 'advertisers' ***
+        Route::group(['prefix' => 'advts'], function(){
+            Route::get('/list', 'AdvertisersController@index');
+            Route::get('/search', 'AdvertisersController@search');
+        });
+
+        //Service Ads
+        Route::group(['prefix' => 'service_ads'], function(){
+            Route::get('/list', 'ServiceAdsController@index');
+            Route::post('/create', 'ServiceAdsController@store');
+            Route::get('/show/{id}', 'ServiceAdsController@show');
+            Route::post('/update', 'ServiceAdsController@update');
+        });
+
+        //Service Ads photos
+        Route::post('/service_ad_photo/upload', 'ServiceAdPhotosController@store');
+        Route::get('/service_ad_photo/destroy/{id}', 'ServiceAdPhotosController@destroy');
 
         //profile update
         Route::post('/user/update', 'OracleUsersController@update');
@@ -250,3 +268,18 @@ Route::group(['prefix' => 'tools'], function(){
 
 
 Route::get('/test-email/{id}', 'TestController@testEmailData');
+
+/*
+ * Advertiser
+ * *** use abbreviation 'cause adblock blocks 'advertisers' ***
+ */
+Route::group(['prefix' => 'advts'], function () {
+    Route::post('/auth/login', 'Auth\AdvertiserLoginController@login');
+
+    //Advertiser protected routes
+    Route::group(['middleware' => 'auth:advertiser'], function () {
+
+
+    });
+
+});

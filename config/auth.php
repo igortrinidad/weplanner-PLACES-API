@@ -55,6 +55,11 @@ return [
             'driver' => 'jwt',
             'provider' => 'oracle_users',
         ],
+
+        'advertiser' => [
+            'driver' => 'jwt',
+            'provider' => 'advertiser_users',
+        ],
     ],
 
     /*
@@ -88,6 +93,11 @@ return [
         'oracle_users' => [
             'driver' => 'eloquent',
             'model' => App\Models\OracleUser::class,
+        ],
+
+        'advertiser_users' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Advertiser::class,
         ],
 
         // 'users' => [
@@ -126,6 +136,12 @@ return [
 
         'oracle_users' => [
             'provider' => 'oracle_users',
+            'table' => 'password_resets',
+            'expire' => 60,
+        ],
+
+        'advertiser_users' => [
+            'provider' => 'advertiser_users',
             'table' => 'password_resets',
             'expire' => 60,
         ],

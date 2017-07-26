@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 
+use App\Models\Advertiser;
+use App\Models\AdvertiserSocialProvider;
 use App\Models\Client;
 use App\Models\ClientSocialProvider;
 use App\Models\OracleSocialProvider;
@@ -128,8 +130,6 @@ class SocialAuthController extends Controller
         /*
         * Handling with a oracle user
         */
-
-
         if($request->has('role') && $request->get('role') == 'oracle'){
 
             $userSocialProvider = OracleSocialProvider::where('provider_id', $request->get('id'))->first();
@@ -137,6 +137,31 @@ class SocialAuthController extends Controller
             if(!$userSocialProvider)
             {
                 $user = OracleUser::whereEmail($request->get('email'))->first();
+
+                if($user){
+                    $user->socialProviders()->create([
+                        'provider' => 'facebook',
+                        'provider_id' => $request->get('id'),
+                        'access_token' =>$request->get('access_token'),
+                        'photo_url' => $request->get('photo_url')
+                    ]);
+                }
+
+            }else{
+                $user = $userSocialProvider->user;
+            }
+        }
+
+        /*
+          * Handling with a advertiser user
+          */
+        if($request->has('role') && $request->get('role') == 'advertiser'){
+
+            $userSocialProvider = AdvertiserSocialProvider::where('provider_id', $request->get('id'))->first();
+
+            if(!$userSocialProvider)
+            {
+                $user = Advertiser::whereEmail($request->get('email'))->first();
 
                 if($user){
                     $user->socialProviders()->create([
@@ -173,6 +198,7 @@ class SocialAuthController extends Controller
                 'user' => $user->load('socialProviders')
             ])->header('Authorization','Bearer '. $token);;
         }
+
 
         return response([
             'status' => 'error',

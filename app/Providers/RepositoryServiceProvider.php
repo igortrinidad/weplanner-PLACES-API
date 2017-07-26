@@ -39,6 +39,9 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(\App\Repositories\PlaceTrackingRepository::class, \App\Repositories\PlaceTrackingRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\ReservationInterestRepository::class, \App\Repositories\ReservationInterestRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\PromotionalDateRepository::class, \App\Repositories\PromotionalDateRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\AdvertiserRepository::class, \App\Repositories\AdvertiserRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\ServiceAdRepository::class, \App\Repositories\ServiceAdRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\ServiceAdPhotoRepository::class, \App\Repositories\ServiceAdPhotoRepositoryEloquent::class);
         //:end-bindings:
     }
 }

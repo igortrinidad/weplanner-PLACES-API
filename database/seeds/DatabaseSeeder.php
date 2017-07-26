@@ -88,5 +88,11 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('password'),
             'remember_token' => str_random(10),
         ]);
+
+        /*
+         * Advertisers
+         */
+
+        $this->call(AdvertisersTableSeeder::class);
     }
 }
