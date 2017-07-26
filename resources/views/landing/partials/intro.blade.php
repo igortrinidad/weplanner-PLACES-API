@@ -37,8 +37,8 @@
             <div class="fp-download">
               <p class="wow fadeInDown" data-wow-delay=".15s">Baixe o aplicativo <strong>We Places</strong> ou <a href="https://app.weplaces.com.br" class="link-acesse-app-header" target="_blank">acesse online</a></p>
               <div class="download-buttons">
-                <a class="download-btn wow fadeInDown" data-wow-delay=".2s" href="#"><img src="assets/images/app_store_btn.png" alt="App Store"></a>
-                <a class="download-btn wow fadeInDown" data-wow-delay=".25s" href="#"><img src="assets/images/play_store_btn.png" alt="Play Store"></a>
+                <a class="download-btn wow fadeInDown" data-wow-delay=".2s" href="https://itunes.apple.com/us/app/we-places/id1248872717?ls=1&mt=8" target="_blank"><img src="assets/images/app_store_btn.png" alt="App Store"></a>
+                <a class="download-btn wow fadeInDown" data-wow-delay=".25s" href="https://play.google.com/store/apps/details?id=com.br.weplaces" target="_blank"><img src="assets/images/play_store_btn.png" alt="Play Store"></a>
               </div>
             </div> <!--|End Download|-->
           </div>

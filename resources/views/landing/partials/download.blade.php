@@ -13,8 +13,8 @@
     <div class="row">
       <div class="col-md-8 block-center">
         <div class="download-buttons wow fadeInUp" data-wow-delay=".2s">
-          <a class="download-btn" href="#"><img src="assets/images/app_store_btn.png" alt="App Store"></a>
-          <a class="download-btn" href="#"><img src="assets/images/play_store_btn.png" alt="Play Store"></a>
+          <a class="download-btn" href="https://itunes.apple.com/us/app/we-places/id1248872717?ls=1&mt=8" target="_blank"><img src="assets/images/app_store_btn.png" alt="App Store"></a>
+          <a class="download-btn" href="https://play.google.com/store/apps/details?id=com.br.weplaces" target="_blank"><img src="assets/images/play_store_btn.png" alt="Play Store"></a>
         </div>
 
         <a class="btn btn-primary btn-xl" href="https://app.weplaces.com.br">Acessar online</a>
