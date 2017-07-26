@@ -16,19 +16,37 @@
         <!--|Screenshots|-->
         <div class="screenshots">
           <figure class="screenshot">
-            <img src="assets/weplaces/screenshots/00.png" alt="">
+            <img src="assets/weplaces/iphone_black/screen1.png" alt="">
           </figure>
           <figure class="screenshot">
-            <img src="assets/weplaces/screenshots/01.png" alt="">
+            <img src="assets/weplaces/iphone_black/screen2.png" alt="">
           </figure>
           <figure class="screenshot">
-            <img src="assets/weplaces/screenshots/03.png" alt="">
+            <img src="assets/weplaces/iphone_black/screen3.png" alt="">
           </figure>
           <figure class="screenshot">
-            <img src="assets/weplaces/screenshots/04.png" alt="">
+            <img src="assets/weplaces/iphone_black/screen4.png" alt="">
           </figure>
           <figure class="screenshot">
-            <img src="assets/weplaces/screenshots/05.png" alt="">
+            <img src="assets/weplaces/iphone_black/screen5.png" alt="">
+          </figure>
+          <figure class="screenshot">
+            <img src="assets/weplaces/iphone_black/screen6.png" alt="">
+          </figure>
+          <figure class="screenshot">
+            <img src="assets/weplaces/iphone_black/screen7.png" alt="">
+          </figure>
+          <figure class="screenshot">
+            <img src="assets/weplaces/iphone_black/screen8.png" alt="">
+          </figure>
+          <figure class="screenshot">
+            <img src="assets/weplaces/iphone_black/screen9.png" alt="">
+          </figure>
+          <figure class="screenshot">
+            <img src="assets/weplaces/iphone_black/screen10.png" alt="">
+          </figure>
+          <figure class="screenshot">
+            <img src="assets/weplaces/iphone_black/screen11.png" alt="">
           </figure>
         </div> <!--|End Screenshot|-->
       </div>
@@ -38,6 +56,6 @@
           <a class="btn btn-primary btn-lg" href="https://app.weplaces.com.br">Acessar o app</a>
         </div>
       </div>
-    </section> 
+    </section>
 
     <!--| END SCREENSHOTS|-->

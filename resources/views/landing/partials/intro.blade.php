@@ -45,7 +45,7 @@
 
           <div class="col-md-5">
             <div class="intro-img-wrap wow fadeInDownBig" data-wow-delay=".3s">
-              <img class="intro-img img-responsive" src="assets/images/iphone01.png" alt="iphone">
+              <img class="intro-img img-responsive" src="assets/weplaces/iphone_black/screen1.png" alt="iphone">
             </div>
           </div>
         </div>

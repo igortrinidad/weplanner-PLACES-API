@@ -6,7 +6,7 @@
       <div class="row">
         <div class="col-md-4">
           <div class="phone-image wow fadeInLeft" data-wow-delay=".1s">
-            <img src="assets/images/iphone04.png" alt="">
+            <img src="assets/weplaces/iphone_white/screen5.png" alt="">
           </div>
         </div>
 
