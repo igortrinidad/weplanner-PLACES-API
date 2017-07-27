@@ -83,8 +83,8 @@ class PlaceMonthlyReport extends Command
 
             $email = !$place['has_owner'] ? $place['email'] : $place['user']['email'];
 
-            if(!$email){
-                $this->warn($place['name']. ' sem e-mail cadastrado');
+            if(!$email || !filter_var($email, FILTER_VALIDATE_EMAIL)){
+                $this->warn($place['name']. ' sem e-mail cadastrado ou não aceito.');
                 continue;
             }
 
