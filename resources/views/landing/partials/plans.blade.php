@@ -5,7 +5,8 @@
       <div class="row">
         <div class="col-md-6 block-center">
           <h2 class="section-title">Planos</h2>
-          <p>A Plataforma Places We-Planner é 100% gratuita para clientes e espaços de Cerimônia (Igrejas). Veja os planos de assinatura seu espaço de eventos.</p>
+          <p>A plataforma <b>We Places</b> é 100% gratuita para clientes e Igrejas.</p>
+          <p>Se você possui um espaço de eventos e quer oferecer todos os recursos da plataforma para seus clientes, escolha abaixo um plano de assinatura.</p>
         </div>
       </div>
     </header> <!--|End Section Header|-->
