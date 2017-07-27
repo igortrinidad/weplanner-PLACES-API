@@ -48,7 +48,7 @@
           </div>
           <div class="pricing-features">
             <ul>
-              <li>Até 2 Fotos</li>
+              <li>Até 5 Fotos</li>
               <li>Cadastrar espaço</li>
               <li>Administrar espaço</li>
               <li>Visualizações do mês</li>
@@ -76,7 +76,7 @@
           </div>
           <div class="pricing-features">
             <ul>
-              <li>Até 2 Fotos</li>
+              <li>Até 10 Fotos</li>
               <li>Cadastrar espaço</li>
               <li>Administrar espaço</li>
               <li>Visualizações do mês</li>
