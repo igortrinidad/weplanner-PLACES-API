@@ -59,7 +59,7 @@
                 <i class="fp-icon-small ion-ios-calendar-outline"></i>
                 <div class="text">
                   <h5 class="title">Agenda</h5>
-                  <p>Saiba as datas disponíveis disponíveis de cada local e faça sua reserva ou pré-reserva.</p>
+                  <p>Saiba as datas disponíveis de cada local e faça sua reserva ou pré-reserva.</p>
                 </div>
               </div> <!--|End Text Box|-->
             </div>
