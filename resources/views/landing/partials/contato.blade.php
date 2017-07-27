@@ -29,7 +29,7 @@
                 <input id="subject" name="subject" placeholder="Assunto" type="text">
             </div>
             <div class="entry-field">
-                <textarea id="message" rows="6" name="message" placeholder="Deixe sua massage" required=""></textarea>
+                <textarea id="message" rows="6" name="message" placeholder="Deixe sua mensagem" required=""></textarea>
             </div>
 
             <div class="action-message">

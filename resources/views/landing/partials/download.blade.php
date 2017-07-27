@@ -5,7 +5,7 @@
       <div class="row">
         <div class="col-md-6 block-center wow flipInX" data-wow-delay=".15s">
           <h2 class="section-title">Acesse agora</h2>
-          <p>We Places, disponível para Iphone e Android ou online</p>
+          <p>We Places, disponível para Iphone, Android e online</p>
         </div>
       </div>
     </header> <!--|End Section Header|-->
