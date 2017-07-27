@@ -72,7 +72,7 @@
                         <tbody style="text-align: center; font-family: 'Lato', sans-serif;">
 
 
-                            @if(!$data['place']['has_owner'])
+                            @if(!$data['place']['has_owner'] && $data['reservation_interests'] > 0)
                             <tr>
                                 <td colspan="2" style="padding: 15px 0;  border-bottom: 1px solid rgb(242, 242, 242); width: 50%;">
                                     <span style="font-size: 22px;">{{$data['reservation_interests']}} pessoas</span>

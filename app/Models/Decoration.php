@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
-class Place extends Model implements Transformable
+class Decoration extends Model implements Transformable
 {
     use TransformableTrait, Uuids, SoftDeletes;
 

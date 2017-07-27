@@ -27,6 +27,9 @@ class Kernel extends ConsoleKernel
     {
         //Update the tracker autimaticaly to keep places interesting on our platform while we do not have much users
         $schedule->command('update:tracker')->dailyAt('17:58');
+
+        //Envia o email de insights semanais
+        $schedule->command('place:monthly-report')->weekly()->tuesdays()->at('10:00');
     }
 
     /**
