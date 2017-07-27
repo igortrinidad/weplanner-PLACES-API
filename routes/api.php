@@ -106,6 +106,12 @@ Route::group(['prefix' => 'places'], function () {
     Route::get('{category_slug}/search', 'PlacesController@search');
 });
 
+//*** use abbreviation 'cause adblock blocks words like 'ad / ads' ***
+Route::group(['prefix' => 'wpsysad'], function () {
+    Route::get('/homeads', 'ServiceAdsController@homeAds');
+    Route::post('/tracker', 'AdTrackingsController@tracker');
+});
+
 /*
  * Clients
  */
@@ -229,6 +235,10 @@ Route::group(['prefix' => 'oracle'], function () {
         //Advertisers *** use abbreviation 'cause adblock blocks 'advertisers' ***
         Route::group(['prefix' => 'advts'], function(){
             Route::get('/list', 'AdvertisersController@index');
+            Route::post('/create', 'AdvertisersController@store');
+            Route::get('/show/{id}', 'AdvertisersController@show');
+            Route::post('/update', 'AdvertisersController@update');
+            Route::get('/destroy/{id}', 'AdvertisersController@destroy');
             Route::get('/search', 'AdvertisersController@search');
         });
 
@@ -238,6 +248,7 @@ Route::group(['prefix' => 'oracle'], function () {
             Route::post('/create', 'ServiceAdsController@store');
             Route::get('/show/{id}', 'ServiceAdsController@show');
             Route::post('/update', 'ServiceAdsController@update');
+            Route::get('/destroy/{id}', 'ServiceAdsController@destroy');
         });
 
         //Service Ads photos

@@ -43,4 +43,21 @@ class AdvertiserRepositoryEloquent extends BaseRepository implements AdvertiserR
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
+
+    public function create(array $attributes)
+    {
+        if(array_key_exists('password', $attributes)){
+            $attributes['password'] = bcrypt($attributes['password']);
+        }
+        return parent::create($attributes);
+    }
+
+    public function update(array $attributes, $id)
+    {
+        if(array_key_exists('password', $attributes)){
+            $attributes['password'] = bcrypt($attributes['password']);
+        }
+
+        return parent::update($attributes, $id);
+    }
 }

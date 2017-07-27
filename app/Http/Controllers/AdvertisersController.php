@@ -42,13 +42,11 @@ class AdvertisersController extends Controller
     {
         $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
 
-        $advertisers = $this->repository->paginate(10);
+        $advertisers = $this->repository->orderBy('name', 'asc')->paginate(10);
 
         if (request()->wantsJson()) {
 
-            return response()->json([
-                'data' => $advertisers,
-            ]);
+            return response()->json($advertisers);
         }
 
         return view('advertisers.index', compact('advertisers'));
@@ -103,13 +101,11 @@ class AdvertisersController extends Controller
      */
     public function show($id)
     {
-        $advertiser = $this->repository->find($id);
+        $advertiser = $this->repository->with('ads', 'decorations')->find($id);
 
         if (request()->wantsJson()) {
 
-            return response()->json([
-                'data' => $advertiser,
-            ]);
+            return response()->json($advertiser);
         }
 
         return view('advertisers.show', compact('advertiser'));
@@ -124,14 +120,14 @@ class AdvertisersController extends Controller
      *
      * @return Response
      */
-    public function update(AdvertiserUpdateRequest $request, $id)
+    public function update(AdvertiserUpdateRequest $request)
     {
 
         try {
 
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
 
-            $advertiser = $this->repository->update($request->all(), $id);
+            $advertiser = $this->repository->update($request->all(), $request->get('id'));
 
             $response = [
                 'message' => 'Advertiser updated.',

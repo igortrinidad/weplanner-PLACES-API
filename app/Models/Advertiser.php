@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\Uuids;
+use Aws\Api\Service;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject as JWTSubject;
@@ -117,5 +118,21 @@ class Advertiser extends Authenticatable implements JWTSubject
     public function socialProviders()
     {
         return $this->hasMany(ClientSocialProvider::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function ads()
+    {
+        return $this->hasMany(ServiceAd::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function decorations()
+    {
+        return $this->hasMany(Decoration::class);
     }
 }

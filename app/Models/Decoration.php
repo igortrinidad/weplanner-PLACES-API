@@ -10,7 +10,7 @@ use Prettus\Repository\Traits\TransformableTrait;
 
 class Decoration extends Model implements Transformable
 {
-    use TransformableTrait, Uuids, SoftDeletes;
+    use TransformableTrait, Uuids;
 
     /**
      * The table associated with the model.
@@ -88,7 +88,6 @@ class Decoration extends Model implements Transformable
     }
 
 
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -97,6 +96,12 @@ class Decoration extends Model implements Transformable
         return $this->hasMany(PlaceVideo::class);
     }
 
-
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function tracking()
+    {
+        return $this->hasMany(AdTracking::class, 'ad_id');
+    }
 
 }
