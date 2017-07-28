@@ -42,7 +42,9 @@ class AdvertisersController extends Controller
     {
         $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
 
-        $advertisers = $this->repository->orderBy('name', 'asc')->paginate(10);
+        $advertisers = $this->repository->orderBy('name', 'asc')
+            ->withCount('ads', 'decorations')
+            ->paginate(10);
 
         if (request()->wantsJson()) {
 

@@ -109,7 +109,11 @@ Route::group(['prefix' => 'places'], function () {
 //*** use abbreviation 'cause adblock blocks words like 'ad / ads' ***
 Route::group(['prefix' => 'wpsysad'], function () {
     Route::get('/homeads', 'ServiceAdsController@homeAds');
+    Route::get('/cityads', 'ServiceAdsController@cityAds');
+    Route::get('/placeads', 'ServiceAdsController@placeAds');
     Route::post('/tracker', 'AdTrackingsController@tracker');
+
+    Route::post('/contactForm', 'ServiceAdsController@contactForm');
 });
 
 /*
@@ -138,7 +142,7 @@ Route::group(['prefix' => 'client'], function () {
 });
 
 /*
- * Users
+ * Admin
  */
 Route::group(['prefix' => 'user', 'middleware' => 'auth:admin'], function () {
     Route::get('/index', 'UserController@index');
@@ -146,6 +150,10 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth:admin'], function () {
     Route::post('/create', 'UserController@create');
     Route::post('/update', 'UserController@update');
     Route::post('/destroy', 'UserController@destroy');
+
+
+    Route::get('/owner-requests', 'OwnerRequestsController@adminList');
+
 });
 
 /*

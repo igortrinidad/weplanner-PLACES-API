@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 
+use App\Repositories\AdvertiserRepository;
 use App\Repositories\ClientRepository;
 use App\Repositories\OracleUserRepository;
+use App\Repositories\OwnerRequestRepository;
+use App\Repositories\ServiceAdRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 
@@ -33,6 +36,18 @@ class OracleController extends Controller
      * @var OracleUserRepository
      */
     private $oracleUserRepository;
+    /**
+     * @var OwnerRequestRepository
+     */
+    private $ownerRequestRepository;
+    /**
+     * @var AdvertiserRepository
+     */
+    private $advertiserRepository;
+    /**
+     * @var ServiceAdRepository
+     */
+    private $adRepository;
 
     /**
      * OracleController constructor.
@@ -40,18 +55,27 @@ class OracleController extends Controller
      * @param ClientRepository $clientRepository
      * @param UserRepository $userRepository
      * @param OracleUserRepository $oracleUserRepository
+     * @param OwnerRequestRepository $ownerRequestRepository
+     * @param AdvertiserRepository $advertiserRepository
+     * @param ServiceAdRepository $adRepository
      */
     public function __construct(
         PlaceRepository $placeRepository,
         ClientRepository $clientRepository,
         UserRepository $userRepository,
-        OracleUserRepository $oracleUserRepository
+        OracleUserRepository $oracleUserRepository,
+        OwnerRequestRepository $ownerRequestRepository,
+        AdvertiserRepository $advertiserRepository,
+        ServiceAdRepository $adRepository
     )
     {
         $this->placeRepository = $placeRepository;
         $this->clientRepository = $clientRepository;
         $this->userRepository = $userRepository;
         $this->oracleUserRepository = $oracleUserRepository;
+        $this->ownerRequestRepository = $ownerRequestRepository;
+        $this->advertiserRepository = $advertiserRepository;
+        $this->adRepository = $adRepository;
     }
 
     /**
@@ -209,13 +233,20 @@ class OracleController extends Controller
         $admins = $this->userRepository->all()->count();
         $oracles = $this->oracleUserRepository->all()->count();
 
+        $owner_requests = $this->ownerRequestRepository->all()->count();
+        $advertisers = $this->advertiserRepository->all()->count();
+        $service_ads = $this->adRepository->all()->count();
+
         $data = [
             'confirmed_places' => $confirmed_places,
             'unconfirmed_places' => $unconfirmed_places,
             'trashed_places' => $trashed_places,
             'clients' => $clients,
             'admins' => $admins,
-            'oracles' => $oracles
+            'oracles' => $oracles,
+            'owner_requests' => $owner_requests,
+            'advertisers' => $advertisers,
+            'service_ads' => $service_ads
         ];
 
         if (request()->wantsJson()) {

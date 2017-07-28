@@ -94,5 +94,7 @@ class DatabaseSeeder extends Seeder
          */
 
         $this->call(AdvertisersTableSeeder::class);
+
+        $this->call(ServiceAdsTableSeeder::class);
     }
 }

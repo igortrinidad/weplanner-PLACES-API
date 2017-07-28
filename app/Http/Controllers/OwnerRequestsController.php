@@ -293,4 +293,19 @@ class OwnerRequestsController extends Controller
 
         return redirect()->back()->with('message', 'OwnerRequest confirmed.');
     }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function adminList()
+    {
+
+        $ownerRequests = $this->repository->scopeQuery(function ($query){
+            return $query->where('user_id', \Auth::user()->id);
+        })->with(['place'])->paginate(10);
+
+        return response()->json($ownerRequests);
+    }
 }
