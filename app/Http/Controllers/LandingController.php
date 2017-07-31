@@ -32,6 +32,19 @@ class LandingController extends Controller
     }
 
     /**
+     * SIGNUP
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function signup()
+    {
+
+        return view('signup.index');
+
+    }
+
+    /**
      * Index teste
      *
      * @param Request $request
@@ -59,6 +72,61 @@ class LandingController extends Controller
 
     }
 
+        /**
+     * Index teste
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function sendSignupForm(Request $request)
+    {
+        //Email
+        $data = [];
+        $data['align'] = 'left';
+
+
+        $nome = $request['name'];
+        $cpf = $request['cpf'];
+        $address = $request['address'];
+        $phone = $request['phone'];
+        $email = $request['email'];
+        $plan = $request['plan_selected'];
+        $company_name = $request['company_name'];
+
+        $messageOne = 
+        '<p><b>Nome completo: </b>' . $nome . '</p>
+        <p><b>CPF: </b>' .  $cpf . '</p>
+        <p><b>Endereço: </b>' . $address . '</p>
+        <p><b>Telefone: </b>' . $phone . '</p>
+        <p><b>Email: </b>' . $email . '</p>
+        <p><b>Plano: </b>' . $plan . '</p>
+        <p><b>Nome empresa: </b>' . $company_name . '</p>';
+
+        $data['messageTitle'] = 'CADASTRO WE PLACES: ';
+        $data['messageOne'] = $messageOne;
+        $data['messageSubject'] = 'WE PLACES: CADASTRO WE PLACES RECEBIDO';
+
+        \Mail::send('emails.standart-with-btn',['data' => $data], function ($message) use ($data){
+            $message->from('no-reply@weplaces.com.br', 'Landing We Places');
+            $message->to('comercial@weplaces.com.br', 'We Places')->subject($data['messageSubject']);
+        });
+
+        return redirect('/parabens');
+
+    }
+
+    /**
+     * CONGRATULATION PAGE
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function congrats()
+    {
+
+        return view('signup.congrats.index');
+
+    }
     
 }
 

@@ -12,7 +12,10 @@
 */
 
 Route::get('/', 'LandingController@index');
+Route::get('/cadastre-se/{choosed_payment}', 'LandingController@signup');
+Route::get('/parabens', 'LandingController@congrats');
 Route::post('/sendLandingContactForm', 'LandingController@sendLandingContactForm');
+Route::post('/sendSignupForm', 'LandingController@sendSignupForm');
 
 
 

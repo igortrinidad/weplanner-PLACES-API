@@ -14,7 +14,7 @@
       <div class="row">
         <div class="col-md-8 block-center">
           <!--|Contact Form|-->
-          <form class="contact-form wow shake" method="POST" action="/sendLandingContactForm" data-wow-delay=".15s">
+          <form id="landing-form" class="contact-form wow shake" method="POST" action="/sendLandingContactForm" data-wow-delay=".15s">
           {!! csrf_field() !!}
             <!--|Action Message|-->
 

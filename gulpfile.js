@@ -29,6 +29,7 @@ elixir(function(mix) {
         'magnific-popup.css',
         'owl.carousel.css',
         'style.css',
+        'helpers.css',
     ], 'public/build/landing/css/vendors.css');
 
     //JS

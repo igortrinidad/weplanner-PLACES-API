@@ -1759,6 +1759,16 @@ img {
   -moz-background-size: cover;
   background-size: cover;
 }
+
+.contact-signup {
+  position: relative;
+  background-image: url("../weplaces/road_california.jpg");
+  background-position: center center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+}
+
 .contact.gradient-overlay-black .overlay-inner {
   background: -webkit-linear-gradient(rgba(0, 0, 0, 0.6) 10%, #212121);
   background: -o-linear-gradient(rgba(0, 0, 0, 0.6) 10%, #212121);

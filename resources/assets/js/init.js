@@ -95,7 +95,7 @@
 
     //
     // Contact
-    var contact         = $('.contact-form'),
+    var contact         = $('#landing-form'),
       successMessage    = $('.contact-success'),
       errorMessage      = $('.contact-error'),
       is_sending        = false;
