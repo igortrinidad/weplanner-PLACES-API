@@ -111,6 +111,7 @@ Route::group(['prefix' => 'wpsysad'], function () {
     Route::get('/homeads', 'ServiceAdsController@homeAds');
     Route::get('/cityads', 'ServiceAdsController@cityAds');
     Route::get('/placeads', 'ServiceAdsController@placeAds');
+    Route::get('/place_decorations/{id}', 'DecorationsController@placeDecorations');
     Route::post('/tracker', 'AdTrackingsController@tracker');
 
     Route::post('/contactForm', 'ServiceAdsController@contactForm');
@@ -262,6 +263,24 @@ Route::group(['prefix' => 'oracle'], function () {
         //Service Ads photos
         Route::post('/service_ad_photo/upload', 'ServiceAdPhotosController@store');
         Route::get('/service_ad_photo/destroy/{id}', 'ServiceAdPhotosController@destroy');
+
+        //Decoration
+        Route::group(['prefix' => 'decoration'], function(){
+            Route::post('/list/{place_id}', 'DecorationsController@index');
+            Route::post('/create', 'DecorationsController@store');
+            Route::get('/show/{id}', 'DecorationsController@show');
+            Route::post('/update', 'DecorationsController@update');
+            Route::get('/destroy/{id}', 'DecorationsController@destroy');
+        });
+
+        //Decoration photos
+        Route::post('/decoration_photo/upload', 'DecorationPhotosController@store');
+        Route::get('/decoration_photo/destroy/{id}', 'DecorationPhotosController@destroy');
+
+        //Decoration videos
+        Route::post('/decoration_video/create', 'DecorationVideosController@store');
+        Route::post('/decoration_video/update', 'DecorationVideosController@update');
+        Route::get('/decoration_video/destroy/{id}', 'DecorationVideosController@destroy');
 
         //profile update
         Route::post('/user/update', 'OracleUsersController@update');

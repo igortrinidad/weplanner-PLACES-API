@@ -2,15 +2,14 @@
 
 namespace App\Models;
 
-use App\Models\Traits\Uuids;
+
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 class Decoration extends Model implements Transformable
 {
-    use TransformableTrait, Uuids;
+    use TransformableTrait;
 
     /**
      * The table associated with the model.
@@ -34,13 +33,13 @@ class Decoration extends Model implements Transformable
     protected $fillable = [
         'id',
         'place_id',
+        'advertiser_id',
+        'action',
+        'action_data',
+        'title',
+        'description',
         'expire_at',
         'is_active',
-        'decor_name',
-        'views',
-        'phone_clicks',
-        'whatsapp_clicks',
-        'email_clicks',
     ];
 
     /**
@@ -50,6 +49,7 @@ class Decoration extends Model implements Transformable
      */
     protected $casts = [
         'is_active' => 'boolean',
+        'action_data' => 'json',
     ];
 
     /**
@@ -57,7 +57,7 @@ class Decoration extends Model implements Transformable
      *
      * @var array
      */
-    protected $appends = [];
+    protected $appends = ['action_label'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -72,6 +72,23 @@ class Decoration extends Model implements Transformable
      * -------------------------------
      */
 
+    /**
+     * @return mixed
+     */
+    public function getActionLabelAttribute()
+    {
+        if ($this->action == 'email') {
+            return 'E-mail';
+        }
+
+        if ($this->action == 'call') {
+            return 'Ligação';
+        }
+
+        if ($this->action == 'whatsapp') {
+            return 'Whatsapp';
+        }
+    }
 
     /**
      * -------------------------------
@@ -80,20 +97,35 @@ class Decoration extends Model implements Transformable
      */
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function advertiser()
+    {
+        return $this->belongsTo(Advertiser::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function place()
+    {
+        return $this->belongsTo(Place::class);
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function photos()
     {
-        return $this->hasMany(PlacePhoto::class);
+        return $this->hasMany(DecorationPhoto::class);
     }
-
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function videos()
     {
-        return $this->hasMany(PlaceVideo::class);
+        return $this->hasMany(DecorationVideo::class);
     }
 
     /**

@@ -7,29 +7,28 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
-use App\Http\Requests\AdvertiserCreateRequest;
-use App\Http\Requests\AdvertiserUpdateRequest;
-use App\Repositories\AdvertiserRepository;
-use App\Validators\AdvertiserValidator;
+use App\Http\Requests\DecorationVideoCreateRequest;
+use App\Http\Requests\DecorationVideoUpdateRequest;
+use App\Repositories\DecorationVideoRepository;
 
 
-class AdvertisersController extends Controller
+
+class DecorationVideosController extends Controller
 {
 
     /**
-     * @var AdvertiserRepository
+     * @var DecorationVideoRepository
      */
     protected $repository;
 
     /**
-     * @var AdvertiserValidator
+     * @var DecorationVideoValidator
      */
     protected $validator;
 
-    public function __construct(AdvertiserRepository $repository, AdvertiserValidator $validator)
+    public function __construct(DecorationVideoRepository $repository)
     {
         $this->repository = $repository;
-        $this->validator  = $validator;
     }
 
 
@@ -41,38 +40,35 @@ class AdvertisersController extends Controller
     public function index()
     {
         $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
-
-        $advertisers = $this->repository->orderBy('name', 'asc')
-            ->withCount(['ads', 'decorations'])
-            ->paginate(10);
+        $decorationVideos = $this->repository->all();
 
         if (request()->wantsJson()) {
 
-            return response()->json($advertisers);
+            return response()->json([
+                'data' => $decorationVideos,
+            ]);
         }
 
-        return view('advertisers.index', compact('advertisers'));
+        return view('decorationVideos.index', compact('decorationVideos'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  AdvertiserCreateRequest $request
+     * @param  DecorationVideoCreateRequest $request
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(AdvertiserCreateRequest $request)
+    public function store(DecorationVideoCreateRequest $request)
     {
 
         try {
 
-            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
-
-            $advertiser = $this->repository->create($request->all());
+            $decorationVideo = $this->repository->create($request->all());
 
             $response = [
-                'message' => 'Advertiser created.',
-                'data'    => $advertiser->toArray(),
+                'message' => 'DecorationVideo created.',
+                'data'    => $decorationVideo->toArray(),
             ];
 
             if ($request->wantsJson()) {
@@ -103,37 +99,53 @@ class AdvertisersController extends Controller
      */
     public function show($id)
     {
-        $advertiser = $this->repository->with(['ads', 'decorations.place'])->find($id);
+        $decorationVideo = $this->repository->find($id);
 
         if (request()->wantsJson()) {
 
-            return response()->json($advertiser);
+            return response()->json([
+                'data' => $decorationVideo,
+            ]);
         }
 
-        return view('advertisers.show', compact('advertiser'));
+        return view('decorationVideos.show', compact('decorationVideo'));
+    }
+
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int $id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+
+        $decorationVideo = $this->repository->find($id);
+
+        return view('decorationVideos.edit', compact('decorationVideo'));
     }
 
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  AdvertiserUpdateRequest $request
+     * @param  DecorationVideoUpdateRequest $request
      * @param  string            $id
      *
      * @return Response
      */
-    public function update(AdvertiserUpdateRequest $request)
+    public function update(DecorationVideoUpdateRequest $request)
     {
 
         try {
 
-            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
-
-            $advertiser = $this->repository->update($request->all(), $request->get('id'));
+            $decorationVideo = $this->repository->update($request->all(), $request->get('id'));
 
             $response = [
-                'message' => 'Advertiser updated.',
-                'data'    => $advertiser->toArray(),
+                'message' => 'DecorationVideo updated.',
+                'data'    => $decorationVideo->toArray(),
             ];
 
             if ($request->wantsJson()) {
@@ -171,30 +183,11 @@ class AdvertisersController extends Controller
         if (request()->wantsJson()) {
 
             return response()->json([
-                'message' => 'Advertiser deleted.',
+                'message' => 'DecorationVideo deleted.',
                 'deleted' => $deleted,
             ]);
         }
 
-        return redirect()->back()->with('message', 'Advertiser deleted.');
-    }
-
-    /**
-     * Advertiser search by name.
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function search(Request $request)
-    {
-        $advertisers = $this->repository
-            ->scopeQuery(function ($query) use ($request) {
-                return $query->where('name', 'LIKE', '%' . $request->get('therm') . '%');
-            })->all();
-
-        if (request()->wantsJson()) {
-
-            return response()->json(['results' => $advertisers]);
-        }
+        return redirect()->back()->with('message', 'DecorationVideo deleted.');
     }
 }

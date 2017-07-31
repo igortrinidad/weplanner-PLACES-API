@@ -255,5 +255,13 @@ class Place extends Model implements Transformable
         return $this->hasMany(PromotionalDate::class, 'place_id', 'id');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function decorations()
+    {
+        return $this->hasMany(Decoration::class, 'place_id', 'id');
+    }
+
 
 }

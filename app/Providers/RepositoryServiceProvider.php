@@ -43,6 +43,8 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(\App\Repositories\ServiceAdRepository::class, \App\Repositories\ServiceAdRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\ServiceAdPhotoRepository::class, \App\Repositories\ServiceAdPhotoRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\AdTrackingRepository::class, \App\Repositories\AdTrackingRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\DecorationPhotoRepository::class, \App\Repositories\DecorationPhotoRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\DecorationVideoRepository::class, \App\Repositories\DecorationVideoRepositoryEloquent::class);
         //:end-bindings:
     }
 }
