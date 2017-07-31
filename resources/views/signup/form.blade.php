@@ -84,8 +84,8 @@
             <div class="entry-field">
                <label>Plano</label>
                <select class="form-control" name="plan_selected">
-                    <option>Anual R$39,00 / mês - R$498,00 por 12 meses</option>
-                    <option>Semestral R$49,00 / mês - R$264,00 por 6 meses</option>
+                    <option>Anual R$39,00 / mês - R$468,00 por 12 meses</option>
+                    <option>Semestral R$49,00 / mês - R$294,00 por 6 meses</option>
                     <option>Mensal R$79,00 / mês - R$79,00 por mês</option>
                </select>
             </div>
