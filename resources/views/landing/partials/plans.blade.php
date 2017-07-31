@@ -71,7 +71,7 @@
         <div class="pricing-table highlight wow fadeInUp" data-wow-delay=".1s">
           <div class="pricing-header">
             <p class="plan-name">Plano anual</p>
-            <p class="price"><span class="currency-symbol">R$</span>39,90 <span class="duration">/mês</span></p>
+            <p class="price"><span class="currency-symbol">R$</span>39,00 <span class="duration">/mês</span></p>
           </div>
           <div class="pricing-features">
             <ul>

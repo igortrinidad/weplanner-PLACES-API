@@ -102,13 +102,17 @@ class LandingController extends Controller
         <p><b>Plano: </b>' . $plan . '</p>
         <p><b>Nome empresa: </b>' . $company_name . '</p>';
 
-        $data['messageTitle'] = 'CADASTRO WE PLACES: ';
+        $data['messageTitle'] = 'CADASTRO WE PLACES';
         $data['messageOne'] = $messageOne;
-        $data['messageSubject'] = 'WE PLACES: CADASTRO WE PLACES RECEBIDO';
+        $data['button_link'] = 'https://app.weplaces.com.br/#/oracle/login';
+        $data['button_name'] = 'Acesse o Oracle Agora';
+        $data['messageSubject'] = 'WE PLACES CADASTRO: ' . $plan;
 
         \Mail::send('emails.standart-with-btn',['data' => $data], function ($message) use ($data){
             $message->from('no-reply@weplaces.com.br', 'Landing We Places');
             $message->to('comercial@weplaces.com.br', 'We Places')->subject($data['messageSubject']);
+            $message->to('jessica.santos@weplaces.com.br', 'We Places')->subject($data['messageSubject']);
+            $message->to('nathan.borem@weplaces.com.br', 'We Places')->subject($data['messageSubject']);
         });
 
         return redirect('/parabens');
