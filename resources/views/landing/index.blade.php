@@ -18,14 +18,6 @@
   <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
   <title>We Places</title>
 
-  <!--|Google Font(Quicksand)|-->
-  <link href="https://fonts.googleapis.com/css?family=Quicksand:400,700" rel="stylesheet">
-  <!--|Google Font(Roboto)|-->
-  <link href='https://fonts.googleapis.com/css?family=Lato:400,100italic,100,300,300italic,400italic,500,500italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
-
-
-  <link href="{!! asset('build/landing/css/vendors.css') !!}" rel="stylesheet">
-
   <!--|Favicon|-->
   <link rel="icon" href="assets/images/favicon.ico">
   <!-- Touch Icons -->
@@ -59,7 +51,7 @@
   @include('landing.partials.paraseuespaco')
   @include('landing.partials.screenshots')
 
-</div> 
+</div>
 
   @include('landing.partials.posts')
   @include('landing.partials.plans')
@@ -88,3 +80,9 @@
 
 </body>
 </html>
+<!--|Google Font(Quicksand)|-->
+<link href="https://fonts.googleapis.com/css?family=Quicksand:400,700" rel="stylesheet">
+<!--|Google Font(Roboto)|-->
+<link href='https://fonts.googleapis.com/css?family=Lato:400,100italic,100,300,300italic,400italic,500,500italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+<!-- Styles -->
+<link href="{!! asset('build/landing/css/vendors.css') !!}" rel="stylesheet">
