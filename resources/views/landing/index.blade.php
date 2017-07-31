@@ -3,7 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="cache-control" content="public">
+  <meta http-equiv="expires" content ="<?php echo date('l jS \of F Y h:i:s A', strtotime('+7 days')); ?>" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
 
   <meta property="og:locale" content="pt_BR">
   <meta property="og:url" content="https://weplaces.com.br">
@@ -15,7 +18,13 @@
   <meta property="og:image:width" content="800">
   <meta property="og:image:height" content="600">
 
-  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <!--|Google Font(Quicksand)|-->
+  <link href="https://fonts.googleapis.com/css?family=Quicksand:400,700" rel="stylesheet">
+  <!--|Google Font(Roboto)|-->
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,100italic,100,300,300italic,400italic,500,500italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+  <!-- Styles -->
+  <link href="{!! asset('build/landing/css/vendors.css') !!}" rel="stylesheet">
+
   <title>We Places</title>
 
   <!--|Favicon|-->
@@ -80,9 +89,3 @@
 
 </body>
 </html>
-<!--|Google Font(Quicksand)|-->
-<link href="https://fonts.googleapis.com/css?family=Quicksand:400,700" rel="stylesheet">
-<!--|Google Font(Roboto)|-->
-<link href='https://fonts.googleapis.com/css?family=Lato:400,100italic,100,300,300italic,400italic,500,500italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
-<!-- Styles -->
-<link href="{!! asset('build/landing/css/vendors.css') !!}" rel="stylesheet">
