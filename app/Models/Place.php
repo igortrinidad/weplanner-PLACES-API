@@ -67,6 +67,7 @@ class Place extends Model implements Transformable
         'pre_reservation_price',
         'virtual_tour_url',
         'featured_position',
+        'show_all_informations',
         'created_by_id',
         'created_by_type',
         'list_common'
@@ -96,6 +97,7 @@ class Place extends Model implements Transformable
         'is_active' => 'boolean',
         'instructions' => 'json',
         'list_common' => 'boolean',
+        'show_all_informations' => 'boolean',
         'featured_position' => 'integer',
         'reservation_price' => 'double',
         'pre_reservation_price' => 'double',
