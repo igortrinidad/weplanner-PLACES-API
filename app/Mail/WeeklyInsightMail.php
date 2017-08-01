@@ -31,6 +31,8 @@ class WeeklyInsightMail extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.weekly-insights')->with(['data' => $this->data]);
+
+        return $this->from('no-reply@weplaces.com.br', 'We Places')
+            ->view('emails.weekly-insights')->with(['data' => $this->data]);
     }
 }
