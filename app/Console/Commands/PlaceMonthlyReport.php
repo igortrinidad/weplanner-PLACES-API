@@ -97,7 +97,7 @@ class PlaceMonthlyReport extends Command
 
             $data = $this->getData($place, $place['id']);
 
-            \Mail::send('emails.weekly-insights', ['data' => $data], function ($message) use ($data, $email, $place) {
+            \Mail::queue('emails.weekly-insights', ['data' => $data], function ($message) use ($data, $email, $place) {
                 $message->from('no-reply@weplaces.com.br', 'We Places');
                 $message->to($email)->subject('Insights: ' . $place['name']);
             });
