@@ -80,6 +80,8 @@ class PlaceMonthlyReport extends Command
 
         })->with('user')->all();
 
+        $reportAll = [];
+
         foreach($places  as $place){
             $place = $place->setHidden(['appointments_count', 'reservations_count', 'pre_reservations_count'])->toArray();
 
@@ -100,15 +102,32 @@ class PlaceMonthlyReport extends Command
             $data = $this->getData($place, $place['id']);
 
             \Mail::to($email, $place['name'])->queue(new WeeklyInsightMail($data));
-/*
-            \Mail::queue('emails.weekly-insights', ['data' => $data], function ($message) use ($data, $email, $place) {
-                $message->from('no-reply@weplaces.com.br', 'We Places');
-                $message->to($email)->subject('Insights: ' . $place['name']);
-            });
-*/
+
+            $reportAll[] = ['place_name' => $place['name'], 'place_email' => $email, 'place_views' => $data['views']['last_month'] ];
 
             $this->info('Email enviado para ' . $email);
         }
+
+        //Para controlar para quais emails foram enviados os reports
+
+        $reportData = [];
+        $reportData['align'] = 'left';
+        $text = '';
+
+        foreach($reportAll as $report){
+            $text = $text . '<p><b>Espaço: </b>' . $report['place_name'] . ' | ' . '<b>Email: </b>' . $report['place_name'] . '</p>
+            <p><b>Visualizações: <b>' . $report['place_views'] . '</p><hr>';
+        }
+
+        $reportData['messageTitle'] = 'Insights enviados';
+        $reportData['messageOne'] = $text;
+        $reportData['messageSubject'] = 'We Places: Insight reports.';
+
+        \Mail::send('emails.standart-with-btn',['data' => $reportData], function ($message) use ($reportData){
+            $message->from('no-reply@weplaces.com.br', 'Landing We Places');
+            $message->to('comercial@weplaces.com.br', 'We Places')->subject($reportData['messageSubject']);
+            $message->to('nathan.borem@weplaces.com.br', 'We Places')->subject($reportData['messageSubject']);
+        });
 
     }
 
