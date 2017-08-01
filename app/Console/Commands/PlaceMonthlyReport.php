@@ -9,6 +9,8 @@ use App\Repositories\ReservationInterestRepository;
 use Illuminate\Console\Command;
 use Carbon\Carbon as Carbon;
 
+use App\Mail\WeeklyInsightMail;
+
 class PlaceMonthlyReport extends Command
 {
     /**
@@ -97,10 +99,13 @@ class PlaceMonthlyReport extends Command
 
             $data = $this->getData($place, $place['id']);
 
+            \Mail::to($email, $place['name'])->queue(new WeeklyInsightMail($data));
+/*
             \Mail::queue('emails.weekly-insights', ['data' => $data], function ($message) use ($data, $email, $place) {
                 $message->from('no-reply@weplaces.com.br', 'We Places');
                 $message->to($email)->subject('Insights: ' . $place['name']);
             });
+*/
 
             $this->info('Email enviado para ' . $email);
         }
