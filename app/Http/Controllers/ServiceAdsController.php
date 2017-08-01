@@ -95,10 +95,8 @@ class ServiceAdsController extends Controller
 
             $serviceAd = $this->repository->create($request->all());
 
-
             //Atualiza a lista de anuncios para fazer a rotatividade
-            //
-            //
+            $this->updateRedisAdList();
 
 
             //update photos
@@ -197,8 +195,7 @@ class ServiceAdsController extends Controller
             $serviceAd = $this->repository->update($request->all(), $request->get('id'));
 
             //Atualiza a lista de anuncios para fazer a rotatividade
-            //
-            //
+            $this->updateRedisAdList();
 
             $response = [
                 'message' => 'ServiceAd updated.',
@@ -316,16 +313,9 @@ class ServiceAdsController extends Controller
 
         if(!$home_ads){
 
-            //Get ads list
-            $serviceAds = $this->repository->makeModel()->where(function ($query) {
-                return $query->where('type', 'home')->where('is_active', true);
-            })->get()->pluck('id');
+             $this->updateRedisAdList();
 
-
-            // store the list on redis
-            \Redis::set('home_ads', json_encode($serviceAds));
-
-            $home_ads = json_decode(\Redis::get('home_ads'));
+             $home_ads = json_decode(\Redis::get('home_ads'));
         }
 
         // get the first ad on list
@@ -375,17 +365,9 @@ class ServiceAdsController extends Controller
 
         if(!$city_ads){
 
-            //Get ads list
-            $serviceAds = $this->repository->makeModel()->where(function ($query)  use($request){
-                return $query->where('type', 'city')->where('city', $request->get('city'))->where('is_active', true);
-            })->get()->pluck('id');
+            $this->updateRedisAdList();
 
-            if($serviceAds->count()){
-                // store the list on redis
-                \Redis::set($city_prefix, json_encode($serviceAds));
-
-                $city_ads = json_decode(\Redis::get($city_prefix));
-            }
+            $city_ads = json_decode(\Redis::get($city_prefix));
         }
 
         if($city_ads){
@@ -440,17 +422,10 @@ class ServiceAdsController extends Controller
 
         if(!$place_ads){
 
-            //Get ads list
-            $serviceAds = $this->repository->makeModel()->where(function ($query)  use($request){
-                return $query->where('place_id', $request->get('place'))->where('is_active', true);
-            })->get()->pluck('id');
+            $this->updateRedisAdList();
 
-            if($serviceAds->count()){
-                // store the list on redis
-                \Redis::set($place_prefix, json_encode($serviceAds));
+            $place_ads = json_decode(\Redis::get($place_prefix));
 
-                $place_ads = json_decode(\Redis::get($place_prefix));
-            }
         }
 
         if($place_ads){
@@ -484,5 +459,44 @@ class ServiceAdsController extends Controller
         }
 
         return response()->json(['status' => 'no-ads']);
+    }
+
+    /*
+     * Update the ads list on redis after create/update or redis is empty
+     */
+    function updateRedisAdList(){
+
+        \Redis::flushAll();
+
+        //Get ads
+        $serviceAds = $this->repository->makeModel()->where(function ($query) {
+            return $query->where('is_active', true);
+        })->get();
+
+        //Home Ads
+        $home_ads = $serviceAds->where('type', 'home')->pluck('id')->all();
+        \Redis::set('home_ads', json_encode($home_ads));
+
+        //Cities Ads
+        $cities_ads = collect($serviceAds->where('type', 'city')->all());
+        foreach($cities_ads as $city_ad){
+            $city_prefix = snake_case($city_ad->city.'_ads');
+
+            $city_ads = $cities_ads->where('city', $city_ad->city)->pluck('id')->all();
+
+            \Redis::set($city_prefix, json_encode($city_ads));
+        }
+
+        //Places Ads
+        $places_ads = collect($serviceAds->where('type', 'place')->all());
+        foreach($places_ads as $place_ad){
+
+            $place_prefix = snake_case($place_ad->place_id).'_ads';
+
+            $place_ads = $places_ads->where('place_id', $place_ad->place_id)->pluck('id')->all();
+
+            \Redis::set($place_prefix, json_encode($place_ads));
+
+        }
     }
 }
