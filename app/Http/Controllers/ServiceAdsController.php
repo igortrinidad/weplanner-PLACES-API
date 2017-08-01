@@ -16,6 +16,8 @@ use App\Repositories\ServiceAdRepository;
 use App\Validators\ServiceAdValidator;
 use Carbon\Carbon as Carbon;
 
+use App\Models\ServiceAd;
+
 
 class ServiceAdsController extends Controller
 {
@@ -92,6 +94,12 @@ class ServiceAdsController extends Controller
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
 
             $serviceAd = $this->repository->create($request->all());
+
+
+            //Atualiza a lista de anuncios para fazer a rotatividade
+            //
+            //
+
 
             //update photos
             if (array_key_exists('photos', $request->all())) {
@@ -187,6 +195,10 @@ class ServiceAdsController extends Controller
             }
 
             $serviceAd = $this->repository->update($request->all(), $request->get('id'));
+
+            //Atualiza a lista de anuncios para fazer a rotatividade
+            //
+            //
 
             $response = [
                 'message' => 'ServiceAd updated.',
@@ -417,6 +429,7 @@ class ServiceAdsController extends Controller
     */
     public function placeAds(Request $request)
     {
+
         //List by place-id_ads
         $place_prefix = snake_case($request->get('place')).'_ads';
 

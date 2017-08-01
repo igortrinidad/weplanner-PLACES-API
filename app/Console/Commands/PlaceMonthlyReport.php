@@ -115,7 +115,7 @@ class PlaceMonthlyReport extends Command
         $text = '';
 
         foreach($reportAll as $report){
-            $text = $text . '<p><b>Espaço: </b>' . $report['place_name'] . ' | ' . '<b>Email: </b>' . $report['place_name'] . '</p>
+            $text = $text . '<p><b>Espaço: </b>' . $report['place_name'] . ' | ' . '<b>Email: </b>' . $report['place_email'] . '</p>
             <p><b>Visualizações: <b>' . $report['place_views'] . '</p><hr>';
         }
 

@@ -110,7 +110,7 @@ Route::group(['prefix' => 'places'], function () {
 Route::group(['prefix' => 'wpsysad'], function () {
     Route::get('/homeads', 'ServiceAdsController@homeAds');
     Route::get('/cityads', 'ServiceAdsController@cityAds');
-    Route::get('/placeads', 'ServiceAdsController@placeAds');
+    Route::post('/placeads', 'ServiceAdsController@placeAds');
     Route::get('/place_decorations/{id}', 'DecorationsController@placeDecorations');
     Route::post('/tracker', 'AdTrackingsController@tracker');
 
