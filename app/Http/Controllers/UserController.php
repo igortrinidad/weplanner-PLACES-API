@@ -34,7 +34,7 @@ class UserController extends Controller
     {
         $limit = 300;
 
-        $paginator = $this->repository->paginate($limit);
+        $paginator = $this->repository->orderBy('name', 'asc')->paginate($limit);
         $users = $paginator->getCollection();
 
         if (request()->wantsJson()) {
@@ -179,5 +179,16 @@ class UserController extends Controller
         }
 
         return redirect()->back()->with('message', 'Client deleted.');
+    }
+
+    public function search(Request $request)
+    {
+        $users = $this->repository->scopeQuery(function ($query) use ($request){
+            return $query->where('name', 'LIKE', '%'.$request->get('search').'%')
+                ->orWhere('last_name', 'LIKE', '%'.$request->get('search').'%')
+                ->orderBy('name', 'asc');
+        });
+
+        return response()->json($users->paginate(10));
     }
 }

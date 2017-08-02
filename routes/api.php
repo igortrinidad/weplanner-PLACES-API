@@ -228,6 +228,11 @@ Route::group(['prefix' => 'oracle'], function () {
             Route::post('/update/client', 'ClientsController@update');
             Route::post('/update/oracle', 'OracleUsersController@update');
 
+            //Search
+            Route::get('/search/admin', 'UserController@search');
+            Route::get('/search/client', 'ClientsController@search');
+            Route::get('/search/oracle', 'OracleUsersController@search');
+
             //Destroy
             Route::get('/destroy/admin/{id}', 'UserController@destroy');
             Route::get('/destroy/client/{id}', 'ClientsController@destroy');
