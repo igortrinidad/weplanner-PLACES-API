@@ -41,13 +41,11 @@ class ClientsController extends Controller
     public function index()
     {
         $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
-        $clients = $this->repository->all();
+        $clients = $this->repository->orderBy('name', 'asc')->paginate(10);
 
         if (request()->wantsJson()) {
 
-            return response()->json([
-                'data' => $clients,
-            ]);
+            return response()->json($clients);
         }
 
         return view('clients.index', compact('clients'));
@@ -254,5 +252,16 @@ class ClientsController extends Controller
         }
 
         return redirect()->back()->with('message', 'Client deleted.');
+    }
+
+    public function search(Request $request)
+    {
+        $users = $this->repository->scopeQuery(function ($query) use ($request){
+            return $query->where('name', 'LIKE', '%'.$request->get('search').'%')
+                ->orWhere('last_name', 'LIKE', '%'.$request->get('search').'%')
+                ->orderBy('name', 'asc');
+        });
+
+        return response()->json($users->paginate(10));
     }
 }

@@ -41,13 +41,12 @@ class OracleUsersController extends Controller
     public function index()
     {
         $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
-        $oracleUsers = $this->repository->all();
+
+        $oracleUsers = $this->repository->orderBy('name', 'asc')->paginate(10);
 
         if (request()->wantsJson()) {
 
-            return response()->json([
-                'data' => $oracleUsers,
-            ]);
+            return response()->json($oracleUsers);
         }
 
         return view('oracleUsers.index', compact('oracleUsers'));
@@ -254,5 +253,16 @@ class OracleUsersController extends Controller
         }
 
         return redirect()->back()->with('message', 'OracleUser deleted.');
+    }
+
+    public function search(Request $request)
+    {
+        $users = $this->repository->scopeQuery(function ($query) use ($request){
+            return $query->where('name', 'LIKE', '%'.$request->get('search').'%')
+                ->orWhere('last_name', 'LIKE', '%'.$request->get('search').'%')
+                ->orderBy('name', 'asc');
+        });
+
+        return response()->json($users->paginate(10));
     }
 }
