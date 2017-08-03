@@ -32,7 +32,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $limit = 12;
+        $limit = 50;
 
         $paginator = $this->repository->orderBy('name', 'asc')->paginate($limit);
         $users = $paginator->getCollection();
