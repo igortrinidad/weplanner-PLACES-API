@@ -95,6 +95,30 @@ class OwnerRequestsController extends Controller
 
             $ownerRequest = $this->repository->create($request->all());
 
+
+            /* NOTIFICATION USER  ABOUT THE REQUEST*/
+
+            $data = [];
+            $data['user_email'] = $request->get('user_email');
+            $data['user_name'] = $request->get('user_name');
+            $data['align'] = 'left';
+
+            $data['messageTitle'] = 'Olá, ' . $request->get('user_name.');
+            $data['messageOne'] = 'Acabamos de receber a sua solicitação de propriedade do espaço.';
+            $data['messageTwo'] = 'Certifique-se de finalizar o procedimento enviando ao menos um documento que comprove que você é o responsável pelo espaço em questão.';
+            $data['messageThree'] = 'Sua solicitação será processada após o envio dos documentos e você pode acompanhar o status de suas solicitações através do botão abaixo:';
+            $data['button_link'] = 'https://app.weplaces.com.br/#/dashboard/requerimentos-de-propriedade';
+            $data['button_name'] = 'Acompanhar solicitações';
+            $data['messageSubject'] = 'Solicitação de propriedade de espaço We Places.';
+
+            \Mail::send('emails.standart-with-btn',['data' => $data], function ($message) use ($data){
+                $message->from('no-reply@weplaces.com.br', 'We Places');
+                $message->to($data['user_email'], $data['user_name'])->subject($data['messageSubject']);
+            });
+
+            /* END NOTIFICATION*/
+
+
             $response = [
                 'message' => 'OwnerRequest created.',
                 'data'    => $ownerRequest->load('documents')->toArray(),
@@ -236,6 +260,30 @@ class OwnerRequestsController extends Controller
         $owner_request->canceled = true;
         $owner_request->save();
 
+
+        /* NOTIFICATION USER  ABOUT THE REQUEST*/
+
+        $data = [];
+        $data['user_email'] = $request->get('user_email');
+        $data['user_name'] = $request->get('user_name');
+        $data['align'] = 'left';
+
+        $data['messageTitle'] = 'Olá, ' . $request->get('user_name.');
+        $data['messageOne'] = 'Infelizmente a sua solicitação de propriedade não foi aprovada.';
+        $data['messageTwo'] = 'Certifique de enviar ao menos um documento que comprove que você possui propriedade ou é responsável pelo espaço: ' . $request->get('place_name');
+        $data['messageThree'] = 'Por favor, ignore esta mensagem caso seu pedido de propriedade já tenha sido aprovado em outras requisições para este mesmo espaço: ' . $request->get('place_name');
+        $data['button_link'] = 'https://app.weplaces.com.br/#/dashboard/requerimentos-de-propriedade';
+        $data['button_name'] = 'Acompanhar solicitações';
+        $data['messageSubject'] = 'Requerimento de propriedade processado: ' . $request->get('place_name');
+
+        \Mail::send('emails.standart-with-btn',['data' => $data], function ($message) use ($data){
+            $message->from('no-reply@weplaces.com.br', 'We Places');
+            $message->to($data['user_email'], $data['user_name'])->subject($data['messageSubject']);
+        });
+
+        /* END NOTIFICATION*/
+
+
         if (request()->wantsJson()) {
 
             return response()->json([
@@ -262,6 +310,30 @@ class OwnerRequestsController extends Controller
         //transfer the place to the user
         $place->user_id = $owner_request->user_id;
         $place->save();
+
+
+        /* NOTIFICATION USER  ABOUT THE REQUEST*/
+
+        $data = [];
+        $data['user_email'] = $request->get('user_email');
+        $data['user_name'] = $request->get('user_name');
+        $data['align'] = 'left';
+
+        $data['messageTitle'] = 'Olá, ' . $request->get('user_name.');
+        $data['messageOne'] = 'Parabéns!';
+        $data['messageTwo'] = 'Sua solicitação de propriedade do espaço ' . $request->get('place_name') . ' foi aprovada com sucesso.';
+        $data['messageThree'] = 'Acesse o dashboard administrativo para gerenciar seu espaço na plataforma We Places.';
+        $data['button_link'] = 'https://app.weplaces.com.br/#/dashboard/places/';
+        $data['button_name'] = 'Acessar dashboard';
+        $data['messageSubject'] = 'Requerimento de propriedade aprovado: ' . $request->get('place_name');
+
+        \Mail::send('emails.standart-with-btn',['data' => $data], function ($message) use ($data){
+            $message->from('no-reply@weplaces.com.br', 'We Places');
+            $message->to($data['user_email'], $data['user_name'])->subject($data['messageSubject']);
+        });
+
+        /* END NOTIFICATION*/
+
 
         // copy the file to place documents
         foreach ($owner_request->documents as $document){

@@ -31,7 +31,7 @@
                         <tr>
                             <td style="padding: 50px 50px 50px 50px; text-align: center; max-width: 80% !important; background-color: rgb(255, 255, 255); color: rgb(85, 85, 85); "
                                 align="center">
-                                <img src="https://s3.amazonaws.com/weplanner-places-assets/logos/LOGO-1-04.png"
+                                <img src="https://s3.amazonaws.com/weplanner-places-assets/logos/LOGO-1-03.png"
                                      width="200" alt="Logo" border="0" style="-ms-interpolation-mode:bicubic">
                             </td>
                         </tr>
