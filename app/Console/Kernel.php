@@ -29,7 +29,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('update:tracker')->dailyAt('17:58');
 
         //Envia o email de insights semanais
-        $schedule->command('place:monthly-report')->weekly()->tuesdays()->at('10:00');
+        $schedule->command('place:monthly-report')->weekly()->tuesdays()->at('17:05');
     }
 
     /**
