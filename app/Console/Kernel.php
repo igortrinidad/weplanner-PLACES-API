@@ -26,7 +26,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         //Update the tracker autimaticaly to keep places interesting on our platform while we do not have much users
-        $schedule->command('update:tracker')->dailyAt('17:58');
+        $schedule->command('update:tracker')->dailyAt('07:58');
 
         //Envia o email de insights semanais
         $schedule->command('place:monthly-report')->weekly()->tuesdays()->at('17:05');

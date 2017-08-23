@@ -37,6 +37,7 @@ class PromotionalDate extends Model implements Transformable
         'all_day',
         'slots',
         'title',
+        'original_value',
         'value',
         'discount',
         'rules'
@@ -48,6 +49,7 @@ class PromotionalDate extends Model implements Transformable
      * @var array
      */
     protected $casts = [
+        'original_value' => 'double',
         'value' => 'double',
         'discount' => 'double',
         'all_day' => 'boolean',
