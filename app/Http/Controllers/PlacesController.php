@@ -348,7 +348,7 @@ class PlacesController extends Controller
                         }
                     }
                 });
-            })->with(['photos'])->orderBy('name');
+            })->with(['photos'])->orderBy('featured_position', 'DESC');
 
         $per_page == 'all' ? $places = $places->all() : $places = $places->paginate($per_page);
 
@@ -434,7 +434,7 @@ class PlacesController extends Controller
                         }
                     }
                 });
-            })->with(['photos'])->orderBy('name');
+            })->with(['photos'])->orderBy('featured_position', 'DESC');
 
 
         $cerimonyCount = Place::where('confirmed', true)
