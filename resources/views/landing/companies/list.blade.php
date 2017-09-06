@@ -51,6 +51,9 @@
 </style>
 
 @section('content')
+
+@include('landing.companies.search')
+
 <section id="list-places" class="section">
     <div class="container">
         <div class="row">
@@ -68,7 +71,7 @@
                             <i class="ion-ios-location"></i> {{ $place->city }} - {{ $place->state }}
                         </h3>
 
-                        <a href="#" class="btn btn-info p-5 p-l-10 p-r-10 m-b-10">Ver o local</a>
+                        <a href="/buscar/{{ $place->slug }}" title="{{ $place->name }}" class="btn btn-info p-5 p-l-10 p-r-10 m-b-10">Ver o local</a>
                     </div>
                 </div>
             @endforeach

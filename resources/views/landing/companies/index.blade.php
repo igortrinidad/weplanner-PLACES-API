@@ -159,8 +159,6 @@
     @include('landing.companies.navbar')
 </div>
 
-    @include('landing.companies.search')
-
     @section('content')
     @show
 
