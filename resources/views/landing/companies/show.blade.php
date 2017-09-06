@@ -180,6 +180,26 @@
                                 </ul>
                                <!-- /Servicos -->
 
+                               <!-- Time -->
+                               <ul class="list-group">
+                                   <li class="list-group-item title"><strong>Horário</strong></li>
+                                   <li class="list-group-item">Possui horário limete ? <span class="badge badge-success m-l-5">{{ $place->informations['time_limit'] ? 'sim' : 'não' }}</span></li>
+                                   @if($place->informations['time_limit'])
+                                        <li class="list-group-item">Horário até <span class="badge badge-success m-l-5">{{ $place->informations['time_limit_value'] }}</span></li>
+                                   @endif
+                               </ul>
+                              <!-- / Time -->
+
+                              <!-- Time -->
+                              <ul class="list-group">
+                                  <li class="list-group-item title"><strong>Exclusividade de fornecedores</strong></li>
+                                  <li class="list-group-item">Exclusividade Buffet <span class="badge badge-success m-l-5">{{ $place->informations['buffet_exclusivity'] ? 'sim' : 'não' }}</span></li>
+                                  <li class="list-group-item">Exclusividade Decoração<span class="badge badge-success m-l-5">{{ $place->informations['decoration_exclusivity'] ? 'sim' : 'não' }}</span></li>
+                                  <li class="list-group-item">Exclusividade Barman<span class="badge badge-success m-l-5">{{ $place->informations['barman_exclusivity'] ? 'sim' : 'não' }}</span></li>
+                                  <li class="list-group-item">Exclusividade Música<span class="badge badge-success m-l-5">{{ $place->informations['music_exclusivity'] ? 'sim' : 'não' }}</span></li>
+                              </ul>
+                             <!-- / Time -->
+
                             </div>
                         </div>
                     </div>
@@ -187,6 +207,65 @@
                 </div>
                 <!-- / RIGHT COL -->
 
+                <!-- Promotions -->
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header ch-alt text-center">
+                            <h2 class="m-0">Promoções</h2>
+                        </div>
+                    </div>
+                </div>
+                <!-- / Promotions -->
+
+                <!-- Map -->
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header ch-alt text-center">
+                            <h2 class="m-0">Mapa</h2>
+                        </div>
+                    </div>
+                </div>
+                <!-- / Map -->
+
+                <!-- Tour Virtual -->
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header ch-alt text-center">
+                            <h2 class="m-0">Tour Virtual</h2>
+                        </div>
+                    </div>
+                </div>
+                <!-- / Tour Virtual -->
+
+                <!-- Videos -->
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header ch-alt text-center">
+                            <h2 class="m-0">Vídeos</h2>
+                        </div>
+                    </div>
+                </div>
+                <!-- / Videos -->
+
+                <!-- Decorations -->
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header ch-alt text-center">
+                            <h2 class="m-0">Decorações exclusivas</h2>
+                        </div>
+                    </div>
+                </div>
+                <!-- / Decorations -->
+
+                <!-- Anuncios -->
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header ch-alt text-center">
+                            <h2 class="m-0">Anuncios</h2>
+                        </div>
+                    </div>
+                </div>
+                <!-- / Anuncios -->
             </div>
         </div>
     </div>
