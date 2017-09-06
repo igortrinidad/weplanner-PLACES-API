@@ -29,11 +29,12 @@
     /*CARD */
     .card {
         position: relative;
-        background: #FBFBFB;
+        background: #F2F2F2;
         box-shadow: 0 0 5px rgba(42,42,42,.3);
         margin-bottom: 30px;
         border-radius: 4px;
         padding: 4px;
+        font-weight: 400;
     }
     .card .card-header {
         position: relative;
