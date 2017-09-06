@@ -159,11 +159,7 @@
                 <!-- RIGHT COL -->
                 <div class="col-sm-7">
                     <!-- Extra Informations -->
-                    <div class="card">
-                        <div class="card card-header ch-alt text-center">
                             <h2>Informações</h2>
-                        </div>
-                        <div class="card-body">
                             <div class="m-b-20" v-show="interactions.showMoreInfo || isDesktop">
 
                                 <!-- Capacidade -->
@@ -207,60 +203,83 @@
                              <!-- / Time -->
 
                             </div>
-                        </div>
-                    </div>
                     <!-- / Extra Informations -->
                 </div>
                 <!-- / RIGHT COL -->
 
                 <!-- Promotions -->
+                @if($place->promotions)
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="card-header ch-alt text-center">
                             <h2 class="m-0">Promoções</h2>
                         </div>
+                        <div class="card-body card-padding">
+                            Listar Promoções
+                        </div>
                     </div>
                 </div>
+                @endif
                 <!-- / Promotions -->
 
                 <!-- Map -->
+                @if($place->address['geolocation'])
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="card-header ch-alt text-center">
                             <h2 class="m-0">Mapa</h2>
                         </div>
+                        <div class="card-body card-padding">
+                            Exibir mapa
+                        </div>
                     </div>
                 </div>
+                @endif
                 <!-- / Map -->
 
                 <!-- Tour Virtual -->
+                @if($place->virtual_tour_url)
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="card-header ch-alt text-center">
                             <h2 class="m-0">Tour Virtual</h2>
                         </div>
+                        <div class="card-body">
+                            <iframe src="{{ $place->virtual_tour_url }}" width="100%" height="500"></iframe>
+                        </div>
                     </div>
                 </div>
+                @endif
                 <!-- / Tour Virtual -->
 
                 <!-- Videos -->
+                @if(count($place->videos) > 0)
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="card-header ch-alt text-center">
                             <h2 class="m-0">Vídeos</h2>
                         </div>
+                        <div class="card-body card-padding">
+                            Listar Videos
+                        </div>
                     </div>
                 </div>
+                @endif
                 <!-- / Videos -->
 
                 <!-- Decorations -->
+                @if($place->decorations)
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="card-header ch-alt text-center">
                             <h2 class="m-0">Decorações exclusivas</h2>
                         </div>
+                        <div class="card-body card-padding">
+                            Listar Decorações
+                        </div>
                     </div>
                 </div>
+                @endif
                 <!-- / Decorations -->
 
                 <!-- Anuncios -->
