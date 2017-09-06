@@ -2,16 +2,16 @@
     .section {
         color: #4a5464;
     }
+    .swiper-container.place-photos {
+        height: 300px !important;
+        margin-top: -40px;
+    }
     .place-cover {
-        width: 100%; height: 350px;
-        position: absolute;
-        top: 80px; left: 0; right: 0;
-        z-index: 1;
+        width: 100%; height: 300px !important;
     }
     .place-content {
         width: 100%;
         position: relative;
-        z-index: 10;
     }
     /* Interactions */
     .btn.out { display: none !important; }
@@ -28,12 +28,18 @@
 @section('content')
 
 <section class="section">
-    @foreach($place->photos as $photo)
-        @if($photo->is_cover)
-            <div class="cover place-cover" style="background-image: url('{{ $photo->photo_url }}')"></div>
-        @endif
-    @endforeach
-    <div class="place-content">
+
+    <div class="swiper-container place-photos">
+        <div class="swiper-wrapper">
+            @foreach($place->photos as $photo)
+                <div class="swiper-slide cover place-cover" style="background-image: url('{{ $photo->photo_url }}')"></div>
+            @endforeach
+        </div>
+        <div class="swiper-button-prev swiper-button-black"></div>
+        <div class="swiper-button-next swiper-button-black"></div>
+    </div>
+
+    <div class="place-content m-t-20">
         <div class="container">
             <div class="row">
                 <div class="col-sm-12">
@@ -281,6 +287,11 @@
             var target = e.target.dataset.target
             $(e.target).addClass('out')
             $(target).addClass('in')
+        })
+
+        var coverSwiper = new Swiper($('.place-photos'), {
+            prevButton: '.swiper-button-prev',
+            nextButton: '.swiper-button-next'
         })
     </script>
 

@@ -23,7 +23,8 @@
   <!--|Google Font(Roboto)|-->
   <link href='https://fonts.googleapis.com/css?family=Lato:400,100italic,100,300,300italic,400italic,500,500italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
   <!-- Styles -->
-  <link href="{!! asset('build/landing/css/vendors.css') !!}" rel="stylesheet">]]
+  <link href="{!! asset('build/landing/css/vendors.css') !!}" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.4.2/css/swiper.min.css">
 
   <style media="screen">
 
@@ -206,7 +207,7 @@
 
 
 <script src="{!! asset('build/landing/js/vendors.js') !!}"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.4.2/js/swiper.jquery.min.js"></script>
 <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
