@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 
 use App\Models\Post;
+use App\Models\Place;
 
 
 class LandingController extends Controller
@@ -28,6 +29,36 @@ class LandingController extends Controller
             ->get();
 
         return view('landing.index', compact('posts'));
+
+    }
+
+    /**
+     * Lista empresas
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function list_index()
+    {
+
+        $places = Place::all();
+
+        return view('landing.companies.list', compact('places'));
+
+    }
+
+    /**
+     * Index
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function show_public($slug)
+    {
+
+        $place = Place::where('slug', $slug)->first();
+
+        return view('landing.companies.show', compact('place'));
 
     }
 

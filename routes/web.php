@@ -17,7 +17,12 @@ Route::get('/parabens', 'LandingController@congrats');
 Route::post('/sendLandingContactForm', 'LandingController@sendLandingContactForm');
 Route::post('/sendSignupForm', 'LandingController@sendSignupForm');
 
+Route::group(['prefix' => 'buscar', 'as' => 'companies.'], function () {
 
+    Route::get('', 'LandingController@list_index');
+    Route::get('/{slug}', 'LandingController@show_public');
+
+});
 
 Route::get('/web/test-email/{template}', function ($template) {
     return view($template);
