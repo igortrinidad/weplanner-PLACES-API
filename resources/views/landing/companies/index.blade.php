@@ -26,6 +26,12 @@
   <link href="{!! asset('build/landing/css/vendors.css') !!}" rel="stylesheet">]]
 
   <style media="screen">
+
+    /* Buttons */
+    .btn.btn-info {
+        background-color: #69a7be !important;
+        border-color: #69a7be !important;
+    }
     /*CARD */
     .card {
         position: relative;
