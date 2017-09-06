@@ -13,29 +13,6 @@
         width: 100%; height: auto;
         padding-bottom: 0 !important;
     }
-    .cover {
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center center;
-    }
-    .wrapper {
-        background-attachment: fixed;
-        width: 100%; height: auto;
-        position: relative;
-        padding: 50px 0;
-    }
-    .wrapper-title {
-        background: rgba(255, 255, 255, .8);
-        padding: 5px 10px;
-        margin: 0 auto 10px auto;
-        border-radius: 4px;
-        font-size: 2.5rem;
-        color: #4a5464;
-    }
-    .card .cover {
-        width: 100%; height: 150px;
-        border-radius: 4px;
-    }
     /* Card Adjusts */
 
     .card h2, .card .name {
@@ -75,6 +52,11 @@
                     </div>
                 </div>
             @endforeach
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                {!! $places->render() !!}
+            </div>
         </div>
     </div>
 

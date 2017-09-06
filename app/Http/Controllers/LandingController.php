@@ -41,7 +41,7 @@ class LandingController extends Controller
     public function list_index()
     {
 
-        $places = Place::all();
+        $places = Place::paginate(16);
 
         return view('landing.companies.list', compact('places'));
 
@@ -124,7 +124,7 @@ class LandingController extends Controller
         $plan = $request['plan_selected'];
         $company_name = $request['company_name'];
 
-        $messageOne = 
+        $messageOne =
         '<p><b>Nome completo: </b>' . $nome . '</p>
         <p><b>CPF: </b>' .  $cpf . '</p>
         <p><b>Endereço: </b>' . $address . '</p>
@@ -162,6 +162,5 @@ class LandingController extends Controller
         return view('signup.congrats.index');
 
     }
-    
-}
 
+}

@@ -27,11 +27,47 @@
 
   <style media="screen">
 
+    .cover {
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+    }
+    .cover-fixed { background-attachment: fixed; }
+    .wrapper {
+        background-attachment: fixed;
+        width: 100%; height: auto;
+        position: relative;
+        padding: 50px 0;
+    }
+    .wrapper-title {
+        background: rgba(255, 255, 255, .8);
+        padding: 5px 10px;
+        margin: 0 auto 10px auto;
+        border-radius: 4px;
+        font-size: 2.5rem;
+        color: #4a5464;
+    }
+    .card .cover {
+        width: 100%; height: 150px;
+        border-radius: 4px;
+    }
+
     /* Buttons */
     .btn.btn-info {
         background-color: #69a7be !important;
         border-color: #69a7be !important;
     }
+    .btn.btn-facebook {
+        background-color: #4267b2 !important;
+        border-color: #4267b2 !important;
+        color: #fff;
+    }
+    .btn.btn-whatsapp {
+        background-color: #1ebea5 !important;
+        border-color: #1ebea5 !important;
+        color: #fff;
+    }
+    .btn:focus { outline: none; }
     /*CARD */
     .card {
         position: relative;
