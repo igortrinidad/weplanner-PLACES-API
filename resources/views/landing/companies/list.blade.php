@@ -17,6 +17,23 @@
         background-repeat: no-repeat;
         background-position: center center;
     }
+    .wrapper {
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-attachment: fixed;
+        width: 100%; height: auto;
+        position: relative;
+        padding: 50px 0;
+    }
+    .wrapper-title {
+        background: rgba(255, 255, 255, .8);
+        padding: 5px 10px;
+        margin: 0 auto 10px auto;
+        border-radius: 4px;
+        font-size: 2.5rem;
+        color: #4a5464;
+    }
     .card .cover {
         width: 100%; height: 150px;
         border-radius: 4px;
@@ -53,12 +70,20 @@
                             <i class="ion-ios-location"></i> {{ $place->city }} - {{ $place->state }}
                         </h3>
 
-                        <a href="#" class="btn btn-info p-5 p-l-10 p-r-10 m-b-10">Ver local</a>
+                        <a href="#" class="btn btn-info p-5 p-l-10 p-r-10 m-b-10">Ver o local</a>
                     </div>
                 </div>
             @endforeach
         </div>
     </div>
+
+    <div class="wrapper" style="background-image: url('/assets/weplaces/ceremony.jpg')">
+        <div class="container text-center">
+            <span class="wrapper-title">Não encontrou o local que procura ?</span><br>
+            <a href="#" class="btn btn-primary m-t-10">Indique para nós</a>
+        </div>
+    </div>
+
 </section>
 @stop
 
