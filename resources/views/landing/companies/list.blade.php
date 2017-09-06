@@ -11,6 +11,7 @@
     .section {
         position: relative;
         width: 100%; height: auto;
+        padding-bottom: 0 !important;
     }
     .cover {
         background-size: cover;
@@ -18,9 +19,6 @@
         background-position: center center;
     }
     .wrapper {
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center center;
         background-attachment: fixed;
         width: 100%; height: auto;
         position: relative;
@@ -77,7 +75,7 @@
         </div>
     </div>
 
-    <div class="wrapper" style="background-image: url('/assets/weplaces/ceremony.jpg')">
+    <div class="wrapper m-t-20">
         <div class="container text-center">
             <span class="wrapper-title">Não encontrou o local que procura ?</span><br>
             <a href="#" class="btn btn-primary m-t-10">Indique para nós</a>

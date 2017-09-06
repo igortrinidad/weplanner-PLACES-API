@@ -158,6 +158,8 @@
     @section('content')
     @show
 
+    @include('landing.partials.contato')
+    @include('landing.partials.footer')
 
 <!--|Scroll Top|-->
 <a class="scroll-top" href="#intro"><img src="assets/images/map_icon.png"></a> <!--|End Scroll Top|-->
