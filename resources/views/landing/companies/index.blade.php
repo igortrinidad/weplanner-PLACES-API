@@ -23,7 +23,104 @@
   <!--|Google Font(Roboto)|-->
   <link href='https://fonts.googleapis.com/css?family=Lato:400,100italic,100,300,300italic,400italic,500,500italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
   <!-- Styles -->
-  <link href="{!! asset('build/landing/css/vendors.css') !!}" rel="stylesheet">
+  <link href="{!! asset('build/landing/css/vendors.css') !!}" rel="stylesheet">]]
+
+  <style media="screen">
+    /*CARD */
+    .card {
+        position: relative;
+        background: #FBFBFB;
+        box-shadow: 0 0 5px rgba(42,42,42,.3);
+        margin-bottom: 30px;
+        border-radius: 4px;
+        padding: 4px;
+    }
+    .card .card-header {
+        position: relative;
+        border-radius: 4px;
+    }
+
+    @media screen and (min-width: 768px) {
+        .card .card-header:not(.ch-alt) {
+            padding: 23px 25px;
+        }
+    }
+
+    @media screen and (max-width: 991px) {
+        .card .card-header:not(.ch-alt) {
+            padding: 18px;
+        }
+    }
+
+    .card .card-header h2 {
+        margin: 0;
+        line-height: 100%;
+        font-size: 17px;
+        font-weight: 400;
+    }
+
+    .card .card-header h2 small {
+        display: block;
+        margin-top: 8px;
+        color: #AEAEAE;
+        line-height: 160%;
+    }
+
+    @media screen and (min-width: 768px) {
+        .card .card-header.ch-alt {
+            padding: 23px 26px;
+        }
+    }
+
+    @media screen and (max-width: 991px) {
+        .card .card-header.ch-alt {
+            padding: 18px 18px 28px;
+        }
+    }
+
+    .card .card-header.ch-alt:not([class*="bgm-"]) {
+        background-color: #FBFBFB;
+    }
+
+    .card .card-header[class*="bgm-"] h2,
+    .card .card-header[class*="bgm-"] h2 small {
+        color: #fff;
+    }
+
+    .card .card-header .actions {
+        position: absolute;
+        right: 10px;
+        z-index: 2;
+        top: 15px;
+    }
+
+    .card .card-header .btn-float {
+        right: 25px;
+        bottom: -23px;
+        z-index: 1;
+    }
+
+    @media screen and (min-width: 768px) {
+        .card .card-body.card-padding {
+            padding: 23px 22px;
+        }
+    }
+
+    @media screen and (max-width: 991px) {
+        .card .card-body.card-padding {
+            padding: 14px;
+        }
+    }
+
+    .card .card-body.card-padding-sm {
+        padding: 11px;
+    }
+
+    .card-header:not(.ch-alt):not([class*="bgm-"]) + .card-padding {
+        padding-top: 0;
+    }
+    /* / CARD */
+  </style>
 
   <title>We Places</title>
 
@@ -54,7 +151,7 @@
 <div id="section-1" class="brief">
     @include('landing.companies.navbar')
 </div>
-  
+
     @section('content')
     @show
 
