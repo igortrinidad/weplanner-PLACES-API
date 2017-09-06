@@ -25,6 +25,13 @@
     .card .btn {
         text-transform: none;
     }
+
+    /* Navigate */
+    .pagination > .active > span {
+        background-color: #69a7be !important;
+        border-color: #69a7be !important;
+    }
+
 </style>
 
 @section('content')
@@ -54,7 +61,7 @@
             @endforeach
         </div>
         <div class="row">
-            <div class="col-sm-12">
+            <div class="col-sm-12 text-center">
                 {!! $places->render() !!}
             </div>
         </div>
