@@ -9,7 +9,7 @@
     }
     .search-title {
         font-weight: 100;
-        font-size: 20px;
+        font-size: 18px;
         color: #4a5464;
     }
     .search-logo {
@@ -36,9 +36,8 @@
 <div class="text-center first" style="background-color: #f2f2f2;">
     <div class="container">
         <div class="row">
-            <div class="col-md-4 col-md-offset-4 col-xs-12 text-center">
-                <img class="search-logo" src="https://app.weplaces.com.br/static/img/LOGO-1-01.2a85d56.png" alt="We Places">
-                <h2 class="search-title">Encontre o espaço para sua cerimônia ou festa em um só lugar.</h2>
+            <div class="col-md-12 col-xs-12 text-center">
+                <h2 class="search-title m-t-20">Encontre o espaço para sua cerimônia ou festa em um só lugar.</h2>
             </div>
         </div>
 

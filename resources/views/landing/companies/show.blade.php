@@ -22,6 +22,29 @@
     .list-group-item.title {
         background-color: #f2f2f2;
     }
+
+            .picture-circle{
+            box-sizing: border-box;
+            margin: 0 auto;
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+        }
+
+        .picture-circle{
+            box-sizing: border-box;
+            margin: 0 auto;
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+        }
+
 </style>
 @extends('landing.companies.index')
 
@@ -57,7 +80,7 @@
                         <div class="card-header text-center">
                             @foreach($place->photos as $photo)
                                 @if($photo->is_cover)
-                                    <div class="cover" style="background-image: url('{{ $photo->photo_url }}')"></div>
+                                    <div class="picture-circle" style="background-image: url('{{ $photo->photo_url }}')"></div>
                                 @endif
                             @endforeach
                         </div>
@@ -107,7 +130,7 @@
                             <!-- Website -->
                             @if($place->website)
                                 <div class="m-t-10">
-                                    <button type="button" class="btn btn-sm btn-primary btn-target" data-target="#company-website">Mostrar Website</button>
+                                    <button type="button" class="btn btn-primary btn-target" data-target="#company-website">Mostrar Website</button>
                                     <div class="info" id="company-website">
                                         <i class="ion-ios-world-outline m-r-5"></i>
                                         <span class="f-16"><a href="{{ $place->website }}" target="_blank">{{ $place->website }}</a></span>
@@ -133,7 +156,7 @@
                             <h2>Descrição</h2>
                         </div>
                         <div class="card-body card-padding">
-                            <p class="text-justify">{{ $place->description }}</p>
+                            <p class="text-justify">{!! $place->description !!}</p>
                         </div>
                     </div>
                     <!-- / Description -->
@@ -245,6 +268,7 @@
                             <h2 class="m-0">Tour Virtual</h2>
                         </div>
                         <div class="card-body">
+                            <button class="btn btn-primary">Exibir tour virtual</button>
                             <iframe src="{{ $place->virtual_tour_url }}" width="100%" height="500"></iframe>
                         </div>
                     </div>
@@ -282,7 +306,7 @@
                 @endif
                 <!-- / Decorations -->
 
-                <!-- Anuncios -->
+                <!-- Anuncios 
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="card-header ch-alt text-center">
@@ -290,7 +314,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- / Anuncios -->
+                -->
             </div>
         </div>
     </div>

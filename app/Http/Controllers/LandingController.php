@@ -38,10 +38,10 @@ class LandingController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function list_index()
+    public function list_index(Request $request)
     {
 
-        $places = Place::paginate(16);
+        $places = Place::where('name', 'LIKE', '%'.$request->query('name') . '%')->where('city', 'LIKE', '%'.$request->query('city') . '%')->paginate(16);
 
         return view('landing.companies.list', compact('places'));
 

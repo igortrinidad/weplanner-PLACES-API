@@ -185,6 +185,7 @@ return [
         Spatie\Fractal\FractalServiceProvider::class,
         Prettus\Repository\Providers\RepositoryServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
+        Roumen\Sitemap\SitemapServiceProvider::class,
 
     ],
 

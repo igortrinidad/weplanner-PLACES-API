@@ -108,7 +108,7 @@ class Place extends Model implements Transformable
      *
      * @var array
      */
-    protected $appends = ['appointments_count', 'reservations_count', 'pre_reservations_count', 'has_owner', 'has_virtual_tour', 'total_views'];
+    protected $appends = ['avatar', 'appointments_count', 'reservations_count', 'pre_reservations_count', 'has_owner', 'has_virtual_tour', 'total_views'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -123,12 +123,39 @@ class Place extends Model implements Transformable
      * -------------------------------
      */
 
+        /*
+    * Avatar
+    */
+    public function getAvatarAttribute()
+    {
+        $photo = PlacePhoto::where('place_id', $this->id)->where('is_cover', true)->first();
+
+        if (!$photo) {
+            $photo = PlacePhoto::where('place_id', $this->id)->first();
+        }
+
+        return $photo ? $photo->fresh()->photo_url : 'https://s3.amazonaws.com/weplanner-assets/img/no_picture.jpg';
+    }
+
     /**
      * @return mixed
      */
     public function getAppointmentsCountAttribute()
     {
         return $this->hasMany(PlaceAppointment::class)->count();
+    }
+
+    /*
+    * Rating
+    */
+    public function getWebsiteAttribute($website)
+    {
+        if(strpos($website, 'http://') !== false || strpos($website, 'https://') !== false){
+            return $website;
+        } 
+
+        return 'http://' . $website;
+
     }
 
     /**
