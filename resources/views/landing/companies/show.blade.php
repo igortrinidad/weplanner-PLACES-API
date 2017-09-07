@@ -3,7 +3,7 @@
         color: #4a5464;
     }
     .swiper-container.place-photos {
-        height: 300px !important;
+        height: 350px !important;
         margin-top: -40px;
     }
     .place-cover {
@@ -52,14 +52,8 @@
 
 <section class="section">
 
-    <div class="swiper-container place-photos">
-        <div class="swiper-wrapper">
-            @foreach($place->photos as $photo)
-                <div class="swiper-slide cover place-cover" style="background-image: url('{{ $photo->photo_url }}')"></div>
-            @endforeach
-        </div>
-        <div class="swiper-button-prev swiper-button-black"></div>
-        <div class="swiper-button-next swiper-button-black"></div>
+    <div class="place-photos">
+        <div class="cover place-cover" style="background-image: url('{{ $place->avatar }}')"></div>
     </div>
 
     <div class="place-content m-t-20">
@@ -245,6 +239,24 @@
                 @endif
                 <!-- / Promotions -->
 
+                <!-- PHOTOS -->
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header ch-alt text-center">
+                            <h2 class="m-0">Fotos</h2>
+                        </div>
+                        <div class="card-body card-padding">
+                            <div id="gallery" style="display:none;">
+                                @foreach($place->photos as $photo)
+                                <img alt="{{$place->name}}" src="{{$photo->photo_url}}"
+                                    data-image="{{$photo->photo_url}}"
+                                    data-description="{{$place->name}}">
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Map -->
                 @if($place->address['geolocation'])
                 <div class="col-sm-12">
@@ -336,6 +348,12 @@
             prevButton: '.swiper-button-prev',
             nextButton: '.swiper-button-next'
         })
+
+        $(document).ready(function(){
+            jQuery("#gallery").unitegallery({
+                tiles_type:"justified"
+            });
+        });
     </script>
 
 

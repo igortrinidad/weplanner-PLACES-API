@@ -21,7 +21,8 @@ elixir(function(mix) {
 
     //STYLES
     mix.styles([
-
+        '../../../node_modules/unitegallery/dist/css/unite-gallery.css',
+        '../../../node_modules/unitegallery/dist/themes/default/ug-theme-default.css',
         'animate.css',
         'bootstrap.min.css',
         'general.css',
@@ -30,6 +31,7 @@ elixir(function(mix) {
         'owl.carousel.css',
         'style.css',
         'helpers.css',
+
     ], 'public/build/landing/css/vendors.css');
 
     //JS
@@ -46,8 +48,15 @@ elixir(function(mix) {
         'respond.min.js',
         'waypoints.min.js',
         'wow.min.js',
+        '../../../node_modules/unitegallery/dist/js/unitegallery.min.js',
+        '../../../node_modules/unitegallery/dist/themes/tiles/ug-theme-tiles.js',
         'init.js'
 
     ], 'public/build/landing/js/vendors.js');
+
+    mix.version([
+        'public/build/landing/js/vendors.js', 
+        'public/build/landing/css/vendors.css'
+    ]);
 
 });
