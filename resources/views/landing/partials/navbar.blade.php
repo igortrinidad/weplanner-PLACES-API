@@ -21,6 +21,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li><a href="#intro">Home</a></li>
         <li><a href="#section-voce">Sobre</a></li>
+        <li><a href="/buscar">Buscar espaços</a></li>
         <li><a href="#plans">Preços</a></li>
         <li><a href="https://app.weplaces.com.br" target="_blank">Acesse</a></li>
         <li><a href="https://blog.weplaces.com.br" target="_blank">Blog</a></li>
