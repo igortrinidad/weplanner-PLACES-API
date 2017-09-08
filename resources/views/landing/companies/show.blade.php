@@ -13,44 +13,27 @@
         width: 100%;
         position: relative;
     }
-    /* Interactions */
-    .btn.out { display: none !important; }
-    .info { display: none; }
-    .info.in { display: block; }
-
     /* List */
     .list-group-item.title {
         background-color: #f2f2f2;
     }
 
-            .picture-circle{
-            box-sizing: border-box;
-            margin: 0 auto;
-            background-position: center center;
-            background-repeat: no-repeat;
-            background-size: cover;
-            border-radius: 50%;
-            width: 100px;
-            height: 100px;
-        }
-
-        .picture-circle{
-            box-sizing: border-box;
-            margin: 0 auto;
-            background-position: center center;
-            background-repeat: no-repeat;
-            background-size: cover;
-            border-radius: 50%;
-            width: 100px;
-            height: 100px;
-        }
-
+    .picture-circle {
+        box-sizing: border-box;
+        margin: 0 auto;
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        border-radius: 50%;
+        width: 100px;
+        height: 100px;
+    }
 </style>
 @extends('landing.companies.index')
 
 @section('content')
 
-<section class="section">
+<section class="section" id="show">
 
     <div class="place-photos">
         <div class="cover place-cover" style="background-image: url('{{ $place->avatar }}')"></div>
@@ -112,8 +95,15 @@
                             <!-- Phone -->
                             @if($place->phone)
                                 <div class="m-t-15">
-                                    <button type="button" class="btn btn-primary btn-target" data-target="#company-phone">Mostrar telefone</button>
-                                    <div class="info" id="company-phone">
+                                    <button
+                                        type="button"
+                                        class="btn btn-primary"
+                                        v-show="!interactions.displayPhoneNumber"
+                                        @click="interactions.displayPhoneNumber = !interactions.displayPhoneNumber"
+                                    >
+                                        Mostrar telefone
+                                    </button>
+                                    <div class="info" v-show="interactions.displayPhoneNumber">
                                         <i class="ion-ios-telephone m-r-5"></i>
                                         <span class="f-16"><a href="tel:{{ $place->phone }}">{{ $place->phone }}</a></span>
                                     </div>
@@ -124,8 +114,15 @@
                             <!-- Website -->
                             @if($place->website)
                                 <div class="m-t-10">
-                                    <button type="button" class="btn btn-primary btn-target" data-target="#company-website">Mostrar Website</button>
-                                    <div class="info" id="company-website">
+                                    <button
+                                        type="button"
+                                        class="btn btn-primary"
+                                        v-show="!interactions.displayWebsite"
+                                        @click="interactions.displayWebsite = !interactions.displayWebsite"
+                                    >
+                                        Mostrar Website
+                                    </button>
+                                    <div class="info" v-show="interactions.displayWebsite">
                                         <i class="ion-ios-world-outline m-r-5"></i>
                                         <span class="f-16"><a href="{{ $place->website }}" target="_blank">{{ $place->website }}</a></span>
                                     </div>
@@ -177,7 +174,7 @@
                 <div class="col-sm-7">
                     <!-- Extra Informations -->
                             <h2>Informações</h2>
-                            <div class="m-b-20" v-show="interactions.showMoreInfo || isDesktop">
+                            <div class="m-b-20">
 
                                 <!-- Capacidade -->
                                 <ul class="list-group">
@@ -318,7 +315,7 @@
                 @endif
                 <!-- / Decorations -->
 
-                <!-- Anuncios 
+                <!-- Anuncios
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="card-header ch-alt text-center">
@@ -336,18 +333,20 @@
 
 @section('scripts')
 	@parent
-
+    <script src="https://npmcdn.com/vue/dist/vue.js"></script>
     <script>
-        $('.btn-target').on('click', function(e) {
-            var target = e.target.dataset.target
-            $(e.target).addClass('out')
-            $(target).addClass('in')
-        })
-
-        var coverSwiper = new Swiper($('.place-photos'), {
-            prevButton: '.swiper-button-prev',
-            nextButton: '.swiper-button-next'
-        })
+        new Vue({
+            el: '#show',
+            data: {
+                interactions: {
+                    displayPhoneNumber: false, displayWebsite: false
+                }
+            },
+            mounted() {
+            },
+            methods: {
+            },
+        });
 
         $(document).ready(function(){
             jQuery("#gallery").unitegallery({
