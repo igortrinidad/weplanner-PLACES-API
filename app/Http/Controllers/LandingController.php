@@ -20,10 +20,10 @@ class LandingController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-
-        return view('landing.index', compact('posts'));
+        $places = Place::where('name', 'LIKE', '%'.$request->query('name') . '%')->orderBy('featured_position', 'DESC')->paginate(4);
+        return view('landing.index', compact('posts', 'places'));
 
     }
 

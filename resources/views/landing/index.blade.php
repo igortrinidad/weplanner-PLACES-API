@@ -35,28 +35,168 @@
       })(window,document,'//static.hotjar.com/c/hotjar-','.js?sv=');
   </script>
 
+  <style media="screen">
+
+    .cover {
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+    }
+    .cover-fixed { background-attachment: fixed; }
+    .wrapper {
+        background-attachment: fixed;
+        width: 100%; height: auto;
+        position: relative;
+        padding: 50px 0;
+    }
+    .wrapper-title {
+        background: rgba(255, 255, 255, .8);
+        padding: 5px 10px;
+        margin: 0 auto 10px auto;
+        border-radius: 4px;
+        font-size: 2.5rem;
+        color: #4a5464;
+    }
+    .card .cover {
+        width: 100%; height: 150px;
+        border-radius: 4px;
+    }
+
+    /* Buttons */
+    .btn.btn-info {
+        background-color: #69a7be !important;
+        border-color: #69a7be !important;
+    }
+    .btn.btn-facebook {
+        background-color: #4267b2 !important;
+        border-color: #4267b2 !important;
+        color: #fff;
+    }
+    .btn.btn-whatsapp {
+        background-color: #1ebea5 !important;
+        border-color: #1ebea5 !important;
+        color: #fff;
+    }
+    .btn:focus { outline: none; }
+    /*CARD */
+    .card {
+        position: relative;
+        background: #F2F2F2;
+        box-shadow: 0 0 5px rgba(42,42,42,.3);
+        margin-bottom: 30px;
+        border-radius: 4px;
+        padding: 4px;
+        font-weight: 400;
+    }
+    .card .card-header {
+        position: relative;
+        border-radius: 4px;
+    }
+
+    @media screen and (min-width: 768px) {
+        .card .card-header:not(.ch-alt) {
+            padding: 23px 25px;
+        }
+    }
+
+    @media screen and (max-width: 991px) {
+        .card .card-header:not(.ch-alt) {
+            padding: 18px;
+        }
+    }
+
+    .card .card-header h2 {
+        margin: 0;
+        line-height: 100%;
+        font-size: 17px;
+        font-weight: 400;
+    }
+
+    .card .card-header h2 small {
+        display: block;
+        margin-top: 8px;
+        color: #AEAEAE;
+        line-height: 160%;
+    }
+
+    @media screen and (min-width: 768px) {
+        .card .card-header.ch-alt {
+            padding: 23px 26px;
+        }
+    }
+
+    @media screen and (max-width: 991px) {
+        .card .card-header.ch-alt {
+            padding: 18px 18px 28px;
+        }
+    }
+
+    .card .card-header.ch-alt:not([class*="bgm-"]) {
+        background-color: #FBFBFB;
+    }
+
+    .card .card-header[class*="bgm-"] h2,
+    .card .card-header[class*="bgm-"] h2 small {
+        color: #fff;
+    }
+
+    .card .card-header .actions {
+        position: absolute;
+        right: 10px;
+        z-index: 2;
+        top: 15px;
+    }
+
+    .card .card-header .btn-float {
+        right: 25px;
+        bottom: -23px;
+        z-index: 1;
+    }
+
+    @media screen and (min-width: 768px) {
+        .card .card-body.card-padding {
+            padding: 23px 22px;
+        }
+    }
+
+    @media screen and (max-width: 991px) {
+        .card .card-body.card-padding {
+            padding: 14px;
+        }
+    }
+
+    .card .card-body.card-padding-sm {
+        padding: 11px;
+    }
+
+    .card-header:not(.ch-alt):not([class*="bgm-"]) + .card-padding {
+        padding-top: 0;
+    }
+    /* / CARD */
+  </style>
+
 </head>
 <body>
 <!--|Preloader|-->
 <div class="preloader"></div>
 
 <div id="section-1" class="brief">
-  @include('landing.partials.navbar')
-  @include('landing.partials.intro')
-  @include('landing.partials.header')
-  @include('landing.partials.parasuafesta')
-  @include('landing.partials.video')
-  @include('landing.partials.paraseuespaco')
-  @include('landing.partials.screenshots')
+    @include('landing.partials.navbar')
+    @include('landing.partials.intro')
+    @include('landing.partials.header')
+    @include('landing.partials.parasuafesta')
+    @include('landing.partials.video')
+    @include('landing.partials.paraseuespaco')
+    @include('landing.partials.screenshots')
 
 </div>
 
-  @include('landing.partials.plans')
-  @include('landing.partials.estatisticas')
-  @include('landing.partials.download')
-  @include('landing.partials.contato')
-  @include('landing.partials.footer')
-
+    @include('landing.partials.places')
+    @include('landing.partials.plans')
+    @include('landing.partials.estatisticas')
+    @include('landing.partials.download')
+    @include('landing.partials.contato')
+    @include('landing.partials.footer')
 
 <!--|Scroll Top|-->
 <a class="scroll-top" href="#intro"><img src="assets/images/map_icon.png"></a> <!--|End Scroll Top|-->
