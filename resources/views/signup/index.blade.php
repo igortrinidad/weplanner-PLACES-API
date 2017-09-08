@@ -27,7 +27,7 @@
   <link href="{!! asset('build/landing/css/vendors.css') !!}" rel="stylesheet">
 
   <!--|Favicon|-->
-  <link rel="icon" href="assets/images/favicon.ico">
+  <link rel="icon" href="/assets/images/favicon.ico">
   <!-- Touch Icons -->
   <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">
   <link rel="apple-touch-icon" sizes="72x72" href="assets/images/apple-touch-icon-72x72.png">
@@ -53,7 +53,7 @@
 <div id="section-1" class="brief">
   @include('signup.navbar')
 
-</div> 
+</div>
 
   @include('signup.form')
 
