@@ -28,6 +28,14 @@
         width: 100px;
         height: 100px;
     }
+
+    /* Badges */
+    .badge.badge-primary { background-color: #7BCCC6; color: #FFFFFF; }
+    .badge.badge-success { background-color: #82CB7D; color: #FFFFFF; }
+    .badge.badge-danger  { background-color: #ED7461; color: #FFFFFF; }
+    .badge.badge-warning { background-color: #FFD397; color: #FFFFFF; }
+
+
 </style>
 @extends('landing.companies.index')
 
@@ -97,7 +105,7 @@
                                 <div class="m-t-15">
                                     <button
                                         type="button"
-                                        class="btn btn-primary"
+                                        class="btn btn-primary btn-xs btn-block p-5 f-15"
                                         v-show="!interactions.displayPhoneNumber"
                                         @click="interactions.displayPhoneNumber = !interactions.displayPhoneNumber"
                                     >
@@ -113,10 +121,10 @@
 
                             <!-- Website -->
                             @if($place->website)
-                                <div class="m-t-10">
+                                <div class="m-t-5">
                                     <button
                                         type="button"
-                                        class="btn btn-primary"
+                                        class="btn btn-primary btn-xs btn-block p-5 f-15"
                                         v-show="!interactions.displayWebsite"
                                         @click="interactions.displayWebsite = !interactions.displayWebsite"
                                     >
@@ -130,7 +138,7 @@
                             @endif
                             <!-- Website -->
 
-                            <button type="button" class="btn btn-xs btn-block btn-facebook m-t-20 p-5 f-15" @click="openShareFacebook()">
+                            <button type="button" class="btn btn-xs btn-block btn-facebook m-t-5 p-5 f-15" @click="openShareFacebook()">
                                 <i class="ion-social-facebook m-r-5" ></i>Compartilhar no facebook
                             </button>
                             <button type="button" class="btn btn-xs btn-block btn-whatsapp m-t-5 p-5 f-15" @click="openShareWhatsapp()">
@@ -173,50 +181,94 @@
                 <!-- RIGHT COL -->
                 <div class="col-sm-7">
                     <!-- Extra Informations -->
+                    <div class="card">
+                        <div class="card-header ch-alt text-center">
                             <h2>Informações</h2>
-                            <div class="m-b-20">
+                        </div>
+                    </div>
+                    <div class="m-b-20">
 
-                                <!-- Capacidade -->
-                                <ul class="list-group">
-                                    <li class="list-group-item title"><strong>Capacidade do Local</strong></li>
-                                    <li class="list-group-item">Mínimo de convidade <span class="badge badge-success m-l-5">{{ $place->min_guests }}</span></li>
-                                    <li class="list-group-item">Máximo de convidados <span class="badge badge-success m-l-5">{{ $place->max_guests }}</span></li>
-                                </ul>
-                                <!-- /Capacidade -->
+                        <!-- Capacidade -->
+                        <ul class="list-group">
+                            <li class="list-group-item title"><strong>Capacidade do Local</strong></li>
+                            <li class="list-group-item">Mínimo de convidade <span class="badge badge-primary m-l-5">{{ $place->min_guests }}</span></li>
+                            <li class="list-group-item">Máximo de convidados <span class="badge badge-primary m-l-5">{{ $place->max_guests }}</span></li>
+                        </ul>
+                        <!-- /Capacidade -->
 
-                                <!-- Servicos -->
-                                <ul class="list-group">
-                                    <li class="list-group-item title"><strong>Serviços</strong></li>
-                                    <li class="list-group-item">Cerimônia <span class="badge badge-success m-l-5">{{ $place->cerimony ? 'sim' : 'não' }}</span></li>
-                                    <li class="list-group-item">Festa / Recepção <span class="badge badge-success m-l-5">{{ $place->party_space ? 'sim' : 'não' }}</span></li>
-                                    <li class="list-group-item">Acessibilidade <span class="badge badge-success m-l-5">{{ $place->accessibility ? 'sim' : 'não' }}</span></li>
-                                    <li class="list-group-item">Estacionamento <span class="badge badge-success m-l-5">{{ $place->parking ? 'sim' : 'não' }}</span></li>
-                                    <li class="list-group-item">Espaço coberto <span class="badge badge-success m-l-5">{{ $place->covered ? 'sim' : 'não' }}</span></li>
-                                    <li class="list-group-item">Espaço ao ar livre <span class="badge badge-success m-l-5">{{ $place->outdoor ? 'sim' : 'não' }}</span></li>
-                                </ul>
-                               <!-- /Servicos -->
+                        <!-- Servicos -->
+                        <ul class="list-group">
+                            <li class="list-group-item title"><strong>Serviços</strong></li>
+                            <li class="list-group-item">
+                                Cerimônia <span class="badge m-l-5 {{ $place->cerimony ? 'badge-success' : 'badge-danger' }}">
+                                    {{ $place->cerimony ? 'sim' : 'não' }}
+                                </span>
+                            </li>
+                            <li class="list-group-item">
+                                Festa / Recepção <span class="badge m-l-5 {{ $place->party_space ? 'badge-success' : 'badge-danger' }}">
+                                    {{ $place->party_space ? 'sim' : 'não' }}
+                                </span>
+                            </li>
+                            <li class="list-group-item">
+                                Acessibilidade <span class="badge m-l-5 {{ $place->accessibility ? 'badge-success' : 'badge-danger' }}">
+                                    {{ $place->accessibility ? 'sim' : 'não' }}
+                                </span>
+                            </li>
+                            <li class="list-group-item">
+                                Estacionamento <span class="badge m-l-5 {{ $place->parking ? 'badge-success' : 'badge-danger' }}">
+                                    {{ $place->parking ? 'sim' : 'não' }}
+                                </span>
+                            </li>
+                            <li class="list-group-item">
+                                Espaço coberto <span class="badge m-l-5 {{ $place->covered ? 'badge-success' : 'badge-danger' }}">
+                                    {{ $place->covered ? 'sim' : 'não' }}
+                                </span>
+                            </li>
+                            <li class="list-group-item">
+                                Espaço ao ar livre <span class="badge m-l-5 {{ $place->outdoor ? 'badge-success' : 'badge-danger' }}">
+                                    {{ $place->outdoor ? 'sim' : 'não' }}
+                                </span>
+                            </li>
+                        </ul>
+                       <!-- /Servicos -->
 
-                               <!-- Time -->
-                               <ul class="list-group">
-                                   <li class="list-group-item title"><strong>Horário</strong></li>
-                                   <li class="list-group-item">Possui horário limete ? <span class="badge badge-success m-l-5">{{ $place->informations['time_limit'] ? 'sim' : 'não' }}</span></li>
-                                   @if($place->informations['time_limit'])
-                                        <li class="list-group-item">Horário até <span class="badge badge-success m-l-5">{{ $place->informations['time_limit_value'] }}</span></li>
-                                   @endif
-                               </ul>
-                              <!-- / Time -->
+                       <!-- Time -->
+                       <ul class="list-group">
+                           <li class="list-group-item title"><strong>Horário</strong></li>
+                           <li class="list-group-item">Possui horário limete ? <span class="badge badge-primary m-l-5">{{ $place->informations['time_limit'] ? 'sim' : 'não' }}</span></li>
+                           @if($place->informations['time_limit'])
+                                <li class="list-group-item">Horário até <span class="badge badge-primary m-l-5">{{ $place->informations['time_limit_value'] }}</span></li>
+                           @endif
+                       </ul>
+                      <!-- / Time -->
 
-                              <!-- Time -->
-                              <ul class="list-group">
-                                  <li class="list-group-item title"><strong>Exclusividade de fornecedores</strong></li>
-                                  <li class="list-group-item">Exclusividade Buffet <span class="badge badge-success m-l-5">{{ $place->informations['buffet_exclusivity'] ? 'sim' : 'não' }}</span></li>
-                                  <li class="list-group-item">Exclusividade Decoração<span class="badge badge-success m-l-5">{{ $place->informations['decoration_exclusivity'] ? 'sim' : 'não' }}</span></li>
-                                  <li class="list-group-item">Exclusividade Barman<span class="badge badge-success m-l-5">{{ $place->informations['barman_exclusivity'] ? 'sim' : 'não' }}</span></li>
-                                  <li class="list-group-item">Exclusividade Música<span class="badge badge-success m-l-5">{{ $place->informations['music_exclusivity'] ? 'sim' : 'não' }}</span></li>
-                              </ul>
-                             <!-- / Time -->
+                      <!-- Time -->
+                      <ul class="list-group">
+                          <li class="list-group-item title"><strong>Exclusividade de fornecedores</strong></li>
+                          <li class="list-group-item">
+                              Exclusividade Buffet <span class="badge m-l-5 {{ $place->informations['buffet_exclusivity'] ? 'badge-success' : 'badge-danger' }}">
+                                  {{ $place->informations['buffet_exclusivity'] ? 'sim' : 'não' }}
+                              </span>
+                          </li>
+                          <li class="list-group-item">
+                              Exclusividade Decoração<span class="badge m-l-5 {{ $place->informations['decoration_exclusivity'] ? 'badge-success' : 'badge-danger' }}">
+                                  {{ $place->informations['decoration_exclusivity'] ? 'sim' : 'não' }}
+                              </span>
+                          </li>
+                          <li class="list-group-item">
+                              Exclusividade Barman<span class="badge m-l-5 {{ $place->informations['barman_exclusivity'] ? 'badge-success' : 'badge-danger' }}">
+                                  {{ $place->informations['barman_exclusivity'] ? 'sim' : 'não' }}
+                              </span>
+                          </li>
+                          <li class="list-group-item">
+                              Exclusividade Música<span class="badge m-l-5 {{ $place->informations['music_exclusivity'] ? 'badge-success' : 'badge-danger' }}">
+                                  {{ $place->informations['music_exclusivity'] ? 'sim' : 'não' }}
+                              </span>
+                          </li>
+                      </ul>
+                     <!-- / Time -->
 
-                            </div>
+                    </div>
                     <!-- / Extra Informations -->
                 </div>
                 <!-- / RIGHT COL -->
