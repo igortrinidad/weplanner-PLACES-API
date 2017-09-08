@@ -275,7 +275,7 @@
                 <!-- / RIGHT COL -->
 
                 <!-- Promotions -->
-                @if(count($place->promotions) > 0)
+                @if($place->promotions)
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="card-header ch-alt text-center">
@@ -284,8 +284,8 @@
                         <!-- Promotion -->
                         @foreach($place->poromotions as $promotion)
                             <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                                <div class="box place-show promotion gallery">
-                                    <div class="box-header text-left">
+                                <div class="card">
+                                    <div class="card-header ch-alt text-left">
                                         <span class="date">
                                             <strong>
                                                 Promoção para:
@@ -298,7 +298,7 @@
                                             </span>
                                         </span>
                                     </div>
-                                    <div class="infos text-center">
+                                    <div class="card-body card-padding">
 
                                         <h2 class="title text-overflow">{{ $place->name }}</h2>
                                         <span>

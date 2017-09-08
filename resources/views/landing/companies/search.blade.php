@@ -22,8 +22,15 @@
     .input-search {
         position: relative;
         z-index: 1;
-        padding: 19px 25px !important;
+        padding: 20px 25px !important;
     }
+
+    .form-control:focus {
+        outline: none !important;
+        border-color: #ccc !important;
+        box-shadow: none !important;
+    }
+
     .btn-search {
         position: absolute;
         top: 0; right: -2px;
