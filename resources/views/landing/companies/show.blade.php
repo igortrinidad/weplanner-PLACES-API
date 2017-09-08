@@ -42,6 +42,7 @@
 @extends('landing.companies.index')
 
 @section('content')
+
 <section class="section" id="show">
 
     <div class="place-photos">
@@ -403,14 +404,14 @@
                 <!-- / Videos -->
 
                 <!-- Decorations -->
-                @if($place->decorations)
+                @if(count($place->decorations) > 0)
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="card-header ch-alt text-center">
-                            <h2 class="m-0">Decorações exclusivas</h2>
+                            <h2 class="m-0">Decorações assinadas</h2>
                         </div>
                         <div class="card-body card-padding">
-                            Listar Decorações
+                            <span>Este local não possui decorações assinadas</span>
                         </div>
                     </div>
                 </div>
