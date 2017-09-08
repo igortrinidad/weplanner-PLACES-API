@@ -275,15 +275,64 @@
                 <!-- / RIGHT COL -->
 
                 <!-- Promotions -->
-                @if($place->promotions)
+                @if(count($place->promotions) > 0)
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="card-header ch-alt text-center">
                             <h2 class="m-0">Promoções</h2>
                         </div>
-                        <div class="card-body card-padding">
-                            Listar Promoções
-                        </div>
+                        <!-- Promotion -->
+                        @foreach($place->poromotions as $promotion)
+                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                <div class="box place-show promotion gallery">
+                                    <div class="box-header text-left">
+                                        <span class="date">
+                                            <strong>
+                                                Promoção para:
+                                                <small>{{ $promotion->date->format('d/m/Y') }}</small>
+                                            </strong>
+                                        </span>
+                                        <span class="discount">
+                                            <span class="badge badge-black-opacity">
+                                                - {{ $promotion->discount }}<small>%</small>
+                                            </span>
+                                        </span>
+                                    </div>
+                                    <div class="infos text-center">
+
+                                        <h2 class="title text-overflow">{{ $place->name }}</h2>
+                                        <span>
+                                            <i class="fa fa-map-marker"></i>
+                                            {{ $place->city }} - {{ $place->state }}
+                                        </span>
+
+                                        <div class="m-t-10 m-b-10">
+                                            <div class="values">
+                                                <span class="from-value">
+                                                    De:
+                                                    <small class="value">{{ money_format($promotion->orginal_value) }}</small>
+                                                </span>
+                                                <span class="to-value">
+                                                    Por:
+                                                    <strong>{{ money_format($promotion->value) }}</strong>
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="m-t-20">
+                                            @if($promotion->is_reserved)
+                                                <p>Você quase conseguiu!</p>
+                                                <span class="label label f-13 p-5 f-300 label label-danger block m-b-5">Reservado</span>
+
+                                            @else
+                                                <span class="label label f-13 p-5 f-300 label label-success block m-b-5">Disponível para reserva</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                        <!-- / Promotion -->
                     </div>
                 </div>
                 @endif
