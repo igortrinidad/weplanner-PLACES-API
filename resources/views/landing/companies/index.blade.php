@@ -194,7 +194,7 @@
     @include('landing.partials.footer')
 
 <!--|Scroll Top|-->
-<a class="scroll-top" href="#intro"><img src="assets/images/map_icon.png"></a> <!--|End Scroll Top|-->
+<a class="scroll-top" href="#section-1"><img src="/assets/images/map_icon.png"></a> <!--|End Scroll Top|-->
 
 
 <script src="{!! elixir('build/landing/js/vendors.js') !!}"></script>
