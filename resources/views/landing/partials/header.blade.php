@@ -11,7 +11,10 @@
             <p style="font-size: 20px;">Com facilidade única você pode disponibilizar para seus clientes um perfil completo de seu espaço de eventos com agenda online, fotos, vídeos, tour virtual, informações importantes sobre seus serviços online e muito mais.</p>
           </div>
         </div>
-      </header> 
+        <div class="m-t-30">
+            @include('landing.companies.single-input')
+        </div>
+      </header>
     </div>
   </section>
   <!--|End Section Header|-->
