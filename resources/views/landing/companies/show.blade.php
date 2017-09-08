@@ -72,7 +72,7 @@
                             @endforeach
                         </div>
 
-                        <div class="card-body card-padding text-center">
+                        <div class="card-body p-10 text-center">
 
                             <!-- Price -->
                             <div class="title">
@@ -156,7 +156,7 @@
                         <div class="card-header ch-alt text-center">
                             <h2>Descrição</h2>
                         </div>
-                        <div class="card-body card-padding">
+                        <div class="card-body p-10">
                             <p class="text-justify">{!! $place->description !!}</p>
                         </div>
                     </div>
@@ -167,7 +167,7 @@
                         <div class="card-header ch-alt text-center">
                             <h2>Dias e Horários</h2>
                         </div>
-                        <div class="card-body card-padding text-center">
+                        <div class="card-body p-10 text-center">
                             @if($place->calendar_settings->workday_is_active)
                                 <span>Dias e horários de funcionamento não cadastrados.</span>
                             @else
@@ -299,7 +299,7 @@
                                             </span>
                                         </span>
                                     </div>
-                                    <div class="card-body card-padding">
+                                    <div class="card-body p-10">
 
                                         <h2 class="title text-overflow">{{ $place->name }}</h2>
                                         <span>
@@ -345,7 +345,7 @@
                         <div class="card-header ch-alt text-center">
                             <h2 class="m-0">Fotos</h2>
                         </div>
-                        <div class="card-body card-padding">
+                        <div class="card-body p-t-5">
                             <div id="gallery" style="display:none;">
                                 @foreach($place->photos as $photo)
                                 <img alt="{{$place->name}}" src="{{$photo->photo_url}}"
@@ -379,7 +379,7 @@
                         <div class="card-header ch-alt text-center">
                             <h2 class="m-0">Tour Virtual</h2>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body p-t-5">
                             <button class="btn btn-primary">Exibir tour virtual</button>
                             <iframe src="{{ $place->virtual_tour_url }}" width="100%" height="500"></iframe>
                         </div>
@@ -395,7 +395,7 @@
                         <div class="card-header ch-alt text-center">
                             <h2 class="m-0">Vídeos</h2>
                         </div>
-                        <div class="card-body card-padding">
+                        <div class="card-body p-t-5">
                             Listar Videos
                         </div>
                     </div>
@@ -410,7 +410,7 @@
                         <div class="card-header ch-alt text-center">
                             <h2 class="m-0">Decorações assinadas</h2>
                         </div>
-                        <div class="card-body card-padding">
+                        <div class="card-body p-t-5">
                             <span>Este local não possui decorações assinadas</span>
                         </div>
                     </div>
@@ -423,6 +423,9 @@
                     <div class="card">
                         <div class="card-header ch-alt text-center">
                             <h2 class="m-0">Anuncios</h2>
+                        </div>
+                        <div class="card-body p-t-5">
+                            <span>Listar</span>
                         </div>
                     </div>
                 </div>
