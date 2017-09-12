@@ -8,33 +8,20 @@ commits=(`git log -1 --pretty=%s`)
 for commit in "${commits[@]}"
 do
     #Se houver a palavra --build-testing ele atualiza a versão, altera no arquivo de configurações antes de gerar o build o ENV: 'testing'
+    if [ $commit == "--merge-and-push" ]; then
 
-    if [ $commit == "--update" ]; then
+        git pull;
+        wait;
 
-        cd automating
-        version=(`env=production  node update-version.js`);
-        wait
-        echo "Version updated to ${version}."
-        
-        cd ../
-        git add -A;
-        echo "**********************************************";
-        git commit -m "Generated version: ${version}.";
-        git push
         git checkout master;
-        echo "BRANCH ALTERADA PARA: MASTER"
-        git merge development;
+        git merge dev;
+        git push;
+        wait;
 
-        git add -A;
-        git commit -m "Merge from development: ${version}.";
-        git push
+        git checkout dev;
+        git push;
 
-        git checkout development
-        echo "BRANCH ALTERADA PARA: DEVELOPMENT"
-        echo "**********************************************";
-        echo "FINISHING THE JOB"
-        git push
-        git pull
+        echo "******************************************";
+        echo "...Merge feito com sucesso...";
     fi
 done
-

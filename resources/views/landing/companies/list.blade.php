@@ -57,6 +57,12 @@
                     </a>
                 </div>
             @endforeach
+
+            @if(!count($places))
+                <h2 class="text-center">:(</h2>
+                <h5 class="text-center">Não encontramos nenhum espaço na cidade pesquisada</h5>
+                <br><br>
+            @endif
         </div>
         <div class="row">
             <div class="col-sm-12 text-center">
@@ -65,12 +71,14 @@
         </div>
     </div>
 
+    <!--
     <div class="wrapper m-t-20">
         <div class="container text-center">
             <span class="wrapper-title">Não encontrou o local que procura ?</span><br>
             <a href="#" class="btn btn-primary m-t-10">Indique para nós</a>
         </div>
     </div>
+    -->
 
 </section>
 @stop
