@@ -193,7 +193,7 @@
                         <!-- Capacidade -->
                         <ul class="list-group">
                             <li class="list-group-item title"><strong>Capacidade do Local</strong></li>
-                            <li class="list-group-item">Mínimo de convidade <span class="badge badge-primary m-l-5">{{ $place->min_guests }}</span></li>
+                            <li class="list-group-item">Mínimo de convidados <span class="badge badge-primary m-l-5">{{ $place->min_guests }}</span></li>
                             <li class="list-group-item">Máximo de convidados <span class="badge badge-primary m-l-5">{{ $place->max_guests }}</span></li>
                         </ul>
                         <!-- /Capacidade -->
@@ -237,7 +237,7 @@
                        <!-- Time -->
                        <ul class="list-group">
                            <li class="list-group-item title"><strong>Horário</strong></li>
-                           <li class="list-group-item">Possui horário limete ? <span class="badge badge-primary m-l-5">{{ $place->informations['time_limit'] ? 'sim' : 'não' }}</span></li>
+                           <li class="list-group-item">Possui horário limite ? <span class="badge badge-primary m-l-5">{{ $place->informations['time_limit'] ? 'sim' : 'não' }}</span></li>
                            @if($place->informations['time_limit'])
                                 <li class="list-group-item">Horário até <span class="badge badge-primary m-l-5">{{ $place->informations['time_limit_value'] }}</span></li>
                            @endif

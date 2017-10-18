@@ -192,7 +192,6 @@
     @section('content')
     @show
 
-    @include('landing.partials.contato')
     @include('landing.partials.footer')
 
 <!--|Scroll Top|-->
