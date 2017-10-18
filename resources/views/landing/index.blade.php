@@ -5,6 +5,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta http-equiv="cache-control" content="public">
   <meta http-equiv="expires" content ="<?php echo date('l jS \of F Y h:i:s A', strtotime('+7 days')); ?>" />
+  <link rel="icon" href="/icons/icon_p.png" type="image/x-icon"/>
+  <link rel="shortcut icon" href="/icons/icon_p.png" type="image/x-icon"/>
 
   @include('components.seo-opengraph')
 
