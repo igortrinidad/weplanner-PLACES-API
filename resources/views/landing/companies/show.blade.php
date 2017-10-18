@@ -123,7 +123,7 @@
 
                             <!-- Website -->
                             @if($place->website)
-                                <div class="m-t-5">
+                                <div class="m-t-10">
                                     <button
                                         type="button"
                                         class="btn btn-primary btn-xs btn-block p-5 f-15"
@@ -140,10 +140,10 @@
                             @endif
                             <!-- Website -->
 
-                            <button type="button" class="btn btn-xs btn-block btn-facebook m-t-5 p-5 f-15" @click="openShareFacebook()">
+                            <button type="button" class="btn btn-xs btn-block btn-facebook m-t-10 p-5 f-15" @click="openShareFacebook()">
                                 <i class="ion-social-facebook m-r-5" ></i>Compartilhar no facebook
                             </button>
-                            <button type="button" class="btn btn-xs btn-block btn-whatsapp open-share-whatsapp m-t-5 p-5 f-15">
+                            <button type="button" class="btn btn-xs btn-block btn-whatsapp m-t-10 p-5 f-15" @click="openShareWhatsapp()">
                                 <i class="ion-social-whatsapp m-r-5"></i>Compartilhar no whatsapp
                             </button>
 
@@ -451,6 +451,20 @@
             mounted: function() {
             },
             methods: {
+                openShareFacebook: function(){
+                    let that = this
+                    
+                    var url = `https://www.facebook.com/dialog/share?app_id=151705885358217&href=https://weplaces.com.br/espacos/{{ $place->slug }}&display=popup&mobile_iframe=true`;
+                    window.open(url, '_blank', 'location=yes');
+                    
+                },
+
+                openShareWhatsapp: function(){
+                    let that = this
+                
+                    var url = `https://api.whatsapp.com/send?text=Confira o espaço {{ $place->name }} no weplaces, veja o abaixo: https://weplaces.com.br/espacos/{{ $place->slug }}`;
+                    window.open(url, '_system', null);
+                },
             },
         });
 
@@ -675,16 +689,6 @@
                 infowindow.open(map, marker);
             });
         }
-
-        $('.open-share-facebook').on('click', function() {
-            var url = `https://www.facebook.com/dialog/share?app_id=151705885358217&href=https://weplaces.com.br/espacos/{{ $place->slug }}&display=popup&mobile_iframe=true`;
-            window.open(url, '_blank', 'location=yes');
-        })
-        $('.open-share-whatsapp').on('click', function() {
-            // Whatsapp share
-            var url = `https://api.whatsapp.com/send?text=Confira o espaço {{ $place->name }} no weplaces, veja o abaixo: https://weplaces.com.br/espacos/{{ $place->slug }}`;
-            window.open(url, '_system', null);
-        })
 
         var coverSwiper = new Swiper($('.place-photos'), {
             prevButton: '.swiper-button-prev',
