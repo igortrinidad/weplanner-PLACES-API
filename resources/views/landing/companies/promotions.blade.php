@@ -45,8 +45,6 @@
         <div class="row">
             @foreach($promotions as $promotion)
 
-                {{$promotion}}
-
                 <div class="col-sm-3">
                     <a href="{{ route('places.show', $promotion->place->slug) }}">
                         <div class="card text-center">
@@ -56,6 +54,10 @@
                             <h3 class="location text-muted t-overflow m-t-10">
                                 <i class="ion-ios-location"></i> {{ $promotion->place->city }} - {{ $promotion->place->state }}
                             </h3>
+
+                            <a href="{{ route('places.show', $promotion->place->slug) }}" title="{{ $promotion->date }}" class="btn btn-success p-5 p-l-10 p-r-10 m-b-10">{{dataMysqlParaPtBr($promotion->date)}}</a>
+
+                            <br>
 
                             <a href="{{ route('places.show', $promotion->place->slug) }}" title="{{ $promotion->place->name }}" class="btn btn-info p-5 p-l-10 p-r-10 m-b-10">Ver mais</a>
                         </div>
