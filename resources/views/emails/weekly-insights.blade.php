@@ -71,224 +71,10 @@
                     >
                         <tbody style="text-align: center; font-family: 'Lato', sans-serif;">
 
-
-                            @if(!$data['place']['has_owner'] && $data['reservation_interests'] > 0)
-                            <tr>
-                                <td colspan="2" style="padding: 15px 0;  border-bottom: 1px solid rgb(242, 242, 242); width: 50%;">
-                                    <span style="font-size: 22px;">{{$data['reservation_interests']}} pessoas</span>
-                                    <h5 style="font-family: 'Quicksand', sans-serif; margin: 0 !important;">gostariam de reservar seu espaço</h5>
-                                </td>
-                            </tr>
-                            @endif
-
-                            @if($data['place']['has_owner'])
-                                <!--Reservations-->
-                                <tr style="width: 100%;">
-                                    <td colspan="2" style="padding: 15px 0; border-top: 1px solid rgb(242, 242, 242); border-bottom: 1px solid rgb(242, 242, 242); width: 50%;">
-                                        <h4 style="font-family: 'Quicksand', sans-serif; margin: 0 !important;">Reservas</h4>
-                                    </td>
-                                </tr>
-
-                                <tr style="width: 100%;">
-                                    <td style="padding: 15px 0; width: 50%;">
-                                        <h4 style="font-family: 'Quicksand', sans-serif; margin: 0 !important;">Total</h4>
-                                        <span style="font-size: 22px;">{{$data['reservations']['total']['last_month']}}</span>
-                                        <br />
-                                        <small>
-                                            @if($data['reservations']['total']['stats']['no_data'])
-                                                Sem dados do
-                                            @endif
-                                            @if(!$data['reservations']['total']['stats']['value'] > 0 && !$data['reservations']['total']['stats']['no_data'])
-                                                Igual ao
-                                            @endif
-                                            @if($data['reservations']['total']['stats']['is_positive'] && $data['reservations']['total']['stats']['value'])
-                                                <span style="color:green"><strong>{{$data['reservations']['total']['stats']['value']}}%</strong></span> mais que no
-                                            @endif
-                                            @if(!$data['reservations']['total']['stats']['is_positive'] && $data['reservations']['total']['stats']['value'])
-                                                <span style=" color:red"><strong>{{$data['reservations']['total']['stats']['value']}}%</strong></span> menos que no
-                                            @endif
-                                            <br>
-                                            mês anterior
-                                        </small>
-                                    </td>
-
-                                    <td style="padding: 15px 0; width: 50%;">
-                                        <h4 style="font-family: 'Quicksand', sans-serif; margin: 0 !important;">Confirmadas</h4>
-                                        <span style="font-size: 22px;">{{$data['reservations']['confirmed']['last_month']}}</span>
-                                        <br />
-                                        <small>
-                                            @if($data['reservations']['confirmed']['stats']['no_data'])
-                                                Sem dados do
-                                            @endif
-                                            @if(!$data['reservations']['confirmed']['stats']['value'] > 0 && !$data['reservations']['confirmed']['stats']['no_data'])
-                                                Igual ao
-                                            @endif
-                                            @if($data['reservations']['confirmed']['stats']['is_positive'] && $data['reservations']['confirmed']['stats']['value'])
-                                                <span style="color:green"><strong>{{$data['reservations']['confirmed']['stats']['value']}}%</strong></span> mais que no
-                                            @endif
-                                            @if(!$data['reservations']['confirmed']['stats']['is_positive'] && $data['reservations']['confirmed']['stats']['value'])
-                                                <span style=" color:red"><strong>{{$data['reservations']['confirmed']['stats']['value']}}%</strong></span> menos que no
-                                            @endif
-                                            <br>
-                                            mês anterior
-                                        </small>
-                                    </td>
-                                </tr>
-
-                                <tr style="width: 100%;">
-                                    <td style="padding: 15px 0; width: 50%;">
-                                        <h4 style="font-family: 'Quicksand', sans-serif; margin: 0 !important;">Canceladas</h4>
-                                        <span style="font-size: 22px;">{{$data['reservations']['canceled']['last_month']}}</span>
-                                        <br />
-                                        <small>
-                                            @if($data['reservations']['canceled']['stats']['no_data'])
-                                                Sem dados do
-                                            @endif
-                                            @if(!$data['reservations']['canceled']['stats']['value'] > 0 && !$data['reservations']['canceled']['stats']['no_data'])
-                                                Igual ao
-                                            @endif
-                                            @if($data['reservations']['canceled']['stats']['is_positive'] && $data['reservations']['canceled']['stats']['value'])
-                                                <span style="color:green"><strong>{{$data['reservations']['canceled']['stats']['value']}}%</strong></span> mais que no
-                                            @endif
-                                            @if(!$data['reservations']['canceled']['stats']['is_positive'] && $data['reservations']['canceled']['stats']['value'])
-                                                <span style=" color:red"><strong>{{$data['reservations']['canceled']['stats']['value']}}%</strong></span> menos que no
-                                            @endif
-                                            <br>
-                                            mês anterior
-                                        </small>
-                                    </td>
-
-                                    <td style="padding: 15px 0; width: 50%;">
-                                        <h4 style="font-family: 'Quicksand', sans-serif; margin: 0 !important;">Aguardando</h4>
-                                        <span style="font-size: 22px;">{{$data['reservations']['waiting']['last_month']}}</span>
-                                        <br />
-                                        <small>
-                                            @if($data['reservations']['waiting']['stats']['no_data'])
-                                                Sem dados do
-                                            @endif
-                                            @if(!$data['reservations']['waiting']['stats']['value'] > 0 && !$data['reservations']['waiting']['stats']['no_data'])
-                                                Igual ao
-                                            @endif
-                                            @if($data['reservations']['waiting']['stats']['is_positive'] && $data['reservations']['waiting']['stats']['value'])
-                                                <span style="color:green"><strong>{{$data['reservations']['waiting']['stats']['value']}}%</strong></span> mais que no
-                                            @endif
-                                            @if(!$data['reservations']['waiting']['stats']['is_positive'] && $data['reservations']['waiting']['stats']['value'])
-                                                <span style=" color:red"><strong>{{$data['reservations']['waiting']['stats']['value']}}%</strong></span> menos que no
-                                            @endif
-                                            <br>
-                                            mês anterior
-                                        </small>
-                                    </td>
-
-                                </tr>
-                                <!--Reservations-->
-
-                                <!-- Pre reservations-->
-                                <tr style="width: 100%;">
-                                    <td colspan="2" style="padding: 15px 0; border-top: 1px solid rgb(242, 242, 242); border-bottom: 1px solid rgb(242, 242, 242); width: 50%;">
-                                        <h4 style="font-family: 'Quicksand', sans-serif; margin: 0 !important;">Pré reservas</h4>
-                                    </td>
-                                </tr>
-
-                                <tr style="width: 100%;">
-                                    <td style="padding: 15px 0; width: 50%;">
-                                        <h4 style="font-family: 'Quicksand', sans-serif; margin: 0 !important;">Total</h4>
-                                        <span style="font-size: 22px;">{{$data['pre_reservations']['total']['last_month']}}</span>
-                                        <br />
-                                        <small>
-                                            @if($data['pre_reservations']['total']['stats']['no_data'])
-                                                Sem dados do
-                                            @endif
-                                            @if(!$data['pre_reservations']['total']['stats']['value'] > 0 && !$data['pre_reservations']['total']['stats']['no_data'])
-                                                Igual ao
-                                            @endif
-                                            @if($data['pre_reservations']['total']['stats']['is_positive'] && $data['pre_reservations']['total']['stats']['value'])
-                                                <span style="color:green"><strong>{{$data['pre_reservations']['total']['stats']['value']}}%</strong></span> mais que no
-                                            @endif
-                                            @if(!$data['pre_reservations']['total']['stats']['is_positive'] && $data['pre_reservations']['total']['stats']['value'])
-                                                <span style=" color:red"><strong>{{$data['pre_reservations']['total']['stats']['value']}}%</strong></span> menos que no
-                                            @endif
-                                            <br>
-                                            mês anterior
-                                        </small>
-                                    </td>
-
-                                    <td style="padding: 15px 0; width: 50%;">
-                                        <h4 style="font-family: 'Quicksand', sans-serif; margin: 0 !important;">Confirmadas</h4>
-                                        <span style="font-size: 22px;">{{$data['pre_reservations']['confirmed']['last_month']}}</span>
-                                        <br />
-                                        <small>
-                                            @if($data['pre_reservations']['confirmed']['stats']['no_data'])
-                                                Sem dados do
-                                            @endif
-                                            @if(!$data['pre_reservations']['confirmed']['stats']['value'] > 0 && !$data['pre_reservations']['confirmed']['stats']['no_data'])
-                                                Igual ao
-                                            @endif
-                                            @if($data['pre_reservations']['confirmed']['stats']['is_positive'] && $data['pre_reservations']['confirmed']['stats']['value'])
-                                                <span style="color:green"><strong>{{$data['pre_reservations']['confirmed']['stats']['value']}}%</strong></span> mais que no
-                                            @endif
-                                            @if(!$data['pre_reservations']['confirmed']['stats']['is_positive'] && $data['pre_reservations']['confirmed']['stats']['value'])
-                                                <span style=" color:red"><strong>{{$data['pre_reservations']['confirmed']['stats']['value']}}%</strong></span> menos que no
-                                            @endif
-                                            <br>
-                                            mês anterior
-                                        </small>
-                                    </td>
-                                </tr>
-
-                                <tr style="width: 100%;">
-                                    <td style="padding: 15px 0; width: 50%;">
-                                        <h4 style="font-family: 'Quicksand', sans-serif; margin: 0 !important;">Canceladas</h4>
-                                        <span style="font-size: 22px;">{{$data['pre_reservations']['canceled']['last_month']}}</span>
-                                        <br />
-                                        <small>
-                                            @if($data['pre_reservations']['canceled']['stats']['no_data'])
-                                                Sem dados do
-                                            @endif
-                                            @if(!$data['pre_reservations']['canceled']['stats']['value'] > 0 && !$data['pre_reservations']['canceled']['stats']['no_data'])
-                                                Igual ao
-                                            @endif
-                                            @if($data['pre_reservations']['canceled']['stats']['is_positive'] && $data['pre_reservations']['canceled']['stats']['value'])
-                                                <span style="color:green"><strong>{{$data['pre_reservations']['canceled']['stats']['value']}}%</strong></span> mais que no
-                                            @endif
-                                            @if(!$data['pre_reservations']['canceled']['stats']['is_positive'] && $data['pre_reservations']['canceled']['stats']['value'])
-                                                <span style=" color:red"><strong>{{$data['pre_reservations']['canceled']['stats']['value']}}%</strong></span> menos que no
-                                            @endif
-                                            <br>
-                                            mês anterior
-                                        </small>
-                                    </td>
-
-                                    <td style="padding: 15px 0; width: 50%;">
-                                        <h4 style="font-family: 'Quicksand', sans-serif; margin: 0 !important;">Aguardando</h4>
-                                        <span style="font-size: 22px;">{{$data['pre_reservations']['waiting']['last_month']}}</span>
-                                        <br />
-                                        <small>
-                                            @if($data['pre_reservations']['waiting']['stats']['no_data'])
-                                                Sem dados do
-                                            @endif
-                                            @if(!$data['pre_reservations']['waiting']['stats']['value'] > 0 && !$data['pre_reservations']['waiting']['stats']['no_data'])
-                                                Igual ao
-                                            @endif
-                                            @if($data['pre_reservations']['waiting']['stats']['is_positive'] && $data['pre_reservations']['waiting']['stats']['value'])
-                                                <span style="color:green"><strong>{{$data['pre_reservations']['waiting']['stats']['value']}}%</strong></span> mais que no
-                                            @endif
-                                            @if(!$data['pre_reservations']['waiting']['stats']['is_positive'] && $data['pre_reservations']['waiting']['stats']['value'])
-                                                <span style=" color:red"><strong>{{$data['pre_reservations']['waiting']['stats']['value']}}%</strong></span> menos que no
-                                            @endif
-                                            <br>
-                                            mês anterior
-                                        </small>
-                                    </td>
-
-                                </tr>
-                                <!--Pre reservations-->
-                            @endif
-
                             <!--Tracking-->
                             <tr style="width: 100%;">
                                 <td colspan="2" style="padding: 15px 0; border-top: 1px solid rgb(242, 242, 242); width: 50%;">
-                                    <h4 style="font-family: 'Quicksand', sans-serif; margin: 0 !important;">Dados coletados</h4>
+                                    <h4 style="font-family: 'Quicksand', sans-serif; margin: 0 !important;">Seu perfil na plataforma We Places</h4>
                                 </td>
                             </tr>
 
@@ -297,22 +83,6 @@
                                     <h4 style="font-family: 'Quicksand', sans-serif; margin: 0 !important;">Visualizações</h4>
                                     <span style="font-size: 22px;">{{$data['views']['last_month']}}</span>
                                     <br />
-                                    <small>
-                                        @if($data['views']['stats']['no_data'])
-                                            Sem dados do
-                                        @endif
-                                        @if(!$data['views']['stats']['value'] > 0 && !$data['views']['stats']['no_data'])
-                                            Igual ao
-                                        @endif
-                                        @if($data['views']['stats']['is_positive'] && $data['views']['stats']['value'])
-                                            <span style="color:green"><strong>{{$data['views']['stats']['value']}}%</strong></span> mais que no
-                                        @endif
-                                        @if(!$data['views']['stats']['is_positive'] && $data['views']['stats']['value'])
-                                            <span style=" color:red"><strong>{{$data['views']['stats']['value']}}%</strong></span> menos que no
-                                        @endif
-                                        <br>
-                                        mês anterior
-                                    </small>
                                 </td>
                             </tr>
 
@@ -343,22 +113,6 @@
                                     <h4 style="font-family: 'Quicksand', sans-serif; margin: 0 !important;">Contato <small>(whatsapp)</small></h4>
                                     <span style="font-size: 22px;">{{$data['whatsapp_clicks']['last_month']}}</span>
                                     <br />
-                                    <small>
-                                        @if($data['whatsapp_clicks']['stats']['no_data'])
-                                            Sem dados do
-                                        @endif
-                                        @if(!$data['whatsapp_clicks']['stats']['value'] > 0 && !$data['whatsapp_clicks']['stats']['no_data'])
-                                            Igual ao
-                                        @endif
-                                        @if($data['whatsapp_clicks']['stats']['is_positive'] && $data['whatsapp_clicks']['stats']['value'])
-                                            <span style="color:green"><strong>{{$data['whatsapp_clicks']['stats']['value']}}%</strong></span> mais que no
-                                        @endif
-                                        @if(!$data['whatsapp_clicks']['stats']['is_positive'] && $data['whatsapp_clicks']['stats']['value'])
-                                            <span style=" color:red"><strong>{{$data['whatsapp_clicks']['stats']['value']}}%</strong></span> menos que no
-                                        @endif
-                                        <br>
-                                        mês anterior
-                                    </small>
                                 </td>
 
                             </tr>
@@ -368,44 +122,12 @@
                                     <h4 style="font-family: 'Quicksand', sans-serif; margin: 0 !important;">Contato <small>(ligação)</small></h4>
                                     <span style="font-size: 22px;">{{$data['call_clicks']['last_month']}}</span>
                                     <br />
-                                    <small>
-                                        @if($data['call_clicks']['stats']['no_data'])
-                                            Sem dados do
-                                        @endif
-                                        @if(!$data['call_clicks']['stats']['value'] > 0 && !$data['call_clicks']['stats']['no_data'])
-                                            Igual ao
-                                        @endif
-                                        @if($data['call_clicks']['stats']['is_positive'] && $data['call_clicks']['stats']['value'])
-                                            <span style="color:green"><strong>{{$data['call_clicks']['stats']['value']}}%</strong></span> mais que no
-                                        @endif
-                                        @if(!$data['call_clicks']['stats']['is_positive'] && $data['call_clicks']['stats']['value'])
-                                            <span style=" color:red"><strong>{{$data['call_clicks']['stats']['value']}}%</strong></span> menos que no
-                                        @endif
-                                        <br>
-                                        mês anterior
-                                    </small>
                                 </td>
 
                                 <td style="padding: 15px 0; border-top: 1px solid rgb(242, 242, 242); border-left: 1px solid rgb(242, 242, 242); width: 50%;">
                                     <h4 style="font-family: 'Quicksand', sans-serif; margin: 0 !important;">Contato <small>(Mensagem)</small></h4>
                                     <span style="font-size: 22px;">{{$data['contact_clicks']['last_month']}}</span>
                                     <br />
-                                    <small>
-                                        @if($data['contact_clicks']['stats']['no_data'])
-                                            Sem dados do
-                                        @endif
-                                        @if(!$data['contact_clicks']['stats']['value'] > 0 && !$data['contact_clicks']['stats']['no_data'])
-                                            Igual ao
-                                        @endif
-                                        @if($data['contact_clicks']['stats']['is_positive'] && $data['contact_clicks']['stats']['value'])
-                                            <span style="color:green"><strong>{{$data['contact_clicks']['stats']['value']}}%</strong></span> mais que no
-                                        @endif
-                                        @if(!$data['contact_clicks']['stats']['is_positive'] && $data['contact_clicks']['stats']['value'])
-                                            <span style=" color:red"><strong>{{$data['contact_clicks']['stats']['value']}}%</strong></span> menos que no
-                                        @endif
-                                        <br>
-                                        mês anterior
-                                    </small>
                                 </td>
                             </tr>
                             <!--Tracking-->
@@ -437,23 +159,6 @@
                                 </td>
                                 <td style="padding: 15px; border-radius:0px 4px 4px 0px; background-color: rgb(242, 242, 242); border-left: 1px solid rgb(255, 255, 255); border-top: 1px solid rgb(255, 255, 255); width: 40%;">
                                     <span><strong>{{$data['facebook_shares']['last_month']}}</strong></span>
-                                    <br />
-                                    <small>
-                                        @if($data['facebook_shares']['stats']['no_data'])
-                                            Sem dados do
-                                        @endif
-                                        @if(!$data['facebook_shares']['stats']['value'] > 0 && !$data['facebook_shares']['stats']['no_data'])
-                                            Igual ao
-                                        @endif
-                                        @if($data['facebook_shares']['stats']['is_positive'] && $data['facebook_shares']['stats']['value'])
-                                            <span style="color:green"><strong>{{$data['facebook_shares']['stats']['value']}}%</strong></span> mais que no
-                                        @endif
-                                        @if(!$data['facebook_shares']['stats']['is_positive'] && $data['facebook_shares']['stats']['value'])
-                                            <span style=" color:red"><strong>{{$data['facebook_shares']['stats']['value']}}%</strong></span> menos que no
-                                        @endif
-                                        <br>
-                                        mês anterior
-                                    </small>
                                 </td>
                             </tr>
                             <tr style="width: 100%">
@@ -462,23 +167,6 @@
                                 </td>
                                 <td style="padding: 15px; border-radius:0px 4px 4px 0px; background-color: rgb(242, 242, 242); border-left: 1px solid rgb(255, 255, 255); border-top: 1px solid rgb(255, 255, 255); width: 40%;">
                                     <span><strong>{{$data['whatsapp_shares']['last_month']}}</strong></span>
-                                    <br />
-                                    <small>
-                                        @if($data['whatsapp_shares']['stats']['no_data'])
-                                            Sem dados do
-                                        @endif
-                                        @if(!$data['whatsapp_shares']['stats']['value'] > 0 && !$data['whatsapp_shares']['stats']['no_data'])
-                                            Igual ao
-                                        @endif
-                                        @if($data['whatsapp_shares']['stats']['is_positive'] && $data['whatsapp_shares']['stats']['value'])
-                                            <span style="color:green"><strong>{{$data['whatsapp_shares']['stats']['value']}}%</strong></span> mais que no
-                                        @endif
-                                        @if(!$data['whatsapp_shares']['stats']['is_positive'] && $data['whatsapp_shares']['stats']['value'])
-                                            <span style=" color:red"><strong>{{$data['whatsapp_shares']['stats']['value']}}%</strong></span> menos que no
-                                        @endif
-                                        <br>
-                                        mês anterior
-                                    </small>
                                 </td>
                             </tr>
                             <tr style="width: 100%">
@@ -487,23 +175,6 @@
                                 </td>
                                 <td style="padding: 15px; border-radius:0px 4px 4px 0px; background-color: rgb(242, 242, 242); border-left: 1px solid rgb(255, 255, 255); border-top: 1px solid rgb(255, 255, 255); width: 40%;">
                                     <span><strong>{{$data['link_shares']['last_month']}}</strong></span>
-                                    <br />
-                                    <small>
-                                        @if($data['link_shares']['stats']['no_data'])
-                                            Sem dados do
-                                        @endif
-                                        @if(!$data['link_shares']['stats']['value'] > 0 && !$data['link_shares']['stats']['no_data'])
-                                            Igual ao
-                                        @endif
-                                        @if($data['link_shares']['stats']['is_positive'] && $data['link_shares']['stats']['value'])
-                                            <span style="color:green"><strong>{{$data['link_shares']['stats']['value']}}%</strong></span> mais que no
-                                        @endif
-                                        @if(!$data['link_shares']['stats']['is_positive'] && $data['link_shares']['stats']['value'])
-                                            <span style=" color:red"><strong>{{$data['link_shares']['stats']['value']}}%</strong></span> menos que no
-                                        @endif
-                                        <br>
-                                        mês anterior
-                                    </small>
                                 </td>
                             </tr>
                         </tbody>

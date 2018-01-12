@@ -1530,9 +1530,11 @@ function UGTheme_tiles(){
 
   //
   // Preloader
+  /*
   jQuery(window).load(function() {
     jQuery(".preloader").delay(1000).fadeOut("slow");
   });
+  */
 
   $(document).ready(function(){
     //

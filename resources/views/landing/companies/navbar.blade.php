@@ -22,8 +22,9 @@
         <div class="collapse navbar-collapse" id="primary-nav">
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="/">Home</a></li>
-                <li><a href="{{ route('search') }}">Buscar</a></li>
-                <li><a href="https://app.weplaces.com.br" target="_blank">Acesse</a></li>
+                <li><a href="{{ route('search') }}">Buscar espaços</a></li>
+                <li><a href="{{ route('promotions') }}">Promoções</a></li>
+                <li><a href="https://app.weplaces.com.br" target="_blank">Acesse o app</a></li>
                 <li><a href="https://blog.weplaces.com.br" target="_blank">Blog</a></li>
             </ul>
         </div><!--|End Nav|-->

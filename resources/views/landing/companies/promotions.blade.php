@@ -43,26 +43,30 @@
 <section id="list-places" class="section">
     <div class="container">
         <div class="row">
-            @foreach($places as $place)
+            @foreach($promotions as $promotion)
+
+                {{$promotion}}
+
                 <div class="col-sm-3">
-                    <a href="{{ route('places.show', $place->slug) }}">
+                    <a href="{{ route('places.show', $promotion->place->slug) }}">
                         <div class="card text-center">
-                            <div class="cover" style="background-image: url('{{ $place->avatar }}')" alt="{{ $place->name }}">
+                            <div class="cover" style="background-image: url('{{ $promotion->place->avatar }}')" alt="{{ $promotion->place->name }}">
                             </div>
-                            <h2 class="m-t-10 m-b-0 t-overflow">{{ $place->name }}</h2>
+                            <h2 class="m-t-10 m-b-0 t-overflow">{{ $promotion->place->name }}</h2>
                             <h3 class="location text-muted t-overflow m-t-10">
-                                <i class="ion-ios-location"></i> {{ $place->city }} - {{ $place->state }}
+                                <i class="ion-ios-location"></i> {{ $promotion->place->city }} - {{ $promotion->place->state }}
                             </h3>
 
-                            <a href="{{ route('places.show', $place->slug) }}" title="{{ $place->name }}" class="btn btn-info p-5 p-l-10 p-r-10 m-b-10">Ver o local</a>
+                            <a href="{{ route('places.show', $promotion->place->slug) }}" title="{{ $promotion->place->name }}" class="btn btn-info p-5 p-l-10 p-r-10 m-b-10">Ver mais</a>
                         </div>
                     </a>
                 </div>
+
             @endforeach
         </div>
         <div class="row">
             <div class="col-sm-12 text-center">
-                {!! $places->render() !!}
+                {!! $promotions->render() !!}
             </div>
         </div>
     </div>
@@ -70,7 +74,7 @@
     <div class="wrapper m-t-20">
         <div class="container text-center">
             <span class="wrapper-title">Não encontrou o local que procura ?</span><br>
-            <a href="#" class="btn btn-primary m-t-10">Indique para nós</a>
+            <a href="#" class="btn btn-primary m-t-10">Indique um local</a>
         </div>
     </div>
 

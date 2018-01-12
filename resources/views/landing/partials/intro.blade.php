@@ -11,6 +11,7 @@
   <div class="overlay-inner">
     <div class="container">
       <!--|Site Brand|-->
+      @if($show_logo)
       <div class="site-brand">
         <!--|Logo|-->
         <a class="fp-logo" href="#"><img src="https://blog.weplaces.com.br/wp-content/uploads/2017/07/LOGO-1-03.png" style="width: 131px;" alt="We Places"></a> <!--|End Logo|-->
@@ -24,6 +25,7 @@
           </div>
         </div> <!--|End Social links|-->
       </div> <!--|End Site Brand|-->
+      @endif
 
       <!--|Intro Content|-->
       <div class="intro-content">
