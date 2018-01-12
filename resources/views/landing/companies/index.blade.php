@@ -182,8 +182,6 @@
 
 </head>
 <body class="sticky-nav">
-<!--|Preloader|-->
-<div class="preloader"></div>
 
 <div id="section-1" class="brief">
     @include('landing.companies.navbar')

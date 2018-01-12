@@ -8,6 +8,7 @@ use App\Http\Requests;
 
 use App\Models\Post;
 use App\Models\Place;
+use App\Models\PromotionalDate;
 
 
 class LandingController extends Controller
@@ -39,6 +40,21 @@ class LandingController extends Controller
         $places = Place::where('name', 'LIKE', '%'.$request->query('name') . '%')->where('city', 'LIKE', '%'.$request->query('city') . '%')->orderBy('featured_position', 'DESC')->paginate(16);
 
         return view('landing.companies.list', compact('places'));
+
+    }
+
+    /**
+     * Lista promoções
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function promotions_index(Request $request)
+    {
+
+        $promotions = PromotionalDate::where('date', '>=', date('Y-m-d'))->with('place')->paginate(16);
+
+        return view('landing.companies.promotions', compact('promotions'));
 
     }
 

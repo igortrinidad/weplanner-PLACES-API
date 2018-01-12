@@ -179,8 +179,6 @@
 
 </head>
 <body>
-<!--|Preloader|-->
-<div class="preloader"></div>
 
 <div id="section-1" class="brief">
     @include('landing.partials.navbar')

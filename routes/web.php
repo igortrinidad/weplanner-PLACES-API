@@ -11,13 +11,14 @@
 |
 */
 
-Route::get('/', ['as' => 'landing.index', 'uses' => 'LandingController@index']);
+Route::get('/', ['as' => 'search', 'uses' => 'LandingController@list_index']);
 Route::get('/cadastre-se/{choosed_payment}', 'LandingController@signup');
 Route::get('/parabens', 'LandingController@congrats');
 Route::post('/sendLandingContactForm', 'LandingController@sendLandingContactForm');
 Route::post('/sendSignupForm', 'LandingController@sendSignupForm');
 
 Route::get('/buscar', ['as' => 'search', 'uses' => 'LandingController@list_index']);
+Route::get('/promocoes', ['as' => 'promotions', 'uses' => 'LandingController@promotions_index']);
 
 Route::group(['prefix' => 'espacos', 'as' => 'places.'], function () {
 
